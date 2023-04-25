@@ -58,9 +58,45 @@ YlsBaseManager.getInstance().initYlsSDK(this, config);
 
 #### 2.3.1 首次登录
 
+> 注意，localeIp,localePortI和remoteIp, remotePortI必须有一组是有值的
+
 ```java
-boolean result = YlsLoginManager.getInstance().login(this, userName, password, localeIp,
-                    localePortI, remoteIp, remotePortI);
+/**
+ * 手动登录
+ *
+ * @param context
+ * @param userName
+ * @param passWord
+ * @param localeIp
+ * @param localePort
+ * @param remoteIp
+ * @param remotePort
+ * @param requestCallback 登录结果回调
+ * @return
+ */
+public void loginBlock(Context context, String userName, String passWord, String localeIp, int localePort,
+                       String remoteIp, int remotePort, RequestCallback<Boolean> requestCallback)
+//手动登录示例    
+YlsLoginManager.getInstance().loginBlock(this, userName, password, localeIp,
+        localePortI, remoteIp, remotePortI, new RequestCallback<>() {
+            @Override
+            public void onSuccess(Boolean result) {
+                closeProgressDialog();
+                startActivity(new Intent(LoginActivity.this, DialPadActivity.class));
+            }
+
+            @Override
+            public void onFailed(int code) {
+                closeProgressDialog();
+                Toast.makeText(LoginActivity.this, R.string.login_tip_login_failed, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onException(Throwable exception) {
+                closeProgressDialog();
+                Toast.makeText(LoginActivity.this, R.string.login_tip_login_failed, Toast.LENGTH_LONG).show();
+            }
+        });
 ```
 
 #### 2.3.2 缓存登录
@@ -70,11 +106,69 @@ int networkType = NetWorkUtil.getNetWorkType(this);
 YlsLoginManager.getInstance().cacheLogin(networkType);
 ```
 
+#### 2.3.3 登录状态
+
+```java
+    /**
+     * 判断是否登录上
+     * @return
+     */
+    public boolean isLoginEd()
+    //调用示例
+    boolean isLoginEd = YlsLoginManager.getInstance().isLoginEd();
+```
+
+
+
+#### 2.3.4 连接状态
+
+```java
+    /**
+     * 与服务器的连接状态
+     * @return
+     */
+    public synchronized boolean isConnected()
+    //调用示例
+    YlsLoginManager.getInstance().isConnected();
+```
+
+
+
+#### 2.3.4 sdk通知回调
+
+```java
+    YlsBaseManager.getInstance().setSdkCallback(new SdkCallback() {
+        //cdr变更通知
+        @Override
+        public void onCdrChange(int syncResult) {
+            EventBus.getDefault().post(new CallLogChangeEvent(syncResult));
+        }
+        //退出登录通知
+        @Override
+        public void onLogout(int type) {
+            context.startActivity(new Intent(context, LoginActivity.class));
+        }
+    });
+```
+
+
+
 ### 2.4 通话相关操作
+
+> 通话相关大部分在YlsCallManager
 
 #### 2.4.1 呼叫
 
 ```java
+/**
+ * 拨打电话
+ *
+ * @param callNumber
+ * @param netWorkAvailable 网络是否可用
+ * @return
+ */
+public void makeNewCall(String callNumber, boolean netWorkAvailable)
+//调用方式如下
 YlsCallManager.getInstance().makeNewCall(number, netWorkAvailable);
 ```
 
@@ -175,7 +269,7 @@ CallQualityVo callQualityVo = YlsCallManager.getInstance().getCallQuality();
 #### 2.4.13 通话状态回调
 
 ```java
-    YlsCallManager.getInstance().setCallStateInterface(new CallStateInterface() {
+    YlsCallManager.getInstance().setCallStateCallback(new CallStateCallback() {
         //通话回调
         @Override
         public void onCallStateChange(CallStateVo callStateVo) {
@@ -205,61 +299,10 @@ CallQualityVo callQualityVo = YlsCallManager.getInstance().getCallQuality();
 
 
 
-#### 2.4.15 通话音频回调
+#### 2.4.15 通话UI回调
 
 ```java
-    YlsCallManager.getInstance().setSoundPlayInterface(new SoundPlayInterface() {
-        @Override
-        public void playDtmf(int dtmf) {
-            SoundManager.getInstance().startPlay(context, dtmf);
-        }
-
-        @Override
-        public void playRing() {
-            SoundManager.getInstance().startPlay(context, YlsConstant.SOUND_RING_TYPE);
-        }
-
-        @Override
-        public void playCallWaiting() {
-            SoundManager.getInstance().startPlay(context, YlsConstant.SOUND_CALL_WAITING_TYPE);
-        }
-
-        @Override
-        public void playDisconnect() {
-            SoundManager.getInstance().startPlay(context, YlsConstant.SOUND_DISCONNECT_TYPE);
-        }
-
-        @Override
-        public void stopPlay() {
-            SoundManager.getInstance().stopPlay();
-        }
-
-        @Override
-        public void openRemote() {
-            RemoteControlUtil.getInstance().open(context);
-            MediaUtil.getInstance().registerAudioChangeReceiver();
-        }
-
-        @Override
-        public void setAudioRouter() {
-            MediaUtil.getInstance().setCurrentAudioMode(AudioManager.MODE_IN_COMMUNICATION);
-            if (isBluetoothAudio()) {
-                MediaUtil.getInstance().routeToBluetooth(context);
-            } else if (isSpeakerOn()) {
-                MediaUtil.getInstance().routeToSpeaker(context);
-            } else {
-                MediaUtil.getInstance().routeToWiredOrEarpiece(context);
-            }
-        }
-    });
-```
-
-
-
-#### 2.4.16 通话UI回调
-
-```java
-    YlsCallManager.getInstance().setActionInterface(new ActionInterface() {
+    YlsCallManager.getInstance().setActionCallback(new ActionCallback() {
         @Override
         public void onFinishCall() {
             finishAllCall(context);
@@ -285,43 +328,15 @@ CallQualityVo callQualityVo = YlsCallManager.getInstance().getCallQuality();
         public void onStopMicroPhoneService() {
 
         }
-    });
-```
-
-
-
-#### 2.4.17 CallKit回调
-
-```java
-    YlsCallManager.getInstance().setCallKitInterface(new CallKitInterface() {
-        @Override
-        public void placeCall(String callee) {
-
+        
+     	@Override
+        public void onDismissPopupView() {
+            dismissPopupView();
         }
 
         @Override
-        public void inComingCall(String caller) {
-
-        }
-
-        @Override
-        public void setDisConnectedCauseAll() {
-
-        }
-
-        @Override
-        public void setDisConnectedCause(String number, int cause) {
-
-        }
-
-        @Override
-        public void setActive(String number) {
-
-        }
-
-        @Override
-        public void setHold(String number) {
-
+        public void onNotifyAudioChange() {
+            notifyAudioChange();
         }
     });
 ```
@@ -333,7 +348,32 @@ CallQualityVo callQualityVo = YlsCallManager.getInstance().getCallQuality();
 #### 2.5.1 推送设置
 
 ```java
-YlsBaseManager.getInstance().setPushInfo("GETUI",clientid);
+/**
+ * 设置推送信息
+ *
+ * @param mode
+ * @param token
+ * @param requestCallback
+ * @return
+ */
+public void setPushInfo(String mode, String token, RequestCallback requestCallback)
+//使用方法示例
+YlsBaseManager.getInstance().setPushInfo("GETUI", clientid, new RequestCallback() {
+    @Override
+    public void onSuccess(Object result) {
+
+    }
+
+    @Override
+    public void onFailed(int code) {
+
+    }
+
+    @Override
+    public void onException(Throwable exception) {
+
+    }
+});
 ```
 
 
@@ -341,7 +381,7 @@ YlsBaseManager.getInstance().setPushInfo("GETUI",clientid);
 #### 2.5.2 推送处理
 
 ```java
-    String data = new String(payload);
+	String data = new String(payload);
     JSONObject jsonObject = null;
     try {
         jsonObject = new JSONObject(data);
@@ -353,6 +393,72 @@ YlsBaseManager.getInstance().setPushInfo("GETUI",clientid);
 
 
 
-### 2.6 CDR
+### 2.6 通话记录
 
-### 2.7 UI界面
+#### 2.6.1 获取通话记录
+
+> 获取最多100条通话记录
+
+```java
+/**
+ * 获取cdr数据
+ *
+ * @return
+ */
+public List<CdrVo> getCdrList();
+//调用示例
+List<CdrVo> cdrVoList = YlsCallLogManager.getInstance().getCdrList();
+```
+
+#### 2.6.2 删除通话记录
+
+```java
+    /**
+     * 删除cdr
+     *
+     * @param cdrIds 以","分隔的CdrVo的id字符串
+     * @return
+     */
+    public int deleteCdr(String cdrIds)
+```
+
+#### 2.6.3 删除所有通话记录
+
+```java
+    /**
+     * 删除所有cdr
+     *
+     * @return
+     */
+    public int deleteAllCdr()
+    //调用示例
+    btnCdrClear.setOnClickListener(v -> YlsCallLogManager.getInstance().deleteAllCdr());
+```
+
+#### 2.6.4 标记所有未读为已读
+
+```java
+    /**
+     * 标记已读
+     *
+     * @return
+     */
+    public void readAllCdr()
+```
+
+#### 2.6.5 未接来电数量
+
+```java
+    /**
+     * 未接来电cdr数量
+     *
+     * @return
+     */
+    public int getMissCallCdrCount();
+```
+
+
+
+### 2.7 其他事项
+
+> 其他未尽事项可以结合demo来看
