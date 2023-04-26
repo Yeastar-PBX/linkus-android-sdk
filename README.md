@@ -54,6 +54,41 @@ YlsInitConfig config = new YlsInitConfig.Builder(projectPath)//SDK信息保存�
 YlsBaseManager.getInstance().initYlsSDK(this, config);
 ```
 
+#### 2.2.3 自动增益开关
+
+```java
+/**
+ * agc音频自动增益
+ *
+ * @return
+ */
+public void agcSetting(boolean isOpen)
+```
+
+#### 2.2.4 回音消除开关
+
+```java
+/**
+ * 回音消除
+ *
+ * @return
+ */
+public void echoSetting(boolean isOpen)
+```
+
+#### 2.2.5 主动降噪开关
+
+```java
+/**
+ * 主动降噪
+ *
+ * @return
+ */
+public void ncSetting(boolean isOpen)
+```
+
+
+
 ### 2.3 登录
 
 #### 2.3.1 首次登录
@@ -76,7 +111,7 @@ YlsBaseManager.getInstance().initYlsSDK(this, config);
  */
 public void loginBlock(Context context, String userName, String passWord, String localeIp, int localePort,
                        String remoteIp, int remotePort, RequestCallback<Boolean> requestCallback)
-//手动登录示例    
+//手动登录示例
 YlsLoginManager.getInstance().loginBlock(this, userName, password, localeIp,
         localePortI, remoteIp, remotePortI, new RequestCallback<>() {
             @Override
@@ -109,13 +144,13 @@ YlsLoginManager.getInstance().cacheLogin(networkType);
 #### 2.3.3 登录状态
 
 ```java
-    /**
-     * 判断是否登录上
-     * @return
-     */
-    public boolean isLoginEd()
-    //调用示例
-    boolean isLoginEd = YlsLoginManager.getInstance().isLoginEd();
+/**
+ * 判断是否登录上
+ * @return
+ */
+public boolean isLoginEd()
+//调用示例
+boolean isLoginEd = YlsLoginManager.getInstance().isLoginEd();
 ```
 
 
@@ -123,13 +158,13 @@ YlsLoginManager.getInstance().cacheLogin(networkType);
 #### 2.3.4 连接状态
 
 ```java
-    /**
-     * 与服务器的连接状态
-     * @return
-     */
-    public synchronized boolean isConnected()
-    //调用示例
-    YlsLoginManager.getInstance().isConnected();
+/**
+ * 与服务器的连接状态
+ * @return
+ */
+public synchronized boolean isConnected()
+//调用示例
+YlsLoginManager.getInstance().isConnected();
 ```
 
 
@@ -137,18 +172,18 @@ YlsLoginManager.getInstance().cacheLogin(networkType);
 #### 2.3.4 sdk通知回调
 
 ```java
-    YlsBaseManager.getInstance().setSdkCallback(new SdkCallback() {
-        //cdr变更通知
-        @Override
-        public void onCdrChange(int syncResult) {
-            EventBus.getDefault().post(new CallLogChangeEvent(syncResult));
-        }
-        //退出登录通知
-        @Override
-        public void onLogout(int type) {
-            context.startActivity(new Intent(context, LoginActivity.class));
-        }
-    });
+YlsBaseManager.getInstance().setSdkCallback(new SdkCallback() {
+    //cdr变更通知
+    @Override
+    public void onCdrChange(int syncResult) {
+        EventBus.getDefault().post(new CallLogChangeEvent(syncResult));
+    }
+    //退出登录通知
+    @Override
+    public void onLogout(int type) {
+        context.startActivity(new Intent(context, LoginActivity.class));
+    }
+});
 ```
 
 
@@ -269,32 +304,32 @@ CallQualityVo callQualityVo = YlsCallManager.getInstance().getCallQuality();
 #### 2.4.13 通话状态回调
 
 ```java
-    YlsCallManager.getInstance().setCallStateCallback(new CallStateCallback() {
-        //通话回调
-        @Override
-        public void onCallStateChange(CallStateVo callStateVo) {
-            EventBus.getDefault().post(new CallStateEvent(callStateVo));
-        }
+YlsCallManager.getInstance().setCallStateCallback(new CallStateCallback() {
+    //通话回调
+    @Override
+    public void onCallStateChange(CallStateVo callStateVo) {
+        EventBus.getDefault().post(new CallStateEvent(callStateVo));
+    }
 
-        //通话质量等级回调
-        @Override
-        public void onNetWorkLevelChange(int callId, int networkLevel) {
-            EventBus.getDefault().postSticky(new NetWorkLevelEvent(callId, networkLevel));
-        }
+    //通话质量等级回调
+    @Override
+    public void onNetWorkLevelChange(int callId, int networkLevel) {
+        EventBus.getDefault().postSticky(new NetWorkLevelEvent(callId, networkLevel));
+    }
 
-        //网络连接变化回调
-        @Override
-        public void onConnectChange() {
-            EventBus.getDefault().postSticky(new ConnectionChangeEvent());
-        }
+    //网络连接变化回调
+    @Override
+    public void onConnectChange() {
+        EventBus.getDefault().postSticky(new ConnectionChangeEvent());
+    }
 
-        //录音状态回调
-        @Override
-        public void onRecordChange(boolean isRecording) {
-            EventBus.getDefault().post(new RecordEvent(isRecording));
-        }
+    //录音状态回调
+    @Override
+    public void onRecordChange(boolean isRecording) {
+        EventBus.getDefault().post(new RecordEvent(isRecording));
+    }
 
-    });
+});
 ```
 
 
@@ -302,43 +337,43 @@ CallQualityVo callQualityVo = YlsCallManager.getInstance().getCallQuality();
 #### 2.4.15 通话UI回调
 
 ```java
-    YlsCallManager.getInstance().setActionCallback(new ActionCallback() {
-        @Override
-        public void onFinishCall() {
-            finishAllCall(context);
-        }
+YlsCallManager.getInstance().setActionCallback(new ActionCallback() {
+    @Override
+    public void onFinishCall() {
+        finishAllCall(context);
+    }
 
-        @Override
-        public void onNewCall() {
-            jump2CallActivity(context);
-        }
+    @Override
+    public void onNewCall() {
+        jump2CallActivity(context);
+    }
 
-        @Override
-        public void onCallWaiting() {
-            EventBus.getDefault().post(new CallWaitingEvent());
-            SoundManager.getInstance().startPlay(context, YlsConstant.SOUND_CALL_WAITING_TYPE);
-        }
+    @Override
+    public void onCallWaiting() {
+        EventBus.getDefault().post(new CallWaitingEvent());
+        SoundManager.getInstance().startPlay(context, YlsConstant.SOUND_CALL_WAITING_TYPE);
+    }
 
-        @Override
-        public void onMissCallClick() {
+    @Override
+    public void onMissCallClick() {
 
-        }
+    }
 
-        @Override
-        public void onStopMicroPhoneService() {
+    @Override
+    public void onStopMicroPhoneService() {
 
-        }
-        
-     	@Override
-        public void onDismissPopupView() {
-            dismissPopupView();
-        }
+    }
 
-        @Override
-        public void onNotifyAudioChange() {
-            notifyAudioChange();
-        }
-    });
+    @Override
+    public void onDismissPopupView() {
+        dismissPopupView();
+    }
+
+    @Override
+    public void onNotifyAudioChange() {
+        notifyAudioChange();
+    }
+});
 ```
 
 
@@ -381,14 +416,14 @@ YlsBaseManager.getInstance().setPushInfo("GETUI", clientid, new RequestCallback(
 #### 2.5.2 推送处理
 
 ```java
-	String data = new String(payload);
-    JSONObject jsonObject = null;
-    try {
-        jsonObject = new JSONObject(data);
-    } catch (JSONException e) {
-        e.printStackTrace();
-    }
-    YlsCallManager.getInstance().handlerPushMessage(context, jsonObject);
+String data = new String(payload);
+JSONObject jsonObject = null;
+try {
+    jsonObject = new JSONObject(data);
+} catch (JSONException e) {
+    e.printStackTrace();
+}
+YlsCallManager.getInstance().handlerPushMessage(context, jsonObject);
 ```
 
 
@@ -413,48 +448,48 @@ List<CdrVo> cdrVoList = YlsCallLogManager.getInstance().getCdrList();
 #### 2.6.2 删除通话记录
 
 ```java
-    /**
-     * 删除cdr
-     *
-     * @param cdrIds 以","分隔的CdrVo的id字符串
-     * @return
-     */
-    public int deleteCdr(String cdrIds)
+/**
+ * 删除cdr
+ *
+ * @param cdrIds 以","分隔的CdrVo的id字符串
+ * @return
+ */
+public int deleteCdr(String cdrIds)
 ```
 
 #### 2.6.3 删除所有通话记录
 
 ```java
-    /**
-     * 删除所有cdr
-     *
-     * @return
-     */
-    public int deleteAllCdr()
-    //调用示例
-    btnCdrClear.setOnClickListener(v -> YlsCallLogManager.getInstance().deleteAllCdr());
+/**
+ * 删除所有cdr
+ *
+ * @return
+ */
+public int deleteAllCdr()
+//调用示例
+btnCdrClear.setOnClickListener(v -> YlsCallLogManager.getInstance().deleteAllCdr());
 ```
 
 #### 2.6.4 标记所有未读为已读
 
 ```java
-    /**
-     * 标记已读
-     *
-     * @return
-     */
-    public void readAllCdr()
+/**
+ * 标记已读
+ *
+ * @return
+ */
+public void readAllCdr()
 ```
 
 #### 2.6.5 未接来电数量
 
 ```java
-    /**
-     * 未接来电cdr数量
-     *
-     * @return
-     */
-    public int getMissCallCdrCount();
+/**
+ * 未接来电cdr数量
+ *
+ * @return
+ */
+public int getMissCallCdrCount();
 ```
 
 
