@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_logout" android:title="退出登录"/>
+    <item android:id="@+id/menu_clear_cdr" android:title="清除所有的cdr"/>
+    <item android:id="@+id/menu_read_all" android:title="标记所有cdr已读"/>
+    <item android:id="@+id/menu_agc_open" android:title="开启自动增益"/>
+    <item android:id="@+id/menu_agc_close" android:title="关闭自动增益"/>
+    <item android:id="@+id/menu_ec_open" android:title="开启回音消除"/>
+    <item android:id="@+id/menu_ec_close" android:title="关闭回音消除"/>
+    <item android:id="@+id/menu_nc_open" android:title="开启主动降噪"/>
+    <item android:id="@+id/menu_nc_close" android:title="关闭主动降噪"/>
+</menu>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:layout_centerInParent="true"
+    android:background="@drawable/selector_dial_bg"
+    android:minHeight="64dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/dial_number_tv"
+            android:textSize="26sp"
+            android:textColor="#DE000000"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:gravity="center"
+            android:text="2" />
+
+        <TextView
+            android:id="@+id/dial_letter_tv"
+            android:textSize="12sp"
+            android:textColor="#99000000"
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:layout_marginTop="-2dp"
+            android:gravity="center"
+            android:text="abc"
+            tools:visibility="visible" />
+    </LinearLayout>
+</RelativeLayout>

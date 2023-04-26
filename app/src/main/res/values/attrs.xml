@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="DialPadLayout">
+        <attr name="transparent" format="boolean" />
+        <attr name="showDel" format="boolean" />
+        <attr name="paste" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="CrossFadeImageView">
+        <attr name="altSrc" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="InCallContract">
+        <attr name="zoom" format="boolean"/>
+    </declare-styleable>
+</resources>

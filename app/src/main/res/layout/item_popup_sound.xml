@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:id="@+id/cl_sound"
+    xmlns:tools="http://schemas.android.com/tools">
+    <ImageView
+        android:layout_width="@dimen/dim_22"
+        android:layout_height="@dimen/dim_22"
+        android:id="@+id/iv_sound"
+        android:src="@mipmap/icon_bluetooth_small"
+        android:scaleType="centerInside"
+        android:layout_marginStart="27.5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:id="@+id/tv_sound_name"
+        style="@style/tv_lv_title_style"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginStart="7.5dp"
+        android:layout_marginEnd="@dimen/dim_15"
+        app:layout_constraintStart_toEndOf="@+id/iv_sound"
+        app:layout_constraintTop_toTopOf="@+id/iv_sound"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_sound"
+        tools:text="蓝牙" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/iv_sound_selector"
+        android:src="@mipmap/ic_complete"
+        android:visibility="invisible"
+        android:layout_marginEnd="19dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible"/>
+    <View
+        android:id="@+id/line_divider"
+        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:layout_marginTop="19dp"
+        android:background="@color/dialog_separator"
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

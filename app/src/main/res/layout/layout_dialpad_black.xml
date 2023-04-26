@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/tab_dial_input_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="77dp"
+            android:layout_marginEnd="@dimen/dim_15"
+            android:layout_toStartOf="@+id/tab_dial_delete_iv"
+            android:background="@null"
+            android:cursorVisible="false"
+            android:ellipsize="start"
+            android:gravity="center"
+            android:inputType="phone"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="32sp" />
+
+        <ImageView
+            android:id="@+id/tab_dial_delete_iv"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="49dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/icon_delete"
+            android:background="?android:attr/selectableItemBackground"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+    <GridView
+        android:id="@+id/tab_dial_dialpad_gv"
+        android:layout_width="276dp"
+        android:layout_height="376dp"
+        android:layout_marginTop="56dp"
+        android:layout_gravity="center_horizontal"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:verticalSpacing="@dimen/dim_24"
+        android:horizontalSpacing="@dimen/dim_24"
+        android:listSelector="@android:color/transparent"
+        android:numColumns="3"
+        android:stretchMode="columnWidth" />
+
+</LinearLayout>

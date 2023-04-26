@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="all_bg">#FFF7F7F7</color>
+    <color name="dial_normal">#FFFFFFFF</color>
+    <color name="dial_press">#0A000000</color>
+    <color name="color_text_normal">#DEFFFFFF</color>
+    <color name="color_text_gray">#61FFFFFF</color>
+    <color name="fifty_transparent">#80000000</color>
+    <color name="white_one_fifth_transparency">#ccffffff</color>
+    <color name="color_white_FFFEFE">#FFFEFE</color>
+    <color name="bg_flot_window_bottom">#61000000</color>
+    <color name="bg_top_hold">#3D000000</color>
+    <color name="color_shape_normal">#21FFFFFF</color>
+    <color name="color_shape_pressed">#EDFFFFFF</color>
+    <color name="translucent_call_quality">#6000</color>
+    <color name="dialog_separator">#12000000</color>
+    <color name="dialog_background">#FFFFFFFF</color>
+    <color name="item_background_pressed">#FFF7F7F7</color>
+    <color name="text_title">@color/gray_9</color>
+    //描述信息颜色(sidebar灰色)
+    <color name="text_sub_title">#989898</color>
+    <color name="color_text_disable">#99FFFFFF</color>
+    <color name="divider_line_color">@color/separator</color>
+    <color name="blue">@color/blue_6</color>
+    <color name="dialog_bg">#F3F3F3</color>
+    <color name="separator_line_color">#E3E3E3</color>
+    <color name="item_background_normal">@color/background_2</color>
+
+    <color name="separator">#12000000</color>
+    <color name="background_1">#FFF7F7F7</color>
+    <color name="background_1_transparent">#99F7F7F7</color>
+    <color name="background_2">#FFFFFFFF</color>
+
+    <color name="gray_1">#0A000000</color>
+    <color name="gray_2">#12000000</color>
+    <color name="gray_3">#21000000</color>
+    <color name="gray_4">#3D000000</color>
+    <color name="gray_5">#61000000</color>
+    <color name="gray_6">#7A000000</color>
+    <color name="gray_7">#99000000</color>
+    <color name="gray_8">#BF000000</color>
+    <color name="gray_9">#DE000000</color>
+    <color name="gray_10">#ED000000</color>
+
+    <color name="blue_1">#E6F9FF</color>
+    <color name="blue_2">#9BDAF2</color>
+    <color name="blue_3">#6EC0E6</color>
+    <color name="blue_4">#45A5D9</color>
+    <color name="blue_5">#218ACC</color>
+    <color name="blue_6">#0070C0</color>
+    <color name="blue_7">#005499</color>
+    <color name="blue_8">#003B73</color>
+    <color name="blue_9">#00254D</color>
+    <color name="blue_10">#001126</color>
+
+    <color name="green_1">#F0FFF3</color>
+    <color name="green_2">#C6F5D3</color>
+    <color name="green_3">#97E8AF</color>
+    <color name="green_4">#6BDB91</color>
+    <color name="green_5">#44CF77</color>
+    <color name="green_6">#20C161</color>
+    <color name="green_7">#0D9E4C</color>
+    <color name="green_8">#04783A</color>
+    <color name="green_9">#005229</color>
+    <color name="green_10">#002B17</color>
+
+    <color name="yellow_1">#FFFEE6</color>
+    <color name="yellow_2">#FFF9A3</color>
+    <color name="yellow_3">#FFF27A</color>
+    <color name="yellow_4">#FFE852</color>
+    <color name="yellow_5">#FFDB29</color>
+    <color name="yellow_6">#FFCB00</color>
+    <color name="yellow_7">#D9A600</color>
+    <color name="yellow_8">#B38300</color>
+    <color name="yellow_9">#8C6200</color>
+    <color name="yellow_10">#664400</color>
+
+    <color name="orange_1">#00000021</color>
+    <color name="orange_2">#FFE2A3</color>
+    <color name="orange_3">#FFD17A</color>
+    <color name="orange_4">#FFBD52</color>
+    <color name="orange_5">#FFA629</color>
+    <color name="orange_6">#FE8C00</color>
+    <color name="orange_7">#D97000</color>
+    <color name="orange_8">#B35600</color>
+    <color name="orange_9">#8C3F00</color>
+    <color name="orange_10">#662B00</color>
+
+    <color name="red_1">#FFF2F0</color>
+    <color name="red_2">#FFE4E0</color>
+    <color name="red_3">#FFBFB8</color>
+    <color name="red_4">#FF968F</color>
+    <color name="red_5">#FF6B66</color>
+    <color name="red_6">#F63B3B</color>
+    <color name="red_7">#CF272D</color>
+    <color name="red_8">#A81821</color>
+    <color name="red_9">#820C18</color>
+    <color name="red_10">#5C0713</color>
+</resources>

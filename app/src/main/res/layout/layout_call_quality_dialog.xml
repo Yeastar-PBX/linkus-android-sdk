@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_round_rect_call_quality"
+    android:orientation="vertical"
+    android:paddingBottom="10dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="10dp">
+
+    <TextView
+        android:id="@+id/tv_tx_loss_rate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="Sender loss rate： --"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_15"
+        tools:text="Sender loss rate：0.00%" />
+
+    <TextView
+        android:id="@+id/tv_tx_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="Send RTP packets： --"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_15"
+        tools:text="Send RTP packets：373" />
+
+    <TextView
+        android:id="@+id/tv_tx_loss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_15"
+        tools:text="1 loss" />
+
+    <TextView
+        android:id="@+id/tv_tx_dup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="-- duplicate"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_15"
+        tools:text="0 duplicate" />
+
+    <TextView
+        android:id="@+id/tv_tx_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="-- out-of-order"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_15"
+        tools:text="0 out-of-order" />
+
+    <TextView
+        android:id="@+id/tv_tx_jitter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="Jitter buffer size： --"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_15"
+        tools:text="Jitter buffer size：59.3ms" />
+
+    <TextView
+        android:id="@+id/tv_tx_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dim_16"
+        android:singleLine="true"
+        android:text="TX Level： --"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_15"
+        tools:text="TX Level：2" />
+
+    <TextView
+        android:id="@+id/tv_rx_loss_rate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="Receiver loss rate： --"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_15"
+        tools:text="Receiver loss rate： 0.00%" />
+
+    <TextView
+        android:id="@+id/tv_rx_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="Received RTP packets： --"
+        android:textColor="@color/white"
+        tools:text="Received RTP packets：3" />
+
+    <TextView
+        android:id="@+id/tv_rx_loss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="-- loss"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_15"
+        tools:text="1 loss" />
+
+    <TextView
+        android:id="@+id/tv_rx_dup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="-- duplicate"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_15"
+        tools:text="0 duplicate" />
+
+    <TextView
+        android:id="@+id/tv_rx_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="-- out-of-order"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_15"
+        tools:text="0 out-of-order" />
+
+    <TextView
+        android:id="@+id/tv_rx_jitter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="Jitter buffer size： --ms"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_15"
+        tools:text="Jitter buffer size：59.3ms" />
+
+    <TextView
+        android:id="@+id/tv_rx_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dim_16"
+        android:singleLine="true"
+        android:text="RX Level： --"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_15"
+        tools:text="RX Level：2" />
+
+    <TextView
+        android:id="@+id/tv_remote_addr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="--"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_15"
+        tools:text="From IP Address： 192.168.XX.XX.xxx.xxxx.xxx.xxx.xx" />
+</LinearLayout>

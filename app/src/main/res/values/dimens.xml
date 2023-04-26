@@ -1,0 +1,71 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="dim_0">0dp</dimen>
+    <dimen name="dim_0_5">0.5dp</dimen>
+    <dimen name="dim_1">1dp</dimen>
+    <dimen name="dim_2">2dp</dimen>
+    <dimen name="dim_3">3dp</dimen>
+    <dimen name="dim_4">4dp</dimen>
+    <dimen name="dim_5">5dp</dimen>
+    <dimen name="dim_6">6dp</dimen>
+    <dimen name="dim_7">7dp</dimen>
+    <dimen name="dim_8">8dp</dimen>
+    <dimen name="dim_9">9dp</dimen>
+    <dimen name="dim_10">10dp</dimen>
+    <dimen name="dim_12">12dp</dimen>
+    <dimen name="dim_14">14dp</dimen>
+    <dimen name="dim_15">15dp</dimen>
+    <dimen name="dim_16">16dp</dimen>
+    <dimen name="dim_18">18dp</dimen>
+    <dimen name="dim_20">20dp</dimen>
+    <dimen name="dim_22">22dp</dimen>
+    <dimen name="dim_24">24dp</dimen>
+    <dimen name="dim_26">26dp</dimen>
+    <dimen name="dim_30">30dp</dimen>
+    <dimen name="dim_32">32dp</dimen>
+    <dimen name="dim_34">34dp</dimen>
+    <dimen name="dim_36">36dp</dimen>
+    <dimen name="dim_38">38dp</dimen>
+    <dimen name="dim_40">40dp</dimen>
+    <dimen name="dim_42">42dp</dimen>
+    <dimen name="dim_44">44dp</dimen>
+    <dimen name="dim_45">45dp</dimen>
+    <dimen name="dim_48">48dp</dimen>
+    <dimen name="dim_50">50dp</dimen>
+    <dimen name="dim_56">56dp</dimen>
+    <dimen name="dim_60">60dp</dimen>
+    <dimen name="dim_63_5">63.5dp</dimen>
+    <dimen name="dim_70">70dp</dimen>
+    <dimen name="dim_90">90dp</dimen>
+    <dimen name="dim_96">96dp</dimen>
+    <dimen name="dim_101">101dp</dimen>
+    <dimen name="dim_120">120dp</dimen>
+    <dimen name="dim_200">200dp</dimen>
+    <dimen name="dim_220">220dp</dimen>
+    <dimen name="dim_222">222dp</dimen>
+    <dimen name="dim_240">240dp</dimen>
+
+    <dimen name="sp_9">9sp</dimen>
+    <dimen name="sp_10">10sp</dimen>
+    <dimen name="sp_11">11sp</dimen>
+    <dimen name="sp_12">12sp</dimen>
+    <dimen name="sp_13">13sp</dimen>
+    <dimen name="sp_14">14sp</dimen>
+    <dimen name="sp_15">15sp</dimen>
+    <dimen name="sp_16">16sp</dimen>
+    <dimen name="sp_17">17sp</dimen>
+    <dimen name="sp_18">18sp</dimen>
+    <dimen name="sp_19">19sp</dimen>
+    <dimen name="sp_20">20sp</dimen>
+    <dimen name="sp_26">26sp</dimen>
+    <!--左右边距-->
+    <dimen name="dim_padding">@dimen/dim_16</dimen>
+    <!--小的左边距-->
+    <dimen name="dim_left_padding">@dimen/dim_10</dimen>
+    <!--小的右边距-->
+    <dimen name="dim_right_padding">@dimen/dim_8</dimen>
+</resources>

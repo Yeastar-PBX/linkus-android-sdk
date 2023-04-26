@@ -1,0 +1,102 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- 服务器配置输入框 -->
+    <style name="et_style">
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:imeOptions">actionNext</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#DE000000</item>
+        <item name="android:textColorHint">#61000000</item>
+    </style>
+    <style name="CustomDialogStyle" parent="android:Theme.Dialog">
+        <item name="android:windowFrame">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="ProgressDialogStyle" parent="CustomDialogStyle">
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+    <!--通话质量不佳提示-->
+    <style name="tv_tx_level_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@color/fifty_transparent</item>
+        <item name="android:text">@string/call_audio</item>
+        <item name="android:textColor">@color/white_one_fifth_transparency</item>
+        <item name="android:textSize">@dimen/sp_16</item>
+    </style>
+    <style name="call_waiting_txt_style">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <!--列表的主标题-->
+    <style name="tv_lv_title_style">
+        <item name="android:textSize">@dimen/sp_17</item>
+        <item name="android:textColor">@color/gray_9</item>
+    </style>
+
+    <!--解决部分手机dialog不居中问题-->
+    <style name="BDAlertDialog" parent="Theme.AppCompat.DayNight.Dialog">
+        <item name="android:windowMinWidthMinor">350dp</item>
+        <item name="windowFixedWidthMinor">350dp</item>
+    </style>
+    <style name="incall" parent="AppTheme2">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppBaseTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+    <style name="AppTheme2" parent="AppBaseTheme">
+        <!-- Customize your theme here. -->
+        <item name="alertDialogTheme">@style/BDAlertDialog</item>
+        <item name="android:listDivider">@drawable/divider_bg</item>
+        <!--<item name="dialogTheme">@style/AppTheme.Dialog.Alert</item>-->
+
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:windowSoftInputMode">adjustPan</item>
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryDark">@color/blue</item>
+        <item name="colorAccent">@color/blue</item>
+        <item name="checkboxStyle">@style/noButtonStyle</item>
+        <item name="radioButtonStyle">@style/noRadioButtonStyle</item>
+        <item name="android:windowBackground">@color/background_2</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:screenOrientation">portrait</item>
+<!--        <item name="windowActionBar">false</item>-->
+<!--        <item name="windowNoTitle">true</item>-->
+    </style>
+
+    <!--  解决升级到Android X 1.1.0版本后 低版本手机(5.0以下) radioButton设置button属性失效  -->
+    <style name="noRadioButtonStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="buttonCompat">@null</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <!--  解决升级到Android X 1.1.0版本后 低版本手机(5.0以下) checkBox设置drawableLeft属性失效  -->
+    <style name="noButtonStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="buttonCompat">@null</item>
+        <item name="android:background">@null</item>
+    </style>
+</resources>

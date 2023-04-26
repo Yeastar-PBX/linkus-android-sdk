@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fl_ring_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:id="@+id/ll_switch"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dim_40"
+            android:background="@color/bg_top_hold"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible">
+
+            <com.yeastar.linkus.demo.widget.AvatarImageView
+                android:id="@+id/civ_switch_avatar"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="@dimen/dim_12"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/tv_switch_call_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dim_8"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/color_text_normal"
+                android:textSize="@dimen/sp_17"
+                app:autoSizeMinTextSize="7sp"
+                app:autoSizeStepGranularity="2sp"
+                app:autoSizeTextType="uniform"
+                tools:text="1234567891234567899999999995555" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="@dimen/dim_8"
+                android:layout_marginEnd="@dimen/dim_4"
+                android:text="@string/call_hold"
+                android:textColor="@color/red_5"
+                android:textSize="@dimen/sp_17"
+                tools:ignore="RelativeOverlap" />
+
+            <Chronometer
+                android:id="@+id/tv_incall_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dim_12"
+                android:textColor="@color/red_5"
+                android:textSize="@dimen/sp_17"
+                tools:text="@string/call_incoming" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_tx_level"
+            style="@style/tv_tx_level_style"
+            android:height="@dimen/dim_40"
+            android:visibility="gone"
+            android:elevation="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_zoom_out"
+            tools:visibility="visible" />
+
+        <com.yeastar.linkus.demo.widget.ClickImageView
+            android:id="@+id/iv_zoom_out"
+            android:layout_width="@dimen/dim_32"
+            android:layout_height="@dimen/dim_32"
+            android:layout_marginStart="@dimen/dim_padding"
+            android:layout_marginTop="@dimen/dim_padding"
+            android:padding="@dimen/dim_4"
+            android:scaleType="fitXY"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_switch" />
+
+        <com.yeastar.linkus.demo.widget.ClickImageView
+            android:id="@+id/iv_report_call_quality"
+            android:layout_width="@dimen/dim_32"
+            android:layout_height="@dimen/dim_32"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/dim_padding"
+            android:layout_marginEnd="@dimen/dim_padding"
+            android:background="@drawable/shape_round_call"
+            android:padding="@dimen/dim_4"
+            android:scaleType="fitXY"
+            android:src="@mipmap/icon_report_call_quality"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_switch" />
+
+        <com.yeastar.linkus.demo.call.InCallContractItem
+            android:id="@+id/incall_contact_video"
+            android:layout_width="202dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_padding"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_switch" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_incall"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingTop="@dimen/dim_14"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_zoom_out"
+            app:layout_constraintVertical_weight="1">
+
+            <com.yeastar.linkus.demo.call.InCallContractItem
+                android:id="@+id/incall_hold_contact"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dim_12"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:zoom="true"
+                tools:visibility="visible" />
+
+            <com.yeastar.linkus.demo.call.InCallContractItem
+                android:id="@+id/incall_center_contact"
+                android:layout_width="202dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.yxf.clippathlayout.impl.ClipPathRelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/dim_34"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <RelativeLayout
+                    android:id="@+id/rl"
+                    android:layout_width="345dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/bg_flot_window_bottom"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:id="@+id/iv_top"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:src="@mipmap/icon_arrow_up" />
+
+                    <com.yeastar.linkus.demo.widget.NoScrollGridView
+                        android:id="@+id/incall_btn_gv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/iv_top"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="16dp"
+                        android:columnWidth="74dp"
+                        android:horizontalSpacing="10dp"
+                        android:listSelector="@android:color/transparent"
+                        android:numColumns="4"
+                        android:scrollbars="none"
+                        android:stretchMode="columnWidth"
+                        android:verticalSpacing="24dp" />
+                </RelativeLayout>
+            </com.yxf.clippathlayout.impl.ClipPathRelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

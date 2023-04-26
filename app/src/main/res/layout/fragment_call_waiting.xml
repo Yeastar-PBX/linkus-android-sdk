@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/bg_incall">
+
+    <TextView
+        android:id="@+id/tv_tx_level"
+        style="@style/tv_tx_level_style"
+        android:height="@dimen/dim_40"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+    <com.yeastar.linkus.demo.widget.ClickImageView
+        android:id="@+id/iv_zoom_out"
+        android:layout_width="@dimen/dim_32"
+        android:layout_height="@dimen/dim_32"
+        android:layout_marginStart="@dimen/dim_padding"
+        android:layout_marginTop="@dimen/dim_padding"
+        android:padding="@dimen/dim_4"
+        android:scaleType="fitXY"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.yeastar.linkus.demo.call.InCallContractItem
+        android:id="@+id/incall_contact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_zoom_out"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/iv_zoom_out" />
+
+    <com.yeastar.linkus.demo.widget.ClickImageView
+        android:id="@+id/iv_hangup_answer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dim_36"
+        android:layout_marginBottom="94dp"
+        android:src="@mipmap/icon_hangup_answer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_hangup_answer"
+        style="@style/call_waiting_txt_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dim_10"
+        android:gravity="center_horizontal"
+        android:maxWidth="112dp"
+        android:text="@string/call_hangup_current"
+        app:layout_constraintEnd_toEndOf="@+id/iv_hangup_answer"
+        app:layout_constraintStart_toStartOf="@+id/iv_hangup_answer"
+        app:layout_constraintTop_toBottomOf="@+id/iv_hangup_answer" />
+
+    <com.yeastar.linkus.demo.widget.ClickImageView
+        android:id="@+id/iv_reject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/icon_reject"
+        app:layout_constraintEnd_toEndOf="@+id/iv_answer_hold"
+        app:layout_constraintStart_toStartOf="@+id/iv_hangup_answer"
+        app:layout_constraintTop_toTopOf="@+id/iv_hangup_answer" />
+
+    <TextView
+        android:id="@+id/tv_reject"
+        style="@style/call_waiting_txt_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dim_10"
+        android:gravity="center_horizontal"
+        android:maxWidth="112dp"
+        android:text="@string/call_reject"
+        app:layout_constraintEnd_toEndOf="@+id/iv_reject"
+        app:layout_constraintStart_toStartOf="@+id/iv_reject"
+        app:layout_constraintTop_toBottomOf="@+id/iv_reject" />
+
+    <com.yeastar.linkus.demo.widget.ClickImageView
+        android:id="@+id/iv_answer_hold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dim_36"
+        android:layout_marginBottom="94dp"
+        android:src="@mipmap/icon_hold_answer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_hold_answer"
+        style="@style/call_waiting_txt_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dim_10"
+        android:gravity="center_horizontal"
+        android:maxWidth="112dp"
+        android:text="@string/call_hold_answer"
+        app:layout_constraintEnd_toEndOf="@+id/iv_answer_hold"
+        app:layout_constraintStart_toStartOf="@+id/iv_answer_hold"
+        app:layout_constraintTop_toBottomOf="@+id/iv_answer_hold" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

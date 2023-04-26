@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fl_ring_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/tv_tx_level"
+        style="@style/tv_tx_level_style"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+    <com.yeastar.linkus.demo.widget.ClickImageView
+        android:id="@+id/iv_zoom_out"
+        android:layout_width="@dimen/dim_32"
+        android:layout_height="@dimen/dim_32"
+        android:layout_marginStart="@dimen/dim_padding"
+        android:layout_marginTop="@dimen/dim_padding"
+        android:padding="@dimen/dim_4"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.yeastar.linkus.demo.call.InCallContractItem
+        android:id="@+id/incall_center_contact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dim_14"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_zoom_out" />
+
+    <com.yeastar.linkus.demo.widget.ClickImageView
+        android:id="@+id/iv_ring_decline"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginBottom="94dp"
+        android:background="@drawable/shape_circle_dial_red"
+        android:padding="@dimen/dim_14"
+        android:src="@mipmap/icon_end_call"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dim_10"
+        android:maxWidth="160dp"
+        android:text="@string/call_reject"
+        android:textColor="@color/color_text_normal"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintEnd_toEndOf="@+id/iv_ring_decline"
+        app:layout_constraintStart_toStartOf="@+id/iv_ring_decline"
+        app:layout_constraintTop_toBottomOf="@+id/iv_ring_decline"
+        tools:textColor="@color/black" />
+
+    <com.yeastar.linkus.demo.widget.ClickImageView
+        android:id="@+id/iv_ring_accept"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="94dp"
+        android:background="@drawable/shape_circle_dial_green"
+        android:maxWidth="160dp"
+        android:padding="@dimen/dim_14"
+        android:src="@mipmap/icon_call"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dim_10"
+        android:maxWidth="160dp"
+        android:text="@string/call_answer"
+        android:textColor="@color/color_text_normal"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintEnd_toEndOf="@+id/iv_ring_accept"
+        app:layout_constraintStart_toStartOf="@+id/iv_ring_accept"
+        app:layout_constraintTop_toBottomOf="@+id/iv_ring_accept"
+        tools:textColor="@color/black" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <com.yeastar.linkus.demo.widget.AvatarImageView
+        android:id="@+id/civ_incall_avatar"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginBottom="@dimen/dim_20"
+        tools:ignore="ContentDescription" />
+    <com.yeastar.linkus.demo.widget.FocusedTextView
+        android:id="@+id/tv_incall_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/color_text_normal"
+        android:textSize="@dimen/sp_17"
+        tools:text="Apple"
+        tools:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tv_incall_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/color_text_gray"
+        android:textSize="@dimen/sp_14"
+        tools:text="1888888885555555 | yeastar-new pstnddddddddddddd"
+        tools:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tv_incall_company"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/color_text_normal"
+        android:textSize="@dimen/sp_17"
+        android:visibility="gone"
+        tools:text="Yeastar"
+        tools:textColor="@color/black"
+        tools:visibility="visible" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dim_4"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_incall_hold_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="@dimen/dim_4"
+            android:text="@string/call_hold"
+            android:textColor="@color/red_5"
+            android:textSize="@dimen/sp_14"
+            android:visibility="gone"
+            tools:ignore="RelativeOverlap" />
+
+        <Chronometer
+            android:id="@+id/tv_incall_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_text_normal"
+            android:textSize="@dimen/sp_14"
+            tools:textColor="@color/black" />
+    </LinearLayout>
+
+</LinearLayout>

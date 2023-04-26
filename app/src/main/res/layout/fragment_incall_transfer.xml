@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/calltransfer_fl_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_tx_level"
+        style="@style/tv_tx_level_style"
+        android:layout_marginTop="?attr/actionBarSize"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/back_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingEnd="@dimen/dim_padding"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:layout_width="@dimen/dim_44"
+                android:layout_height="@dimen/dim_44"
+                android:padding="@dimen/dim_10"
+                android:scaleType="fitXY"
+                android:src="@mipmap/icon_cancel" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/public_cancel"
+                android:textColor="@color/color_white_FFFEFE"
+                android:textSize="@dimen/sp_17" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dim_26"
+        android:layout_marginRight="@dimen/dim_26"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="UselessParent">
+
+        <com.yeastar.linkus.demo.widget.Dialpad.DialPadLayout
+            android:id="@+id/dial_pad_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:transparent="true"
+            app:paste="true" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="31dp"
+            android:layout_marginBottom="82dp"
+            android:paddingStart="37.5dp"
+            android:paddingEnd="37.5dp">
+
+            <LinearLayout
+                android:id="@+id/incall_contact_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/dim_56"
+                    android:layout_height="@dimen/dim_56"
+                    android:background="@drawable/shape_circle_dial_normal"
+                    android:padding="@dimen/dim_10"
+                    android:src="@mipmap/icon_contacts" />
+
+                <TextView
+                    android:layout_width="@dimen/dim_60"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dim_10"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/contacts_contact_system"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_13"
+                    app:autoSizeMaxTextSize="13sp"
+                    app:autoSizeMinTextSize="7sp"
+                    app:autoSizeStepGranularity="2sp"
+                    app:autoSizeTextType="uniform" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/incall_call"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/dim_56"
+                    android:layout_height="@dimen/dim_56"
+                    android:background="@drawable/shape_circle_dial_green"
+                    android:padding="@dimen/dim_10"
+                    android:src="@mipmap/icon_call" />
+
+                <TextView
+                    android:layout_width="@dimen/dim_60"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dim_10"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/cdr_call"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_13"
+                    app:autoSizeMaxTextSize="13sp"
+                    app:autoSizeMinTextSize="7sp"
+                    app:autoSizeStepGranularity="2sp"
+                    app:autoSizeTextType="uniform" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/incall_history_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/dim_56"
+                    android:layout_height="@dimen/dim_56"
+                    android:background="@drawable/shape_circle_dial_normal"
+                    android:padding="@dimen/dim_10"
+                    android:src="@mipmap/icon_cdr" />
+
+                <TextView
+                    android:layout_width="@dimen/dim_60"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dim_10"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/cdr_history"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_13"
+                    app:autoSizeMaxTextSize="13sp"
+                    app:autoSizeMinTextSize="7sp"
+                    app:autoSizeStepGranularity="2sp"
+                    app:autoSizeTextType="uniform" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

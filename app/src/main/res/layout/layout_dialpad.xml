@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="58dp">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/tab_dial_input_tv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="40dp"
+            android:layout_toStartOf="@+id/tab_dial_delete_iv"
+            android:background="@null"
+            android:cursorVisible="false"
+            android:ellipsize="start"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:hint="@string/calls_dialpad_placeholder"
+            android:inputType="phone"
+            android:singleLine="true"
+            android:textColor="#0070C0"
+            android:textColorHint="#3D000000"
+            android:textSize="17sp" />
+
+        <com.yeastar.linkus.demo.widget.ClickImageView
+            android:id="@+id/tab_dial_delete_iv"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:scaleType="center"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:visibility="invisible"
+            android:src="@mipmap/icon_dial_delete"
+            android:background="?android:attr/selectableItemBackground" />
+    </RelativeLayout>
+
+    <GridView
+        android:id="@+id/tab_dial_dialpad_gv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:listSelector="@android:color/transparent"
+        android:numColumns="3"
+        android:stretchMode="columnWidth" />
+
+</LinearLayout>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/all_bg"
+    android:orientation="vertical">
+
+    <com.yeastar.linkus.demo.widget.VerticalRecyclerView
+        android:id="@+id/rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="0dp"
+        android:cacheColorHint="@android:color/transparent" />
+
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/motionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        app:layoutDescription="@xml/fragment_dial_scene">
+
+        <LinearLayout
+            android:id="@+id/tab_dial_pad_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_dial_pad"
+            android:clickable="true"
+            android:elevation="12dp"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.yeastar.linkus.demo.widget.Dialpad.DialPadLayout
+                android:id="@+id/dial_pad_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:paste="true"
+                app:transparent="false" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/tab_dial_cl"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:paddingLeft="40dp"
+                android:paddingRight="40dp"
+                android:paddingBottom="20dp">
+
+                <com.yeastar.linkus.demo.widget.ClickImageView
+                    android:id="@+id/dial_pad_fold"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:scaleType="center"
+                    android:src="@mipmap/ic_dial_expand"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+        <com.yeastar.linkus.demo.widget.CrossFadeImageView
+            android:id="@+id/tab_dial_call_iv"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/shape_circle_blue_with_shadow"
+            android:scaleType="center"
+            android:src="@mipmap/ic_call_expand"
+            app:altSrc="@mipmap/ic_call_fold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.motion.widget.MotionLayout>
+
+</RelativeLayout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_round_sound"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_sound_title"
+        style="@style/tv_lv_title_style"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginEnd="@dimen/dim_15"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:text="@string/call_audio_selection" />
+
+    <View
+        android:id="@+id/line_divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/dialog_separator" />
+    <com.yeastar.linkus.demo.widget.VerticalRecyclerView
+        android:id="@+id/rv_sound"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>
