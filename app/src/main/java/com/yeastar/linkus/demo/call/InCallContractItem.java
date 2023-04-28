@@ -131,13 +131,6 @@ public class InCallContractItem extends LinearLayout {
         }
     }
 
-//    public void setTimeTextHold() {
-//        mInCallTimeTv.stop();
-//        setTimerByStart(CallManager.getInstance().getHoldStartTime());
-//        mTvIncallHoldTitle.setVisibility(VISIBLE);
-//        mInCallTimeTv.setTextColor(getResources().getColor(R.color.red_5));
-//    }
-
     private void setTimerByStart(long time) {
         mInCallTimeTv.setVisibility(VISIBLE);
         mTvIncallHoldTitle.setVisibility(GONE);

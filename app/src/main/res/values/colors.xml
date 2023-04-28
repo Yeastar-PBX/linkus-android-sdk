@@ -37,6 +37,8 @@
     <color name="background_1">#FFF7F7F7</color>
     <color name="background_1_transparent">#99F7F7F7</color>
     <color name="background_2">#FFFFFFFF</color>
+    <color name="bg_toast">#BF000000</color>
+    <color name="text_toast">#DEFFFFFF</color>
 
     <color name="gray_1">#0A000000</color>
     <color name="gray_2">#12000000</color>

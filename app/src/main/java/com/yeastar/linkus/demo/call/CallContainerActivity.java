@@ -181,28 +181,14 @@ public class CallContainerActivity extends BaseActivity {
             if (!YlsCallManager.getInstance().isInCall()) {
                 YlsCallManager.getInstance().getCallList().add(inCallVo);
             }
-//            SearchCallModel searchCallModel = GlobalCache.findSearchCallModel(inCallVo.getCallNumber(), true);//主动呼出的也需要获取最新的Contacts信息
-//            inCallVo.setCallName(searchCallModel.getCallName());
-//            inCallVo.setCompany(searchCallModel.getCompany());
-//            inCallVo.setObject(searchCallModel.getObject());
         }
         LinkedList<InCallVo> list = new LinkedList<>(YlsCallManager.getInstance().getCallList());
         if (CommonUtil.isListNotEmpty(list)) {
             InCallVo inCallVo = list.getFirst();
             if (inCallVo.isAccept() || inCallVo.isAnswer()) {//已接听
-//                if (TextUtils.isEmpty(inCallVo.getConfId())) {//普通来电
                     InCallFragment inCall = new InCallFragment();
                     inCall.setContainerId(R.id.call_container);
                     switchContent(inCall, Constant.TAG_FRAGMENT_CALL);
-//                } else if (!Constant.PUSH_CONFERENCE.equals(inCallVo.getConfId())) {//会议室来电
-//                    ConferenceInCallFragment conferenceInCall = new ConferenceInCallFragment();
-//                    conferenceInCall.setContainerId(R.id.call_container);
-//                    switchContent(conferenceInCall, Constant.TAG_FRAGMENT_CONFERENCE);
-//                } else {//会议室加载页面
-//                    ConferenceLoadingFragment loadingFragment = new ConferenceLoadingFragment();
-//                    loadingFragment.setContainerId(R.id.call_container);
-//                    switchContent(loadingFragment);
-//                }
             } else {
                 if (inCallVo.isCallOut()) {
                     InCallFragment inCall = new InCallFragment();
@@ -277,7 +263,6 @@ public class CallContainerActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-//        App.getInstance().setInCall(false);
         CallManager.getInstance().setCallActivity(new WeakReference<>(null));
         releaseSensor();
         if (audioManager != null) {
@@ -315,13 +300,11 @@ public class CallContainerActivity extends BaseActivity {
                 return super.onKeyDown(keyCode, event);
             case KeyEvent.KEYCODE_VOLUME_UP:
                 LogUtil.w("音量调节+");
-//                MediaUtil.getInstance().stopPlay();
                 SoundManager.getInstance().stopPlay();
                 getCurrentVoiceCallVolume();
                 return super.onKeyDown(keyCode, event);
             case KeyEvent.KEYCODE_VOLUME_DOWN:
                 LogUtil.w("音量调节-");
-//                MediaUtil.getInstance().stopPlay();
                 SoundManager.getInstance().stopPlay();
                 getCurrentVoiceCallVolume();
                 return super.onKeyDown(keyCode, event);

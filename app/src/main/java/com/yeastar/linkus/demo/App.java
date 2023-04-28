@@ -5,11 +5,13 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 
+import com.hjq.toast.ToastUtils;
 import com.igexin.sdk.PushManager;
 import com.yeastar.linkus.demo.base.BaseActivityLifecycleCallbacks;
 import com.yeastar.linkus.demo.call.CallManager;
 import com.yeastar.linkus.demo.eventbus.CallLogChangeEvent;
 import com.yeastar.linkus.demo.utils.Utils;
+import com.yeastar.linkus.demo.widget.MToastStyle;
 import com.yeastar.linkus.service.base.YlsBaseManager;
 import com.yeastar.linkus.service.callback.SdkCallback;
 
@@ -41,6 +43,7 @@ public class App extends Application {
             registerActivityLifecycleCallbacks(new BaseActivityLifecycleCallbacks());
             //个推初始化
             PushManager.getInstance().initialize(this);
+            ToastUtils.init(this, new MToastStyle());
             YlsBaseManager.getInstance().setSdkCallback(new SdkCallback() {
                 //cdr变更通知
                 @Override
@@ -50,7 +53,9 @@ public class App extends Application {
                 //退出登录通知
                 @Override
                 public void onLogout(int type) {
-                    context.startActivity(new Intent(context, LoginActivity.class));
+                    Intent intent = new Intent(context, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
                 }
             });
         }
@@ -77,10 +82,6 @@ public class App extends Application {
 
     public void setInGsmCall(boolean gsmCall) {
         isInGsmCall = gsmCall;
-    }
-
-    public WeakReference<Activity> getWeakCurrentActivity() {
-        return mCurrentActivity;
     }
 
     public void setmCurrentActivity(WeakReference<Activity> mCurrentActivity) {

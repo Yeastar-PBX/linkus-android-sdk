@@ -140,14 +140,12 @@ public class InCallPresenter extends InCallContract.Presenter {
             return;
         }
         LoginResultVo loginResultVo = YlsLoginManager.getInstance().getLoginResultVo();
-//        LoginResultModel loginResultModel = LoginManager.getInstance().getLoginResultModel();
         if (loginResultVo == null) {
             ToastUtil.showToast(R.string.call_record_faild);
             return;
         }
         String recordCode = TextUtils.isEmpty(loginResultVo.getRecordcode()) ? "*1" : loginResultVo.getRecordcode();
         int ret = YlsCallManager.getInstance().record(vo.getCallId(), recordCode);
-//        int ret = AppSdk3.record(model.getCallId(), recordCode);
         if (ret == -1) {
             ToastUtil.showToast(R.string.call_record_faild);
         }
@@ -250,7 +248,6 @@ public class InCallPresenter extends InCallContract.Presenter {
         list.add(switchModel);
         inCallVo = list.getFirst();
         YlsCallManager.getInstance().unHoldCall(context, inCallVo);
-//        MediaUtil.getInstance().setAudioRoute(CallManager.getInstance().getAudioRoute(), inCallVo.getCallNumber());
         view.updateInCallDialPad(inCallVo);
         view.callWaitingConnected(list);
     }

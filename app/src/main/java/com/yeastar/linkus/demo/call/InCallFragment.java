@@ -442,13 +442,10 @@ public class InCallFragment extends InCallRelatedFragment implements InCallContr
     @Override
     public void calling(InCallVo inCallVo) {
         //避免手动进入添加页面，又马上退出后的操作，影响其他功能
-//        BlurBitmapUtil.loadBlurBitmapByGlide(mFlRoot, getContext(), GlobalCache.findBlurUriByNumber(inCallVo.getCallNumber()));
         mInCallHoldContact.setVisibility(View.GONE);
         mLlSwitch.setVisibility(View.GONE);
         initCallContactItem(inCallVo);
-//        MediaUtil.getInstance().setAudioRoute(CallManager.getInstance().getAudioRoute(), inCallVo.getCallNumber());
         RemoteControlUtil.getInstance().setClickCount(1);
-//        initIvDisplay(CallType.Calling, inCallVo);
         updateInCallDialPad(inCallVo);
     }
 
@@ -469,14 +466,10 @@ public class InCallFragment extends InCallRelatedFragment implements InCallContr
 
     @Override
     public void singleCall(InCallVo inCallVo) {
-        //加载高斯模糊背景
-//        BlurBitmapUtil.loadBlurBitmapByGlide(mFlRoot, getContext(), GlobalCache.findBlurUriByNumber(inCallVo.getCallNumber()));
         mInCallHoldContact.setVisibility(View.GONE);
         mLlSwitch.setVisibility(View.GONE);
         initCallContactItem(inCallVo);
-//        MediaUtil.getInstance().setAudioRoute(CallManager.getInstance().getAudioRoute(), inCallVo.getCallNumber());
         RemoteControlUtil.getInstance().setClickCount(1);
-//        initIvDisplay(CallType.SingleCall, inCallVo);
         updateInCallDialPad(inCallVo);
     }
 
@@ -517,7 +510,6 @@ public class InCallFragment extends InCallRelatedFragment implements InCallContr
         //transferToVo   被转移号码
         InCallVo transferVo = list.get(1);
         InCallVo transferToVo = list.getFirst();
-//        BlurBitmapUtil.loadBlurBitmapByGlide(mFlRoot, getContext(), GlobalCache.findBlurUriByNumber(transferToVo.getCallNumber()));
         LogUtil.w("通话界面 转移来电UI transferVo=" + transferVo.toString()
                 + " transferToVo=" + transferToVo.toString());
         //左边是被转移的号码
@@ -533,7 +525,6 @@ public class InCallFragment extends InCallRelatedFragment implements InCallContr
         mInCallCenterContact.setContact(transferToVo, true);
         mInCallCenterContact.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         mInCallCenterContact.setTimerText(transferToVo);
-//        initIvDisplay(CallType.MultiPartyRing, transferToVo);
         updateInCallDialPad(transferToVo);
     }
 
@@ -541,8 +532,6 @@ public class InCallFragment extends InCallRelatedFragment implements InCallContr
     public void threeCall(LinkedList<InCallVo> list) {
         //第一通转移目的地，第二通被转移的，第三通call waiting
         LogUtil.w("通话界面 call waiting+转移 三通通话UI " + list.toString());
-//        InCallVo inCallVo = list.getFirst();
-//        MediaUtil.getInstance().setAudioRoute(CallManager.getInstance().getAudioRoute(), inCallVo.getCallNumber());
         transferCall(list);
     }
 
@@ -550,18 +539,15 @@ public class InCallFragment extends InCallRelatedFragment implements InCallContr
     public void callWaitingConnected(LinkedList<InCallVo> list) {
         InCallVo inCallVo = list.getFirst();
         InCallVo lastVo = list.getLast();
-//        BlurBitmapUtil.loadBlurBitmapByGlide(mFlRoot, getContext(), GlobalCache.findBlurUriByNumber(inCallVo.getCallNumber()));
         initCallContactItem(inCallVo);
         setTopHoldContact(lastVo);
         mInCallHoldContact.setVisibility(View.GONE);
-//        initIvDisplay(CallType.CallWaiting, inCallVo);
         updateInCallDialPad(inCallVo);
     }
 
 
     private void setTopHoldContact(InCallVo topHoldContact) {
         mLlSwitch.setVisibility(View.VISIBLE);
-//        String topPhotoUri = GlobalCache.findPhotoModelJsonByObj(topHoldContact.getObject());
         String topPhotoUri = null;
         mCivSwitchAvatar.loadCirclePhotoUrl(topPhotoUri);
         String topHoldName = getCallName(topHoldContact.getCallName(), topHoldContact.getCallNumber());

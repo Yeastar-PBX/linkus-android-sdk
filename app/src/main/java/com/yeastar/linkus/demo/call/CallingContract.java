@@ -22,22 +22,4 @@ public interface CallingContract {
 
     }
 
-    /**
-     * 蓝牙连接变化接口
-     */
-    interface BluetoothStateCallback {
-        void bluetoothOn();
-
-        void bluetoothOff();
-    }
-
-    /**
-     * 距离传感器接口
-     */
-    interface SensorCallback {
-
-        void screenOn();
-
-        void screenOff();
-    }
 }

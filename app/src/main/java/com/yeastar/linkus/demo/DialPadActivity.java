@@ -26,11 +26,13 @@ import com.yeastar.linkus.demo.eventbus.ToggleDialPadEvent;
 import com.yeastar.linkus.demo.widget.ActionSheetDialog;
 import com.yeastar.linkus.demo.widget.ClickImageView;
 import com.yeastar.linkus.demo.widget.CrossFadeImageView;
+import com.yeastar.linkus.demo.widget.CustomProgressDialog;
 import com.yeastar.linkus.demo.widget.Dialpad.DialPadLayout;
 import com.yeastar.linkus.demo.widget.VerticalRecyclerView;
 import com.yeastar.linkus.service.base.YlsBaseManager;
 import com.yeastar.linkus.service.call.YlsCallManager;
 import com.yeastar.linkus.service.call.vo.CdrVo;
+import com.yeastar.linkus.service.callback.RequestCallback;
 import com.yeastar.linkus.service.cdr.YlsCallLogManager;
 import com.yeastar.linkus.service.log.LogUtil;
 import com.yeastar.linkus.service.login.YlsLoginManager;
@@ -52,11 +54,13 @@ public class DialPadActivity extends AppCompatActivity {
     private boolean dialPadShown = true;
     private DialPadLayout mDialPadLayout;
     private CdrAdapter adapter;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dial_pad);
+        updateCdr();
         mDialPadLayout = findViewById(R.id.dial_pad_layout);
         mMotionLayout = findViewById(R.id.motionLayout);
         mDialPadFold = findViewById(R.id.dial_pad_fold);
@@ -86,6 +90,7 @@ public class DialPadActivity extends AppCompatActivity {
         int fetchCdrResult = callLogChangeEvent.getResult();
         LogUtil.i("CallLogChangeEvent result=%d", fetchCdrResult);
         initCdr();
+        updateCdr();
     }
 
 
@@ -110,7 +115,7 @@ public class DialPadActivity extends AppCompatActivity {
                             ActionSheetDialog.SheetItemColor.Black, which -> {
                                 List<CdrVo> list = (List<CdrVo>) adapter.getData();
                                 CdrVo cdrVo = list.get(position);
-                                YlsCallLogManager.getInstance().deleteCdr(cdrVo.getId()+"");
+                                YlsCallLogManager.getInstance().deleteCdr(cdrVo.getId() + "");
                             });
             if (actionSheetDialog.getSheetItemCount() > 0) {
                 actionSheetDialog.show();
@@ -132,6 +137,11 @@ public class DialPadActivity extends AppCompatActivity {
         mDialPadFold.setOnClickListener(v -> {
             toggleDialPad(false);
         });
+    }
+
+    private void updateCdr() {
+        int missCallCount = YlsCallLogManager.getInstance().getMissCallCdrCount();
+        setTitle("未接来电数量:" + missCallCount);
     }
 
     private void toggleDialPad(boolean dialPadShown) {
@@ -184,14 +194,31 @@ public class DialPadActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.my_menu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_logout:
                 // 处理退出登录菜单项的点击事件
-                YlsLoginManager.getInstance().logout(this);
-                finish();
-                startActivity(new Intent(this,LoginActivity.class));
+                showLargeProgressDialog();
+                YlsLoginManager.getInstance().logout(this, new RequestCallback() {
+                    @Override
+                    public void onSuccess(Object result) {
+                        finish();
+                        startActivity(new Intent(DialPadActivity.this, LoginActivity.class));
+                        closeProgressDialog();
+                    }
+
+                    @Override
+                    public void onFailed(int code) {
+                        closeProgressDialog();
+                    }
+
+                    @Override
+                    public void onException(Throwable exception) {
+                    }
+                });
+
                 return true;
             case R.id.menu_clear_cdr:
                 // 处理清除所有cdr的点击事件
@@ -227,6 +254,25 @@ public class DialPadActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void showLargeProgressDialog() {
+        if (progressDialog == null) {
+            progressDialog = new CustomProgressDialog(this, CustomProgressDialog.TYPE_TEXT_MULTIPLE, R.string.setting_logging_out, true);
+        }
+        if (!isDestroyed() && !isFinishing()) {
+            progressDialog.show();
+        }
+    }
+
+    private void closeProgressDialog() {
+        if (isDestroyed() || isFinishing()) {
+            return;
+        }
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
         }
     }
 }

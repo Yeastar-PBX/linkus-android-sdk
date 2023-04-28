@@ -187,7 +187,6 @@ public class CallManager {
         if (activity != null && !activity.isDestroyed()) {
             activity.finish();
         }
-//        NotificationUtils.cancelNotificationById(App.getInstance().getContext(), Constant.NEW_CALL_NOTIFICATION_ID);
     }
 
     private void finishAllTransferFragment(Activity activity) {
@@ -360,8 +359,6 @@ public class CallManager {
 
     //跳转到呼出界面
     private void jumpToInCallFragment(Context context, String callee, String routePrefix, String name) {
-//        String calleeFormat = StringUtil.formatMobile(callee, LoginManager.getInstance().isPSeriesV4());
-//        SharePreferenceUtil.putString(context, Constant.LAST_CALL_OUT_NUMBER, calleeFormat);
         InCallVo inCallVo = new InCallVo(-1, name, callee, routePrefix);
         inCallVo.setCallOut(true);
         inCallVo.setIncomeTime(System.currentTimeMillis());
@@ -494,10 +491,6 @@ public class CallManager {
                                  String route, Object object) {
         LogUtil.w("makeTransferCall   calleeName==" + calleeName + "  number==" + number +
                 "  trunkName==" + trunkName + "  route==" + route);
-//        InCallVo inCallVo = new InCallVo(calleeName, number, trunkName);
-//        inCallVo.setObject(object);
-//        inCallVo.setCallOut(true);
-//        inCallVo.setTransfer(true);
         if (YlsCallManager.getInstance().isInCall()) {
             YlsCallManager.getInstance().makeTransferCall(context, calleeName, number, trunkName, route, object);
         } else {
@@ -595,7 +588,6 @@ public class CallManager {
     public boolean isJumpToCallActivity(int notifyType, String linkedId) {
         return !Utils.isAppOnForeground(App.getInstance().getContext())
                 && isPushCallAlive(linkedId);
-//                && PushMessage.NOTIFY_CLICK == notifyType;
     }
 
     /**

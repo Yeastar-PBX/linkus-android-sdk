@@ -11,7 +11,7 @@ android {
         minSdk 21
         targetSdk 31
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         ndk {
             abiFilters "armeabi-v7a", "arm64-v8a"//, "x86", "mips"
         }
@@ -24,12 +24,35 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
+    signingConfigs {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            storeFile file("../demo_key.jks")
+            storePassword "12345678"
+            keyAlias "linkus_demo"
+            keyPassword "12345678"
+        }
+        //Android studio4.0限制在signingConfigs里不能出现debug，否则没法创建activity,fragment
+        dev {
+            storeFile file("../demo_key.jks")
+            storePassword "12345678"
+            keyAlias "linkus_demo"
+            keyPassword "12345678"
         }
     }
+    buildTypes {
+        release {
+            minifyEnabled true //设置代码混淆
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            minifyEnabled false
+            jniDebuggable true
+            signingConfig signingConfigs.release
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
