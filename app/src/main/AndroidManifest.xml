@@ -16,6 +16,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> <!-- 白名单权限 -->
 
     <application
         android:name=".App"
@@ -36,6 +37,9 @@
             android:exported="false"
             android:label="PushService"
             android:process=":pushservice" />
+        <service
+            android:name=".utils.MicroPhoneService"
+            android:foregroundServiceType="phoneCall" />
 
         <activity
             android:name=".WelcomeActivity"

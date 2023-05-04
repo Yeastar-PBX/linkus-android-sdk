@@ -10,6 +10,7 @@ import com.igexin.sdk.PushManager;
 import com.yeastar.linkus.demo.base.BaseActivityLifecycleCallbacks;
 import com.yeastar.linkus.demo.call.CallManager;
 import com.yeastar.linkus.demo.eventbus.CallLogChangeEvent;
+import com.yeastar.linkus.demo.utils.NotificationUtils;
 import com.yeastar.linkus.demo.utils.Utils;
 import com.yeastar.linkus.demo.widget.MToastStyle;
 import com.yeastar.linkus.service.base.YlsBaseManager;
@@ -40,6 +41,7 @@ public class App extends Application {
             instance = this;
             YlsBaseManager.getInstance().initYlsSDK(this, null);
             CallManager.getInstance().initCallBack(this);
+            NotificationUtils.createNotificationChannel(this);
             registerActivityLifecycleCallbacks(new BaseActivityLifecycleCallbacks());
             //个推初始化
             PushManager.getInstance().initialize(this);

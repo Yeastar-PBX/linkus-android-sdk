@@ -24,7 +24,7 @@ public class MicroPhoneService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         LogUtil.w("MicroPhoneService onStartCommand");
-        if (intent != null) {
+        if (intent != null && intent.hasExtra(Constant.EXTRA_DATA)) {
             Notification notification = intent.getParcelableExtra(Constant.EXTRA_DATA);
             if (notification != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 LogUtil.w("MicroPhoneService startForeground");

@@ -62,9 +62,6 @@ public class CallManager {
 
     //最后呼出通话时间
     private long lastCallOutTime;
-    //通话音频
-    private int mAudioRoute = YlsConstant.AUDIO_DEFAULT;
-    //
     private BasePopupView basePopupView;
     private Intent microPhoneServiceIntent;
     private boolean isUnfoldDialPad;//通话键盘是否展开
@@ -116,6 +113,9 @@ public class CallManager {
 
             @Override
             public void onNewCall() {
+                if (CallManager.getInstance().getMicroPhoneServiceIntent() == null) {
+                    CallManager.getInstance().makeMicroPhoneNotification(context);
+                }
                 jump2CallActivity(context);
             }
 
@@ -132,7 +132,11 @@ public class CallManager {
 
             @Override
             public void onStopMicroPhoneService() {
-
+                if (!YlsCallManager.getInstance().isInCall()
+                        && CallManager.getInstance().getMicroPhoneServiceIntent() != null) {//未接来电关闭前台服务
+                    LogUtil.w("stopService MicroPhoneService");
+                    App.getInstance().getContext().stopService(CallManager.getInstance().getMicroPhoneServiceIntent());
+                }
             }
 
             @Override
