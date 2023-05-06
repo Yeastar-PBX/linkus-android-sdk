@@ -32,7 +32,8 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="username_empty">Username can\'t be empty.</string>
     <string name="password_empty">Password can\'t be empty.</string>
-    <string name="login_tip_login_failed">Failed to connect to server</string>
+    <string name="login_tip_login_failed">Failed to connect to server (%d)</string>
+    <string name="login_tip_login_exception">Failed to connect to server</string>
 
 
 

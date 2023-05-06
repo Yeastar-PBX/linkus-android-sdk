@@ -47,7 +47,7 @@ YlsBaseManager.getInstance().initYlsSDK(this, null);
 > 除了使用默认参数，用户也能自己设置初始化参数，目前开放的有SDK信息保存地址、自动增益、降噪、回音消除等
 
 ```java
-YlsInitConfig config = new YlsInitConfig.Builder(projectPath)//SDK信息保存地址
+YlsInitConfig config = new YlsInitConfig.Builder(projectPath)//SDK信息保存地址（包括SDK日志信息的地址）
                     	.supportCallWaiting(true)//是否支持CallWaiting
                     	.agc(true)//开启自动增益
                     	.ec(true)//开启回音消除

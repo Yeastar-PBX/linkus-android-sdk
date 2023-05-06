@@ -80,13 +80,14 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onFailed(int code) {
                         closeProgressDialog();
-                        Toast.makeText(LoginActivity.this, R.string.login_tip_login_failed, Toast.LENGTH_LONG).show();
+                        String failStr = getString(R.string.login_tip_login_failed,code);
+                        Toast.makeText(LoginActivity.this, failStr, Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onException(Throwable exception) {
                         closeProgressDialog();
-                        Toast.makeText(LoginActivity.this, R.string.login_tip_login_failed, Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this, R.string.login_tip_login_exception, Toast.LENGTH_LONG).show();
                     }
                 });
     }
