@@ -188,6 +188,26 @@ YlsBaseManager.getInstance().setSdkCallback(new SdkCallback() {
 ```
 
 
+> 其中退出类型如下
+
+```
+SdkEventCode.EVENT_USER_RELOGIN://1005 帐号在其他地方登录
+               
+SdkEventCode.P_EVENT_DISABLE_LINKUS_APP://20014 linkus被禁用了
+   
+SdkEventCode.EVENT_LOGIN_LOCKED://1009 账号被锁住
+
+SdkEventCode.EVENT_LOGIN_INFO_ILLEGAL://1010 缓存登录信息错误
+    
+SdkEventCode.EVENT_CACHE_LOGIIN_USER_NOTFOUND://1011 缓存登录信息为空
+    
+SdkEventCode.P_EVENT_LOGIN_MODE_CHANGE://20008 登录模式变更
+   
+SdkEventCode.P_EVENT_COUNTRY_IP_LIMIT://20083 ip登录限制
+   
+SdkEventCode.P_EVENT_LICENSE_EXPIRE://20093 pbx未激活
+   
+```
 
 ### 2.4 通话相关操作
 
