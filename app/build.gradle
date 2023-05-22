@@ -67,7 +67,7 @@ android {
 
 dependencies {
 
-    implementation files('libs/linkus-sdk-vivo-1.0.4.aar')
+    implementation files('libs/linkus-sdk-vivo-1.0.5.aar')
 //    implementation project(':linkus-sdk-vivo')
     implementation 'com.github.li-xiaojun:XPopup:2.9.19'
     implementation 'com.guolindev.permissionx:permissionx:1.5.1'
