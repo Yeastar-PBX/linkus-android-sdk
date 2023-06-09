@@ -11,9 +11,9 @@
 
   ```
   Android Studio Arctic Fox 及以上
-  Java 11
-  Gradle 7.0.2
-  Android Gradle Plugin 7.0.2
+  Java 8
+  Gradle 6.5
+  Android Gradle Plugin 4.1.1
   Android v5.0 及以上版本
   ```
 
