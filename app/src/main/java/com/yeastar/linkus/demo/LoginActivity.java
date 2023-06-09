@@ -70,9 +70,9 @@ public class LoginActivity extends AppCompatActivity {
         int localePortI = TextUtils.isEmpty(localePort) ? 8111 : Integer.valueOf(localePort);
         int remotePortI = TextUtils.isEmpty(remotePort) ? 8111 : Integer.valueOf(remotePort);
         YlsLoginManager.getInstance().loginBlock(this, userName, password, localeIp,
-                localePortI, remoteIp, remotePortI, new RequestCallback<>() {
+                localePortI, remoteIp, remotePortI, new RequestCallback() {
                     @Override
-                    public void onSuccess(Boolean result) {
+                    public void onSuccess(Object result) {
                         closeProgressDialog();
                         startActivity(new Intent(LoginActivity.this, DialPadActivity.class));
                     }

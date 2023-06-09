@@ -4,11 +4,12 @@ plugins {
 
 android {
     compileSdk 31
-
+    buildToolsVersion '30.0.2'
+    compileSdkVersion 31
     defaultConfig {
         applicationId "com.yeastar.linkus.demo"
         minSdk 21
-        targetSdk 31
+        targetSdk 29
         versionCode 1
         versionName "1.0.7"
         ndk {
@@ -53,8 +54,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -64,8 +65,8 @@ dependencies {
 //    implementation project(':linkus-sdk-vivo')
     implementation 'com.github.li-xiaojun:XPopup:2.9.19'
     implementation 'com.guolindev.permissionx:permissionx:1.5.1'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.0'
     implementation 'androidx.annotation:annotation:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
     implementation 'com.github.nukc:StateView:3.0.2'
