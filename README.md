@@ -1,4 +1,4 @@
-# linkus-android-sdk-vivo
+# linkus-android-sdk
 
 > Linkus Mobile 客户端将 Android 手机与 Yeastar P 系列 PBX 系统、Cloud PBX和S 系列 VoIP PBX集成在一起。它通过一致的办公室体验和强大的协作功能提高效率，离开办公室工作时绝不会错过任何一个电话，通过公司 PBX 拨打 VoIP 电话可降低移动语音费用。YLS-SDK基于Linkus近十年在VOIP领域的技术沉淀， 致力于帮助开发者轻松集成语音通话能力，满足语音通讯的需求。
 
@@ -23,7 +23,7 @@
 
 #### 2.1.1 手动导入aar包
 
-直接导入"linkus-sdk-vivo.aar"
+直接导入"linkus-sdk.aar"
 
 #### 2.1.2 通过maven导入
 
