@@ -176,7 +176,7 @@ public class DialPadActivity extends AppCompatActivity {
     }
 
     private void initCdr() {
-        List<CdrVo> cdrVoList = YlsCallLogManager.getInstance().getCdrList();
+        List<CdrVo> cdrVoList = YlsCallLogManager.getInstance().getCdrList(1000);
         adapter.setList(cdrVoList);
         adapter.notifyDataSetChanged();
     }
