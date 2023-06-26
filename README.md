@@ -518,3 +518,7 @@ public int getMissCallCdrCount();
 ### 2.7 其他事项
 
 > 其他未尽事项可以结合demo来看
+
+## 3. 更新日志
+
+- 2023/06/26 默认关闭callwaiting，新增cdr获取接口配置项，提交1.0.7版本
