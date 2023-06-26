@@ -453,7 +453,7 @@ YlsCallManager.getInstance().handlerPushMessage(context, jsonObject);
 
 #### 2.6.1 获取通话记录
 
-> 获取最多100条通话记录
+> 获取最多N条通话记录
 
 ```java
 /**
@@ -461,9 +461,9 @@ YlsCallManager.getInstance().handlerPushMessage(context, jsonObject);
  *
  * @return
  */
-public List<CdrVo> getCdrList();
+public List<CdrVo> getCdrList(int limit);
 //调用示例
-List<CdrVo> cdrVoList = YlsCallLogManager.getInstance().getCdrList();
+List<CdrVo> cdrVoList = YlsCallLogManager.getInstance().getCdrList(1000);
 ```
 
 #### 2.6.2 删除通话记录
