@@ -57,11 +57,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    ndkVersion '16.1.4479499'
 }
 
 dependencies {
 
-    implementation files('libs/linkus-sdk-1.0.7.aar')
+    implementation files('libs/linkus-sdk-1.0.8.aar')
 //    implementation project(':linkus-sdk-android')
     implementation 'androidx.media:media:1.0.0'
     implementation 'com.github.li-xiaojun:XPopup:2.9.19'
