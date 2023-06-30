@@ -22,6 +22,7 @@ import com.yeastar.linkus.demo.utils.DensityUtil;
 import com.yeastar.linkus.demo.utils.TimeUtil;
 import com.yeastar.linkus.demo.widget.AvatarImageView;
 import com.yeastar.linkus.service.base.ConnectionUtils;
+import com.yeastar.linkus.service.call.YlsCallManager;
 import com.yeastar.linkus.service.call.vo.InCallVo;
 import com.yeastar.linkus.utils.NetWorkUtil;
 
@@ -233,6 +234,24 @@ public class InCallContractItem extends LinearLayout {
             context = ((ContextWrapper) context).getBaseContext();
         }
         return null;
+    }
+
+    public void setTimeTextHold() {
+        mInCallTimeTv.stop();
+        setTimerByStart(YlsCallManager.getInstance().getMultipartyHoldStartTime());
+        mTvIncallHoldTitle.setVisibility(VISIBLE);
+        mInCallTimeTv.setTextColor(getResources().getColor(R.color.red_5));
+    }
+
+    public void setMultiCallTimeText(long time) {
+        mInCallTimeTv.setVisibility(VISIBLE);
+        mInCallTimeTv.stop();
+        boolean isNetworkConnected = NetWorkUtil.isNetworkConnected(context);
+        if (!isNetworkConnected) {
+            mInCallTimeTv.setText(R.string.sip_nonetwork);
+        } else {
+            setTimerByStart(time);
+        }
     }
 
     public void setEnable(boolean enable) {

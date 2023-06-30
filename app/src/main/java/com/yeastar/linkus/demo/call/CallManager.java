@@ -403,11 +403,25 @@ public class CallManager {
         }
     }
 
+    /**
+     * 多方通话呼出
+     */
+    public void makeMultipartyCall(String number, String trunkName, String route, Activity activity) {
+        Object obj = null;//查询添加通话号码的信息
+        if (YlsCallManager.getInstance().isInCall()) {
+            YlsCallManager.getInstance().makeMultipartyCall(number, trunkName, route, activity, obj);
+            finishAllTransferFragment(activity);
+        } else {
+            finishAllCall(activity);
+        }
+    }
+
     public void finishAllCall(Context context) {
         LogUtil.w("finishAllCall");
         CallManager.getInstance().setUnfoldDialPad(false);
         finishAllCallActivity();
         YlsCallManager.getInstance().setInTransfer(false);
+        YlsCallManager.getInstance().setInMultipartyCall(false);
         SoundManager.getInstance().stopPlay();
         //此时场景可能正在进行系统通话,呼入linkus拒接,因此不进行sco关闭
         if (!isTelephonyCalling()) {

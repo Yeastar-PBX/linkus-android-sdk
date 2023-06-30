@@ -86,6 +86,20 @@
             android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ll_switch" />
+        <com.yeastar.linkus.demo.widget.ClickImageView
+            android:id="@+id/iv_calls_manager"
+            android:layout_width="@dimen/dim_32"
+            android:layout_height="@dimen/dim_32"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/dim_padding"
+            android:layout_marginEnd="@dimen/dim_padding"
+            android:background="@drawable/shape_round_call"
+            android:padding="@dimen/dim_4"
+            android:scaleType="fitXY"
+            android:src="@mipmap/icon_calls_manager"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_switch" />
 
         <com.yeastar.linkus.demo.widget.ClickImageView
             android:id="@+id/iv_report_call_quality"

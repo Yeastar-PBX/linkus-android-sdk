@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:orientation="vertical">
+
+    <com.yeastar.linkus.demo.widget.AvatarImageView
+        android:id="@+id/ivAvatar"
+        android:layout_width="@dimen/dim_36"
+        android:layout_height="@dimen/dim_36"
+        android:layout_marginStart="@dimen/dim_padding"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:srcCompat="@mipmap/default_contact_avatar" />
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_marginStart="@dimen/dim_padding"
+        app:layout_constraintStart_toEndOf="@+id/ivAvatar"
+        app:layout_constraintEnd_toStartOf="@+id/ivQuailty"
+        >
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/color_text_normal"
+            android:textSize="@dimen/sp_17"
+            tools:textColor="@color/gray_9"
+            tools:text="命中或或或或或或或或或或或或或或或或或"/>
+
+        <TextView
+            android:id="@+id/tvNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/color_text_gray"
+            android:textSize="@dimen/sp_14"
+            tools:textColor="@color/gray_9"
+            tools:text="111111111111111111111111111111111111111333333333"/>
+    </LinearLayout>
+
+
+    <com.yeastar.linkus.demo.widget.ClickImageView
+        android:id="@+id/ivQuailty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dim_10"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ivMute"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/icon_call_quality" />
+
+    <com.yeastar.linkus.demo.widget.ClickImageView
+        android:id="@+id/ivMute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dim_10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ivRemove"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/icon_mute_small" />
+
+    <com.yeastar.linkus.demo.widget.ClickImageView
+        android:id="@+id/ivRemove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:padding="@dimen/dim_10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/icon_call_remove" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dim_0_5"
+        android:background="#33E3E3E3"
+        android:layout_marginStart="@dimen/dim_padding"
+        app:layout_constraintStart_toEndOf="@+id/ivAvatar"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

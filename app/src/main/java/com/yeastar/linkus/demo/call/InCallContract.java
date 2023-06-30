@@ -18,6 +18,10 @@ public interface InCallContract {
 
         abstract void transfer(int transferType);
 
+        abstract void add();
+
+        abstract void managerCalls();
+
         abstract void mute();
 
         abstract void record();
@@ -65,6 +69,12 @@ public interface InCallContract {
 
         //call waiting+转移
         void threeCall(LinkedList<InCallVo> list);
+
+        //多方通话进行中
+        void multipartyCallInCall(LinkedList<InCallVo> list);
+
+        //多方通话响铃中
+        void multipartyCallRing(LinkedList<InCallVo> list);
 
     }
 }

@@ -52,7 +52,7 @@ public class InCallSignatureFragment extends InCallRelatedFragment {
 
         dialpadLayout.setDialNumberCallBack(number -> {
             if (!TextUtils.isEmpty(number)) {
-                YlsCallManager.getInstance().record(callId, number);
+                YlsCallManager.getInstance().sendDtmf(callId, number);
             }
         });
     }

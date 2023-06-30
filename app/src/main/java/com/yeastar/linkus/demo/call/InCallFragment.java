@@ -69,6 +69,7 @@ public class InCallFragment extends InCallRelatedFragment implements InCallContr
 
     private CallWaitingFragment fragment;
     private ClickImageView mIvReportCallQuality;
+    private ClickImageView mIvCallsManager;
     private CallQualityDialog callQualityDialog;
     private ScheduledExecutorService scheduledExec;
 
@@ -223,7 +224,7 @@ public class InCallFragment extends InCallRelatedFragment implements InCallContr
         int streamVolume = audioManager.getStreamVolume(AudioManager.STREAM_VOICE_CALL);
         LogUtil.w("通话页面 当前通话音量=%d", streamVolume);
         InCallVo inCallVo = getInCallModel();
-        //不支持callKit才监听通话,否则监听无效
+        observePhoneState();
         //避免通话过程转移时候,通话状态未变更,callId仍为-1的情况,再次拨号,导致callKit相关异常
         if (YlsCallManager.getInstance().isSingleCall() && inCallVo != null && inCallVo.getCallId() == -1
                 && TextUtils.isEmpty(inCallVo.getLinkedId()) && !inCallVo.isTransfer()) {
@@ -261,6 +262,7 @@ public class InCallFragment extends InCallRelatedFragment implements InCallContr
         mFlRoot = view.findViewById(R.id.fl_ring_bg);
         mInCallHoldContact = view.findViewById(R.id.incall_hold_contact);
         mIvReportCallQuality = view.findViewById(R.id.iv_report_call_quality);
+        mIvCallsManager = view.findViewById(R.id.iv_calls_manager);
         callDialPad = new CallDialPad(getActivity(), view);
     }
 
@@ -277,6 +279,12 @@ public class InCallFragment extends InCallRelatedFragment implements InCallContr
                 @Override
                 public void onCalling() {
                     LogUtil.w("通话界面 系统来电接听");
+                    if (YlsCallManager.getInstance().isInMultipartyCall()) {
+                        if (inCallPresenter != null) {
+                            inCallPresenter.hold();
+                        }
+                        return;
+                    }
                     //系统来电接起来的时候处理linkus通话
                     InCallVo hangupCall = null;
                     if (YlsCallManager.getInstance().isInCall()) {
@@ -316,18 +324,24 @@ public class InCallFragment extends InCallRelatedFragment implements InCallContr
                         e.printStackTrace();
                     }
                     Utils.moveToFront(activity);
-                    if (YlsCallManager.getInstance().isInCall()) {
-                        InCallVo firstVo = YlsCallManager.getInstance().getCallList().getFirst();
-                        InCallVo lastVo = YlsCallManager.getInstance().getCallList().getLast();
-                        YlsCallManager.getInstance().unHoldCall(getContext(), firstVo);
-                        if (firstVo != lastVo) {
-                            LogUtil.w("通话界面 多通通话 解hold当前通话 callId=" + firstVo.getCallId());
-                        } else {
-                            LogUtil.w("通话界面 恢复一通通话 解hold当前通话 callId=" + firstVo.getCallId());
+                    if (YlsCallManager.getInstance().isInMultipartyCall()) {
+                        if (inCallPresenter != null) {
+                            inCallPresenter.hold();
                         }
-                    }
-                    if (inCallPresenter != null) {
-                        inCallPresenter.refresh();
+                    } else {
+                        if (YlsCallManager.getInstance().isInCall()) {
+                            InCallVo firstVo = YlsCallManager.getInstance().getCallList().getFirst();
+                            InCallVo lastVo = YlsCallManager.getInstance().getCallList().getLast();
+                            YlsCallManager.getInstance().unHoldCall(getContext(), firstVo);
+                            if (firstVo != lastVo) {
+                                LogUtil.w("通话界面 多通通话 解hold当前通话 callId=" + firstVo.getCallId());
+                            } else {
+                                LogUtil.w("通话界面 恢复一通通话 解hold当前通话 callId=" + firstVo.getCallId());
+                            }
+                        }
+                        if (inCallPresenter != null) {
+                            inCallPresenter.refresh();
+                        }
                     }
                     resumeBluetoothSco();
                 }
@@ -349,7 +363,9 @@ public class InCallFragment extends InCallRelatedFragment implements InCallContr
 
     public void setListener() {
         callDialPad.setCallBack(action -> {
-            if (action == CallDialPad.DIAL_PAD) {
+            if (action == CallDialPad.ADD) {
+                inCallPresenter.add();
+            } else if (action == CallDialPad.DIAL_PAD) {
                 inCallPresenter.dialPad();
             } else if (action == CallDialPad.ATTENDED_TRANSFER) {
                 inCallPresenter.transfer(0);
@@ -381,6 +397,7 @@ public class InCallFragment extends InCallRelatedFragment implements InCallContr
             inCallPresenter.switchCallWaiting();
             mInCallHoldContact.setClickable(true);
         });
+        mIvCallsManager.setOnClickListener(v -> inCallPresenter.managerCalls());
         mIvReportCallQuality.setOnClickListener(v -> initCallQuality());
 
     }
@@ -442,6 +459,7 @@ public class InCallFragment extends InCallRelatedFragment implements InCallContr
     @Override
     public void calling(InCallVo inCallVo) {
         //避免手动进入添加页面，又马上退出后的操作，影响其他功能
+        YlsCallManager.getInstance().setInMultipartyCall(false);
         mInCallHoldContact.setVisibility(View.GONE);
         mLlSwitch.setVisibility(View.GONE);
         initCallContactItem(inCallVo);
@@ -466,6 +484,8 @@ public class InCallFragment extends InCallRelatedFragment implements InCallContr
 
     @Override
     public void singleCall(InCallVo inCallVo) {
+        switchIconDisplay(true);
+        YlsCallManager.getInstance().setInMultipartyCall(false);
         mInCallHoldContact.setVisibility(View.GONE);
         mLlSwitch.setVisibility(View.GONE);
         initCallContactItem(inCallVo);
@@ -536,7 +556,50 @@ public class InCallFragment extends InCallRelatedFragment implements InCallContr
     }
 
     @Override
+    public void multipartyCallInCall(LinkedList<InCallVo> list) {
+        switchIconDisplay(false);
+        mLlSwitch.setVisibility(View.GONE);
+        mInCallHoldContact.setVisibility(View.GONE);
+        mInCallCenterContact.setPhoto(null);
+        String title = activity.getString(R.string.call_multi_party_title, YlsCallManager.getInstance().getCallListCount());
+        mInCallCenterContact.setContact(title, title, null, null, true, false, true);
+        // hold所有人的时候头像下方也需要切换成保持+通话计时
+        if (YlsCallManager.getInstance().isInMultipartyHold()) {
+            mInCallCenterContact.setTimeTextHold();
+        } else {
+            mInCallCenterContact.setMultiCallTimeText(YlsCallManager.getInstance().getMultipartyCallStartTime());
+        }
+        InCallVo inCallVo = list.getFirst();
+        updateInCallDialPad(inCallVo);
+    }
+
+    @Override
+    public void multipartyCallRing(LinkedList<InCallVo> list) {
+        switchIconDisplay(true);
+        InCallVo inCallVo = list.getFirst();
+        InCallVo lastModel = list.getLast();
+        mInCallCenterContact.setTimerText(inCallVo);
+        mInCallCenterContact.setContact(inCallVo, true);
+        mInCallCenterContact.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        mInCallHoldContact.setVisibility(View.VISIBLE);
+        mLlSwitch.setVisibility(View.GONE);
+        if (list.size() == 2) {
+            LogUtil.w("multipartyCallRing 两通通话");
+            mInCallHoldContact.setHoldContact(lastModel);
+        } else {
+            LogUtil.w("multipartyCallRing 多通通话");
+            mInCallHoldContact.setPhoto(null);
+            // 通话数不含正在响铃的这通
+            String title = activity.getString(R.string.call_multi_party_title, YlsCallManager.getInstance().getCallListCount() - 1);
+            mInCallHoldContact.setContact(title, title, null, null, true, false, true);
+        }
+        mInCallHoldContact.setTimeTextHold();
+        updateInCallDialPad(inCallVo);
+    }
+
+    @Override
     public void callWaitingConnected(LinkedList<InCallVo> list) {
+        YlsCallManager.getInstance().setInMultipartyCall(false);
         InCallVo inCallVo = list.getFirst();
         InCallVo lastVo = list.getLast();
         initCallContactItem(inCallVo);
@@ -580,6 +643,11 @@ public class InCallFragment extends InCallRelatedFragment implements InCallContr
     @Override
     public void setPresenter(InCallContract.Presenter presenter) {
 
+    }
+
+    private void switchIconDisplay(boolean showQuality) {
+        mIvReportCallQuality.setVisibility(showQuality ? View.VISIBLE : View.GONE);
+        mIvCallsManager.setVisibility(showQuality ? View.GONE : View.VISIBLE);
     }
 
 }

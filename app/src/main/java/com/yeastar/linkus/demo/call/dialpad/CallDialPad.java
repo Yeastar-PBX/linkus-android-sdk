@@ -40,6 +40,7 @@ public class CallDialPad {
     public final static int MUTE = 1;
     public final static int AUDIO = 2;
     public final static int END_CALL = 3;
+    public final static int ADD = 4;
     public final static int DIAL_PAD = 6;
     public final static int RECORD = 7;
     public final static int ATTENDED_TRANSFER = 8;
@@ -51,8 +52,8 @@ public class CallDialPad {
     protected GridView gridView;
     private CommonAdapter adapter;
     private List<CallDialPadVo> list = new ArrayList<>();
-    private static final int[] IN_CALL_ACTION_NORMAL = {HOLD, MUTE, AUDIO, END_CALL, DIAL_PAD, RECORD, ATTENDED_TRANSFER, BLIND_TRANSFER};
-    private static final int[] IN_CALL_ACTION_TRANSFER = {MUTE, AUDIO, TRANSFER_CONFIRM, CANCEL, DIAL_PAD, RECORD, HOLD, BLIND_TRANSFER};
+    private static final int[] IN_CALL_ACTION_NORMAL = {HOLD, MUTE, AUDIO, END_CALL, ADD, DIAL_PAD, RECORD, ATTENDED_TRANSFER, BLIND_TRANSFER};
+    private static final int[] IN_CALL_ACTION_TRANSFER = {MUTE, AUDIO, TRANSFER_CONFIRM, CANCEL, ADD, DIAL_PAD, RECORD, HOLD, BLIND_TRANSFER};
 
     private RelativeLayout rl;
     private ImageView topView;
@@ -265,30 +266,66 @@ public class CallDialPad {
         if (MediaUtil.getInstance().isBTConnected() || SoundManager.getInstance().isSpeakerOn()) {
             setSinglePress(AUDIO);
         }
-        if (inCallVo.isRecord()) {
-            setSinglePress(RECORD);
-        }
-        //P系列录音多了录音中不可点击状态
-        //分机的ctlRecord是no,通话是永久disable(固定会议室),ctlRecord是yes且通话是stop状态,这些情况下都是disable
-        if (YlsLoginManager.getInstance().isDisableRecord() || inCallVo.isAlwaysDisableRecord()
-                || (YlsLoginManager.getInstance().isPauseRecord() && !inCallVo.isRecordAble())) {
-            setSingleDisable(RECORD);
-        } else {
-            setSingleEnable(RECORD);
-        }
-        //hold的时候不能发特征码
-        if (inCallVo.isHold()) {
-            setSinglePress(HOLD);
-            setSingleDisable(DIAL_PAD);
-        }
-        if (inCallVo.isMute()) {
-            setSinglePress(MUTE);
-        }
-        //web端的多方通话禁止转移,flip,record
-        if (!TextUtils.isEmpty(inCallVo.getWebConferenceId())) {
+        // 多方通话
+        if (inCallVo.isMultiparty()) {
+            //多方通话transfer flip recording不可用
             setSingleDisable(ATTENDED_TRANSFER);
             setSingleDisable(BLIND_TRANSFER);
             setSingleDisable(RECORD);
+            // 多方通话达到5人上限时置灰
+            if (YlsCallManager.getInstance().reachMultiPartyCallsLimit()) {
+                setSingleDisable(ADD);
+            }
+            // 未真实接通通话的情况下，添加通话按钮需要禁用 且不是单通的情况
+            if (!inCallVo.isRealAnswer() && YlsCallManager.getInstance().getCallListCount() > 1) {
+                setSingleDisable(ADD);
+            }
+            if ((inCallVo.isRealAnswer() && YlsCallManager.getInstance().isInMultipartyHold())//多方通话都接通且都hold时
+                    || (!inCallVo.isRealAnswer() && inCallVo.isHold())) {//多方通话当前通话未真正接通且在hold时
+                //hold的时候不能发特征码
+                setSinglePress(HOLD);
+                setSingleDisable(DIAL_PAD);
+            }
+            //P系列多方通话可以操作录音
+            if (YlsCallManager.getInstance().isMultipartyCallRecord(YlsCallManager.getInstance().getCallList())) {
+                setSinglePress(RECORD);
+            }
+            //分机的ctlRecord是no,多方通话中有永久disable(固定会议室),ctlRecord是yes且所有的多方通话是stop状态,这些情况下都是disable
+            if (YlsLoginManager.getInstance().isDisableRecord() || YlsCallManager.getInstance().isMultiPartyCallAlwaysRecordDisable()
+                    || (YlsLoginManager.getInstance().isPauseRecord() && !YlsCallManager.getInstance().isMultiPartyCallRecordAble())) {
+                setSingleDisable(RECORD);
+            } else {
+                setSingleEnable(RECORD);
+            }
+            if (YlsCallManager.getInstance().isMultipartyMute()) {
+                setSinglePress(MUTE);
+            }
+        } else {//非多方通话
+            if (inCallVo.isRecord()) {
+                setSinglePress(RECORD);
+            }
+            //P系列录音多了录音中不可点击状态
+            //分机的ctlRecord是no,通话是永久disable(固定会议室),ctlRecord是yes且通话是stop状态,这些情况下都是disable
+            if (YlsLoginManager.getInstance().isDisableRecord() || inCallVo.isAlwaysDisableRecord()
+                    || (YlsLoginManager.getInstance().isPauseRecord() && !inCallVo.isRecordAble())) {
+                setSingleDisable(RECORD);
+            } else {
+                setSingleEnable(RECORD);
+            }
+            //hold的时候不能发特征码
+            if (inCallVo.isHold()) {
+                setSinglePress(HOLD);
+                setSingleDisable(DIAL_PAD);
+            }
+            if (inCallVo.isMute()) {
+                setSinglePress(MUTE);
+            }
+            //web端的多方通话禁止转移,flip,record
+            if (!TextUtils.isEmpty(inCallVo.getWebConferenceId())) {
+                setSingleDisable(ATTENDED_TRANSFER);
+                setSingleDisable(BLIND_TRANSFER);
+                setSingleDisable(RECORD);
+            }
         }
         adapter.notifyDataSetChanged();
     }

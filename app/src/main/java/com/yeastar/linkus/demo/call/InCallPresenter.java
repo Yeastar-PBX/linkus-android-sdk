@@ -4,22 +4,22 @@ import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.text.TextUtils;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.yeastar.linkus.constant.CallType;
+import com.yeastar.linkus.constant.YlsConstant;
 import com.yeastar.linkus.demo.Constant;
 import com.yeastar.linkus.demo.R;
+import com.yeastar.linkus.demo.call.multipartyCall.MultipartyCallFragment;
+import com.yeastar.linkus.demo.call.multipartyCall.MultipartyCallManagerFragment;
 import com.yeastar.linkus.demo.utils.ToastUtil;
 import com.yeastar.linkus.nativecode.YlsCall;
 import com.yeastar.linkus.service.call.YlsCallManager;
 import com.yeastar.linkus.service.call.vo.InCallVo;
-import com.yeastar.linkus.service.call.vo.LoginResultVo;
 import com.yeastar.linkus.service.log.LogUtil;
-import com.yeastar.linkus.service.login.YlsLoginManager;
 import com.yeastar.linkus.utils.CommonUtil;
 import com.yeastar.linkus.utils.MediaUtil;
 import com.yeastar.linkus.utils.SoundManager;
@@ -80,6 +80,43 @@ public class InCallPresenter extends InCallContract.Presenter {
         }
     }
 
+    @Override
+    void add() {
+        LogUtil.w("通话界面 按下多方通话按钮");
+        if (isEndCall()) {
+            return;
+        }
+        if (isViewAttached()) {
+            MultipartyCallFragment multipartyCallFragment = new MultipartyCallFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString(Constant.EXTRA_NUMBER, inCallVo.getCallNumber());
+            multipartyCallFragment.setArguments(bundle);
+            replaceFragment(multipartyCallFragment);
+        }
+        // hold所有人
+        YlsCallManager.getInstance().holdAllMember();
+        // 单通的情况下静音或多通通话静音自己的场景需要重置静音状态
+        if (inCallVo.isMute() && !inCallVo.isMultiparty()) {
+            inCallVo.setMute(false);
+        }
+        if (YlsCallManager.getInstance().isSingleCall()) {
+            inCallVo.setCallStatus(InCallVo.ANSWER);
+        }
+        YlsCallManager.getInstance().setMultipartyMute(false);
+        YlsCallManager.getInstance().setInMultipartyCall(true);
+    }
+
+    @Override
+    void managerCalls() {
+        if (isEndCall()) {
+            return;
+        }
+        if (isViewAttached()) {
+            MultipartyCallManagerFragment callManagerFragment = new MultipartyCallManagerFragment();
+            replaceFragment(callManagerFragment, false);
+        }
+    }
+
     private void replaceFragment(Fragment fragment) {
         replaceFragment(fragment, true);
     }
@@ -107,13 +144,7 @@ public class InCallPresenter extends InCallContract.Presenter {
         if (isEndCall()) {
             return;
         }
-        if (inCallVo.isAccept()) {
-            if (inCallVo.isMute()) {
-                YlsCallManager.getInstance().unMute(inCallVo);
-            } else {
-                YlsCallManager.getInstance().mute(inCallVo);
-            }
-        }
+        YlsCallManager.getInstance().mute(inCallVo);
         if (isViewAttached()) {
             view.updateInCallDialPad(inCallVo);
         }
@@ -125,29 +156,16 @@ public class InCallPresenter extends InCallContract.Presenter {
         if (isEndCall()) {
             return;
         }
-        singleRecord(inCallVo);
-    }
-
-    public void singleRecord(InCallVo vo) {
-        if (vo == null) return;
-        //hold时录音，提示先unHold
-        if (vo.isHold() && !vo.isRecord()) {
-            ToastUtil.showToast(R.string.call_tip_hold);
-            return;
-        } else if (vo.isHold() && vo.isRecord()) {
-            //已经在录音，保持中，结束录音提示先取消保持
-            ToastUtil.showToast(R.string.call_tip_hold);
-            return;
-        }
-        LoginResultVo loginResultVo = YlsLoginManager.getInstance().getLoginResultVo();
-        if (loginResultVo == null) {
-            ToastUtil.showToast(R.string.call_record_faild);
-            return;
-        }
-        String recordCode = TextUtils.isEmpty(loginResultVo.getRecordcode()) ? "*1" : loginResultVo.getRecordcode();
-        int ret = YlsCallManager.getInstance().record(vo.getCallId(), recordCode);
-        if (ret == -1) {
-            ToastUtil.showToast(R.string.call_record_faild);
+        int ret = YlsCallManager.getInstance().record(inCallVo);
+        switch (ret) {
+            case YlsConstant.RECORD_STATE_HOLD:
+                ToastUtil.showToast(R.string.call_tip_hold);
+                break;
+            case YlsConstant.RECORD_STATE_UNLOGIN:
+                ToastUtil.showToast(R.string.call_record_faild);
+                break;
+            default:
+                break;
         }
     }
 
@@ -156,12 +174,23 @@ public class InCallPresenter extends InCallContract.Presenter {
         if (isEndCall()) {
             return;
         }
-        // 可能出现的场景，a打给b，再呼叫c，进入c的转移，然后hold c这种操作...此时相当于hold单通
-        boolean isHold = !inCallVo.isHold();
-        if (isHold) {
-            YlsCallManager.getInstance().holdCall(inCallVo);
-        } else {
-            YlsCallManager.getInstance().unHoldCall(context, inCallVo);
+        // 多方通话
+        if (YlsCallManager.getInstance().isInMultipartyCall() && inCallVo.isRealAnswer()) {
+            inCallVo.setMute(false);
+            YlsCallManager.getInstance().setMultipartyMute(false);
+            if (YlsCallManager.getInstance().isInMultipartyHold()) {
+                YlsCallManager.getInstance().unHoldAllMember();
+            } else {
+                YlsCallManager.getInstance().holdAllMember();
+            }
+        } else { // 普通通话
+            // 可能出现的场景，a打给b，再呼叫c，进入c的转移，然后hold c这种操作...此时相当于hold单通
+            boolean isHold = !inCallVo.isHold();
+            if (isHold) {
+                YlsCallManager.getInstance().holdCall(inCallVo);
+            } else {
+                YlsCallManager.getInstance().unHoldCall(context, inCallVo);
+            }
         }
         if (isViewAttached()) {
             refresh();
@@ -211,7 +240,6 @@ public class InCallPresenter extends InCallContract.Presenter {
         }
         LogUtil.w("通话界面 挂断当前通话 当前通话=" + inCallVo);
         int callId = inCallVo.getCallId();
-        String callNumber = inCallVo.getCallNumber();
         YlsCallManager.getInstance().hangUpCall(context, callId);
     }
 
@@ -282,6 +310,12 @@ public class InCallPresenter extends InCallContract.Presenter {
                     break;
                 case CallWaitingRing:
                     view.callWaitingRing(list);
+                    break;
+                case MultiPartyCall:
+                    view.multipartyCallInCall(list);
+                    break;
+                case MultiPartyRing:
+                    view.multipartyCallRing(list);
                     break;
                 case CallTransfer:
                     view.transferCall(list);

@@ -112,6 +112,10 @@ public class CallDialPadItem implements AdapterItem<CallDialPadVo> {
                 mInCallBtnIconIv.setImageResource(R.mipmap.icon_end_call);
                 mInCallBtnIconIv.setBackgroundResource(R.drawable.shape_circle_dial_red);
                 break;
+            case CallDialPad.ADD:
+                mInCallBtnContentTv.setText(R.string.call_add);
+                mInCallBtnIconIv.setImageResource(callDialPadVo.isEnabled() ? R.mipmap.icon_add : R.mipmap.icon_add_disable);
+                break;
             case CallDialPad.DIAL_PAD:
                 mInCallBtnContentTv.setText(R.string.public_dialpad);
                 mInCallBtnIconIv.setImageResource(callDialPadVo.isEnabled() ? R.mipmap.icon_dial_pad : R.mipmap.icon_dial_pad_disable);

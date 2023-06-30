@@ -50,11 +50,6 @@ public class InCallTransferFragment extends InCallRelatedFragment {
         setListener();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     public void setListener() {
 
         mBackLayout.setOnClickListener(new View.OnClickListener() {

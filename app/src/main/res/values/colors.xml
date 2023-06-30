@@ -105,4 +105,5 @@
     <color name="red_8">#A81821</color>
     <color name="red_9">#820C18</color>
     <color name="red_10">#5C0713</color>
+    <color name="conference_call_bottom_color">#3D4A59</color>
 </resources>
