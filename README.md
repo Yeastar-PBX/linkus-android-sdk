@@ -48,11 +48,11 @@ YlsBaseManager.getInstance().initYlsSDK(this, null);
 
 ```java
 YlsInitConfig config = new YlsInitConfig.Builder(projectPath)//SDK信息保存地址（包括SDK日志信息的地址）
-                    	.supportCallWaiting(true)//是否支持CallWaiting
-                    	.agc(true)//开启自动增益
-                    	.ec(true)//开启回音消除
-                    	.nc(true).build();//开启主动降噪
-YlsBaseManager.getInstance().initYlsSDK(this, config);
+        .supportCallWaiting(true)//是否支持CallWaiting
+        .agc(true)//开启自动增益
+        .ec(true)//开启回音消除
+        .nc(true).build();//开启主动降噪
+        YlsBaseManager.getInstance().initYlsSDK(this, config);
 ```
 
 #### 2.2.3 自动增益开关
@@ -111,27 +111,27 @@ public void ncSetting(boolean isOpen)
  * @return
  */
 public void loginBlock(Context context, String userName, String passWord, String localeIp, int localePort,
-                       String remoteIp, int remotePort, RequestCallback<Boolean> requestCallback)
+        String remoteIp, int remotePort, RequestCallback<Boolean> requestCallback)
 //手动登录示例
-YlsLoginManager.getInstance().loginBlock(this, userName, password, localeIp,
+        YlsLoginManager.getInstance().loginBlock(this, userName, password, localeIp,
         localePortI, remoteIp, remotePortI, new RequestCallback<>() {
-            @Override
-            public void onSuccess(Boolean result) {
-                closeProgressDialog();
-                startActivity(new Intent(LoginActivity.this, DialPadActivity.class));
-            }
+@Override
+public void onSuccess(Boolean result) {
+        closeProgressDialog();
+        startActivity(new Intent(LoginActivity.this, DialPadActivity.class));
+        }
 
-            @Override
-            public void onFailed(int code) {
-                closeProgressDialog();
-                Toast.makeText(LoginActivity.this, R.string.login_tip_login_failed, Toast.LENGTH_LONG).show();
-            }
+@Override
+public void onFailed(int code) {
+        closeProgressDialog();
+        Toast.makeText(LoginActivity.this, R.string.login_tip_login_failed, Toast.LENGTH_LONG).show();
+        }
 
-            @Override
-            public void onException(Throwable exception) {
-                closeProgressDialog();
-                Toast.makeText(LoginActivity.this, R.string.login_tip_login_failed, Toast.LENGTH_LONG).show();
-            }
+@Override
+public void onException(Throwable exception) {
+        closeProgressDialog();
+        Toast.makeText(LoginActivity.this, R.string.login_tip_login_failed, Toast.LENGTH_LONG).show();
+        }
         });
 ```
 
@@ -139,7 +139,7 @@ YlsLoginManager.getInstance().loginBlock(this, userName, password, localeIp,
 
 ```java
 int networkType = NetWorkUtil.getNetWorkType(this);
-YlsLoginManager.getInstance().cacheLogin(networkType);
+        YlsLoginManager.getInstance().cacheLogin(networkType);
 ```
 
 #### 2.3.3 登录状态
@@ -151,7 +151,7 @@ YlsLoginManager.getInstance().cacheLogin(networkType);
  */
 public boolean isLoginEd()
 //调用示例
-boolean isLoginEd = YlsLoginManager.getInstance().isLoginEd();
+        boolean isLoginEd = YlsLoginManager.getInstance().isLoginEd();
 ```
 
 
@@ -165,7 +165,7 @@ boolean isLoginEd = YlsLoginManager.getInstance().isLoginEd();
  */
 public synchronized boolean isConnected()
 //调用示例
-YlsLoginManager.getInstance().isConnected();
+        YlsLoginManager.getInstance().isConnected();
 ```
 
 
@@ -174,17 +174,17 @@ YlsLoginManager.getInstance().isConnected();
 
 ```java
 YlsBaseManager.getInstance().setSdkCallback(new SdkCallback() {
-    //cdr变更通知
-    @Override
-    public void onCdrChange(int syncResult) {
+//cdr变更通知
+@Override
+public void onCdrChange(int syncResult) {
         EventBus.getDefault().post(new CallLogChangeEvent(syncResult));
-    }
-    //退出登录通知
-    @Override
-    public void onLogout(int type) {
+        }
+//退出登录通知
+@Override
+public void onLogout(int type) {
         context.startActivity(new Intent(context, LoginActivity.class));
-    }
-});
+        }
+        });
 ```
 
 
@@ -225,7 +225,7 @@ SdkEventCode.P_EVENT_LICENSE_EXPIRE://20093 pbx未激活
  */
 public void makeNewCall(String callNumber, boolean netWorkAvailable)
 //调用方式如下
-YlsCallManager.getInstance().makeNewCall(number, netWorkAvailable);
+        YlsCallManager.getInstance().makeNewCall(number, netWorkAvailable);
 ```
 
 
@@ -297,24 +297,43 @@ YlsCallManager.getInstance().blindTransferCall(context, callOutNumber);
 #### 2.4.10 静音/取消静音
 
 ```java
-if (inCallVo.isMute()) {
-    YlsCallManager.getInstance().unMute(inCallVo);
-} else {
-    YlsCallManager.getInstance().mute(inCallVo);
-}
+/**
+ * 通话界面进行mute unMute操作
+ */
+public void mute(InCallVo inCallVo)
 ```
 
 
 
-#### 2.4.11 录音/dtmf
+#### 2.4.11 录音
 
 ```java
-YlsCallManager.getInstance().record(callId, number);
+/**
+ * 录音
+ *
+ * @param vo
+ * @return
+ */
+public int record(InCallVo vo)
 ```
 
 
 
-#### 2.4.12 显示通话质量
+#### 2.4.12 发送DTMF
+
+```java
+/**
+ * dtmf
+ *
+ * @param callId
+ * @return
+ */
+public int sendDtmf(int callId, String recordCode)
+```
+
+
+
+#### 2.4.13 显示通话质量
 
 ```java
 CallQualityVo callQualityVo = YlsCallManager.getInstance().getCallQuality();
@@ -322,7 +341,7 @@ CallQualityVo callQualityVo = YlsCallManager.getInstance().getCallQuality();
 
 
 
-#### 2.4.13 通话状态回调
+#### 2.4.14 通话状态回调
 
 ```java
 YlsCallManager.getInstance().setCallStateCallback(new CallStateCallback() {
@@ -513,12 +532,148 @@ public void readAllCdr()
 public int getMissCallCdrCount();
 ```
 
+### 2.7 多方通话（至多五方）
+
+#### 2.7.1 添加多方通话
+
+```java
+/**
+ * 多方通话呼出
+ */
+public void makeMultipartyCall(String number, String trunkName, String route, Activity activity, Object obj)
+```
 
 
-### 2.7 其他事项
+
+#### 2.7.2 挂断多方通话中的单通
+
+```java
+/**
+ * 多方通话中挂断单通通话
+ *
+ * @return
+ */
+public void hangUpSingleCall(Context context, int callId)
+```
+
+
+
+#### 2.7.3 静音/取消静音多方通话中的单通
+
+```java
+/**
+ * 多方通话中对单个成员进行mute unMute操作
+ */
+public void muteSingleMember(InCallVo inCallVo)
+```
+
+
+
+#### 2.7.4 多方通话其他接口
+
+```java
+/**
+ * 多方通话中所有通话的callID数组
+ */
+public int[] getCallIdArrays()
+    
+/**
+ * 多方通话中所有mute通话的callID数组
+ */
+public int[] getMuteArrays()
+
+/**
+ * 多方通话中所有hold通话的callID数组
+ */
+public int[] getHoldArrays()
+    
+/**
+ * 是否在多方通话中
+ *
+ * @return
+ */
+public boolean isInMultipartyCall()
+
+/**
+ * 设置是否在多方通话中
+ *
+ * @param inMultipartyCall
+ */
+public void setInMultipartyCall(boolean inMultipartyCall)
+
+/**
+ * 多方通话是否hold所有人
+ *
+ * @return
+ */
+public boolean isInMultipartyHold()
+
+/**
+ * 获取多方通话hold开始时间
+ *
+ * @return
+ */
+public long getMultipartyHoldStartTime()
+
+/**
+ * 多方通话是否全体静音
+ *
+ * @return
+ */
+public boolean isMultipartyMute()
+
+/**
+ * 设置多方通话是否全体静音
+ *
+ * @param multipartyMute
+ */
+public void setMultipartyMute(boolean multipartyMute)
+
+/**
+ * 获取多方通话开始时间
+ *
+ * @return
+ */
+public long getMultipartyCallStartTime()
+
+/**
+ * 是否达到多方通话最大值(4通)
+ *
+ * @return
+ */
+public boolean reachMultiPartyCallsLimit()
+
+/**
+ * 判断多方通话是否在录音
+ *
+ * @return
+ */
+public boolean isMultipartyCallRecord(LinkedList<InCallVo> list)
+
+/**
+ * 判断多方通话的录音是否可用
+ *
+ * @return
+ */
+public boolean isMultiPartyCallRecordAble()
+
+/**
+ * 判断多方通话的录音是否禁用
+ *
+ * @return
+ */
+public boolean isMultiPartyCallAlwaysRecordDisable()
+```
+
+
+
+### 2.8 会议室
+
+### 2.9 其他事项
 
 > 其他未尽事项可以结合demo来看
 
 ## 3. 更新日志
 
+- 2023/06/28 提交1.0.8版本
 - 2023/06/26 默认关闭callwaiting，新增cdr获取接口配置项，提交1.0.7版本
