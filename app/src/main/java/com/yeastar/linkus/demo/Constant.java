@@ -16,6 +16,7 @@ public class Constant {
     public static final String EXTRA_ON_NEW_INTENT = "onNewIntent";
     public static final String EXTRA_NUMBER = "number";
     public static final String EXTRA_FROM = "from";
+    public static final String EXTRA_CONFERENCE = "conference";
 
     /*------------------------------------推送相关------------------------------------------*/
     public static final String TITLE = "title";
@@ -51,5 +52,7 @@ public class Constant {
     public static final int MICRO_PHONE_NOTIFICATION_ID = 7;
     public static final String NOTIFICATION_CHANNEL_PUSH_ID = "push";
     public static final String NOTIFICATION_CHANNEL_NEW_CALL_ID = "new_call";
+
+    public static final int IN_CONFERENCE=1;
 
 }

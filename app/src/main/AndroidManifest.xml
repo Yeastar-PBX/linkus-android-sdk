@@ -16,7 +16,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> <!-- 白名单权限 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".App"
@@ -26,12 +26,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme2">
+        <activity
+            android:name=".conference.ConferenceAddActivity"
+            android:exported="false" />
+        <activity
+            android:name=".conference.ConferenceListActivity"
+            android:exported="false" />
+
         <meta-data
             android:name="GETUI_APPID"
             android:value="${GETUI_APPID}" />
         <service
             android:name=".call.DemoIntentService"
-            android:exported="false"/>
+            android:exported="false" />
         <service
             android:name=".call.DemoPushService"
             android:exported="false"
@@ -53,7 +60,7 @@
         <activity
             android:name=".LoginActivity"
             android:exported="true"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop" />
         <activity
             android:name=".DialPadActivity"
             android:exported="true" />
@@ -65,6 +72,10 @@
             android:theme="@style/incall"
             android:turnScreenOn="true"
             tools:targetApi="o_mr1" />
+        <activity
+            android:name=".conference.detail.ConferenceDetailActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="nosensor" />
     </application>
 
 </manifest>

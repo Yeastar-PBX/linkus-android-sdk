@@ -11,7 +11,7 @@ android {
         minSdk 21
         targetSdk 29
         versionCode 1
-        versionName "1.0.8"
+        versionName "1.0.9"
         ndk {
             abiFilters "armeabi-v7a", "arm64-v8a"//, "x86", "mips"
         }
@@ -62,8 +62,11 @@ android {
 
 dependencies {
 
-    implementation files('libs/linkus-sdk-1.0.8.aar')
+    implementation files('libs/linkus-sdk-1.0.9.aar')
 //    implementation project(':linkus-sdk-android')
+    implementation 'com.tencent.wcdb:wcdb-android:1.0.8'
+    implementation 'androidx.room:room-runtime:2.3.0'
+    implementation files('libs/wcdb-room.aar')
     implementation 'androidx.media:media:1.0.0'
     implementation 'com.github.li-xiaojun:XPopup:2.9.19'
     implementation 'com.guolindev.permissionx:permissionx:1.5.1'

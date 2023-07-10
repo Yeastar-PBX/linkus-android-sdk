@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/item_background_normal"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/layout_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dim_56"
+                android:background="@color/item_background_normal"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dim_padding"
+                android:paddingRight="@dimen/dim_padding"
+                android:textSize="@dimen/sp_16"
+                android:textColor="@color/text_title"
+                android:text="@string/conference_name" />
+
+            <EditText
+                android:id="@+id/conference_name_et"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dim_56"
+                android:background="@color/item_background_normal"
+                android:gravity="center_vertical"
+                android:paddingStart="0dp"
+                android:paddingEnd="@dimen/dim_padding"
+                android:singleLine="true"
+                android:maxLength="63"
+                android:hint="@string/conference_conference"
+                android:text="@string/conference_conference"
+                android:textColor="@color/text_title"
+                android:textSize="@dimen/sp_16"
+                android:inputType=""
+                android:importantForAutofill="no" />
+        </LinearLayout>
+
+        <View
+            android:layout_below="@+id/layout_name"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/divider_line_color"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_admin"
+            android:layout_below="@+id/layout_name"
+            android:layout_marginTop="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/item_background_normal">
+
+            <RelativeLayout
+                android:id="@+id/avatar_container"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="@dimen/dim_10"
+                android:layout_marginBottom="@dimen/dim_10"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_centerHorizontal="true">
+
+                <com.yeastar.linkus.demo.widget.AvatarImageView
+                    android:id="@+id/admin_photo_civ"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@mipmap/default_contact_avatar"
+                    android:padding="@dimen/dim_5" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/admin_name_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="11dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintStart_toEndOf="@+id/avatar_container"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/avatar_container"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textSize="@dimen/sp_16"
+                android:textColor="@color/text_title"
+                tools:text="会议发起人会议发起人会议发起人会议发起人会议发起人会议发起人"/>
+
+            <TextView
+                android:id="@+id/admin_number_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="11dp"
+                android:layout_marginTop="2dp"
+                app:layout_constraintStart_toEndOf="@+id/avatar_container"
+                app:layout_constraintTop_toBottomOf="@+id/admin_name_tv"
+                android:textSize="@dimen/sp_13"
+                android:textColor="@color/text_sub_title"
+                tools:text="18850599999"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_below="@+id/cl_admin"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/divider_line_color"/>
+
+        <GridView
+            android:id="@+id/conference_member_gv"
+            android:layout_below="@+id/cl_admin"
+            android:layout_marginTop="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="@color/item_background_normal"
+            android:padding="@dimen/dim_10"
+            tools:listitem="@layout/item_conference_new"
+            android:verticalSpacing="8dp"
+            android:listSelector="@android:color/transparent"
+            android:scrollbars="none"
+            android:numColumns="3"
+            android:stretchMode="columnWidth" />
+
+        <RelativeLayout
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+            <Button
+                android:id="@+id/conference_start_btn"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dim_40"
+                android:layout_marginLeft="@dimen/dim_90"
+                android:layout_marginRight="@dimen/dim_90"
+                android:layout_marginTop="@dimen/dim_30"
+                android:layout_marginBottom="@dimen/dim_30"
+                android:background="@drawable/selector_incall_dial_btn_bg"
+                android:gravity="center"
+                android:textAllCaps="false"
+                android:layout_alignParentBottom="true"
+                android:text="@string/conference_start"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+

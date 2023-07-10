@@ -106,4 +106,10 @@
     <color name="red_9">#820C18</color>
     <color name="red_10">#5C0713</color>
     <color name="conference_call_bottom_color">#3D4A59</color>
+    <color name="green">#1ddc3e</color>
+    <color name="incall_dial_btn_down">#3dbf53</color>
+    <color name="conference_call_top_color">#475565</color>
+    <color name="red_light">#d73a29</color>
+    <color name="incall_number_color">#99ffffff</color>
+    <color name="exception_conference_tip_bg">#8fd195</color>
 </resources>

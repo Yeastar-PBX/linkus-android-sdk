@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_list_item">
+
+    <include
+        android:id="@+id/alpha_list_catalog_container"
+        layout="@layout/item_alphalist_catalog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/conference_name_tv"
+        style="@style/TvNormalItemStyle"
+        android:layout_marginStart="@dimen/dim_padding"
+        android:layout_marginTop="@dimen/dim_10"
+        android:paddingEnd="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/alpha_list_catalog_container"
+        tools:text="会议室会议室会议室会议室会议室会议室会议室会议室" />
+
+    <TextView
+        android:id="@+id/conference_count_tv"
+        style="@style/TvNormalItemStyle"
+        android:layout_marginEnd="@dimen/dim_20"
+        app:layout_constraintStart_toEndOf="@+id/conference_name_tv"
+        app:layout_constraintTop_toTopOf="@+id/conference_name_tv"
+        tools:text="(6人)" />
+
+    <ImageView
+        android:id="@+id/conference_status_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dim_padding"
+        android:padding="3dp"
+        android:src="@mipmap/ic_callout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/conference_name_tv" />
+
+    <TextView
+        android:id="@+id/conference_time_tv"
+        style="@style/TvSmallItemStyle"
+        app:layout_constraintBottom_toBottomOf="@+id/conference_status_iv"
+        app:layout_constraintStart_toEndOf="@+id/conference_status_iv"
+        app:layout_constraintTop_toTopOf="@+id/conference_status_iv"
+        app:layout_goneMarginTop="15dp"
+        tools:text="2019-10-31 13:36:26" />
+
+    <View
+        android:id="@+id/bottom_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/divider_line_color"
+        app:layout_constraintTop_toBottomOf="@+id/conference_status_iv" />
+
+    <View
+        android:id="@+id/space_empty"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/background_1"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_goneMarginTop="@dimen/dim_14"
+        tools:visibility="visible" />
+</androidx.constraintlayout.widget.ConstraintLayout>

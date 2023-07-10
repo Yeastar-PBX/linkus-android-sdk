@@ -99,4 +99,27 @@
         <item name="buttonCompat">@null</item>
         <item name="android:background">@null</item>
     </style>
+    <!--正文（次要文字）gray7-->
+    <style name="tv_text_sp12_gray7_style">
+        <item name="android:textSize">@dimen/sp_12</item>
+        <item name="android:textColor">@color/gray_7</item>
+    </style>
+    <!--正文（次要文字）gray5-->
+    <style name="tv_text_sp14_gray5_style">
+        <item name="android:textSize">@dimen/sp_14</item>
+        <item name="android:textColor">@color/gray_5</item>
+    </style>
+    <style name="TvSmallItemStyle" parent="@style/tv_text_sp14_gray5_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="TvNormalItemStyle" parent="@style/tv_lv_title_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
 </resources>

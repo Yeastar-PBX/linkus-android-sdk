@@ -48,11 +48,13 @@ YlsBaseManager.getInstance().initYlsSDK(this, null);
 
 ```java
 YlsInitConfig config = new YlsInitConfig.Builder(projectPath)//SDK信息保存地址（包括SDK日志信息的地址）
-        .supportCallWaiting(true)//是否支持CallWaiting
-        .agc(true)//开启自动增益
-        .ec(true)//开启回音消除
-        .nc(true).build();//开启主动降噪
-        YlsBaseManager.getInstance().initYlsSDK(this, config);
+					.supportCallWaiting(false)//是否支持CallWaiting
+                    .agc(true)//开启自动增益
+                    .ec(true)//开启回音消除
+                    .nc(true)//开启主动降噪
+                    .key("")//数据库密码
+                    .build();
+YlsBaseManager.getInstance().initYlsSDK(this, config);
 ```
 
 #### 2.2.3 自动增益开关
@@ -111,27 +113,27 @@ public void ncSetting(boolean isOpen)
  * @return
  */
 public void loginBlock(Context context, String userName, String passWord, String localeIp, int localePort,
-        String remoteIp, int remotePort, RequestCallback<Boolean> requestCallback)
+                       String remoteIp, int remotePort, RequestCallback<Boolean> requestCallback)
 //手动登录示例
-        YlsLoginManager.getInstance().loginBlock(this, userName, password, localeIp,
+YlsLoginManager.getInstance().loginBlock(this, userName, password, localeIp,
         localePortI, remoteIp, remotePortI, new RequestCallback<>() {
-@Override
-public void onSuccess(Boolean result) {
-        closeProgressDialog();
-        startActivity(new Intent(LoginActivity.this, DialPadActivity.class));
-        }
+            @Override
+            public void onSuccess(Boolean result) {
+                closeProgressDialog();
+                startActivity(new Intent(LoginActivity.this, DialPadActivity.class));
+            }
 
-@Override
-public void onFailed(int code) {
-        closeProgressDialog();
-        Toast.makeText(LoginActivity.this, R.string.login_tip_login_failed, Toast.LENGTH_LONG).show();
-        }
+            @Override
+            public void onFailed(int code) {
+                closeProgressDialog();
+                Toast.makeText(LoginActivity.this, R.string.login_tip_login_failed, Toast.LENGTH_LONG).show();
+            }
 
-@Override
-public void onException(Throwable exception) {
-        closeProgressDialog();
-        Toast.makeText(LoginActivity.this, R.string.login_tip_login_failed, Toast.LENGTH_LONG).show();
-        }
+            @Override
+            public void onException(Throwable exception) {
+                closeProgressDialog();
+                Toast.makeText(LoginActivity.this, R.string.login_tip_login_failed, Toast.LENGTH_LONG).show();
+            }
         });
 ```
 
@@ -139,7 +141,7 @@ public void onException(Throwable exception) {
 
 ```java
 int networkType = NetWorkUtil.getNetWorkType(this);
-        YlsLoginManager.getInstance().cacheLogin(networkType);
+YlsLoginManager.getInstance().cacheLogin(networkType);
 ```
 
 #### 2.3.3 登录状态
@@ -151,7 +153,7 @@ int networkType = NetWorkUtil.getNetWorkType(this);
  */
 public boolean isLoginEd()
 //调用示例
-        boolean isLoginEd = YlsLoginManager.getInstance().isLoginEd();
+boolean isLoginEd = YlsLoginManager.getInstance().isLoginEd();
 ```
 
 
@@ -165,7 +167,7 @@ public boolean isLoginEd()
  */
 public synchronized boolean isConnected()
 //调用示例
-        YlsLoginManager.getInstance().isConnected();
+YlsLoginManager.getInstance().isConnected();
 ```
 
 
@@ -174,17 +176,17 @@ public synchronized boolean isConnected()
 
 ```java
 YlsBaseManager.getInstance().setSdkCallback(new SdkCallback() {
-//cdr变更通知
-@Override
-public void onCdrChange(int syncResult) {
+    //cdr变更通知
+    @Override
+    public void onCdrChange(int syncResult) {
         EventBus.getDefault().post(new CallLogChangeEvent(syncResult));
-        }
-//退出登录通知
-@Override
-public void onLogout(int type) {
+    }
+    //退出登录通知
+    @Override
+    public void onLogout(int type) {
         context.startActivity(new Intent(context, LoginActivity.class));
-        }
-        });
+    }
+});
 ```
 
 
@@ -345,31 +347,31 @@ CallQualityVo callQualityVo = YlsCallManager.getInstance().getCallQuality();
 
 ```java
 YlsCallManager.getInstance().setCallStateCallback(new CallStateCallback() {
-    //通话回调
-    @Override
-    public void onCallStateChange(CallStateVo callStateVo) {
+//通话回调
+@Override
+public void onCallStateChange(CallStateVo callStateVo) {
         EventBus.getDefault().post(new CallStateEvent(callStateVo));
-    }
+        }
 
-    //通话质量等级回调
-    @Override
-    public void onNetWorkLevelChange(int callId, int networkLevel) {
+//通话质量等级回调
+@Override
+public void onNetWorkLevelChange(int callId, int networkLevel) {
         EventBus.getDefault().postSticky(new NetWorkLevelEvent(callId, networkLevel));
-    }
+        }
 
-    //网络连接变化回调
-    @Override
-    public void onConnectChange() {
+//网络连接变化回调
+@Override
+public void onConnectChange() {
         EventBus.getDefault().postSticky(new ConnectionChangeEvent());
-    }
+        }
 
-    //录音状态回调
-    @Override
-    public void onRecordChange(boolean isRecording) {
+//录音状态回调
+@Override
+public void onRecordChange(boolean isRecording) {
         EventBus.getDefault().post(new RecordEvent(isRecording));
-    }
+        }
 
-});
+        });
 ```
 
 
@@ -378,42 +380,42 @@ YlsCallManager.getInstance().setCallStateCallback(new CallStateCallback() {
 
 ```java
 YlsCallManager.getInstance().setActionCallback(new ActionCallback() {
-    @Override
-    public void onFinishCall() {
+@Override
+public void onFinishCall() {
         finishAllCall(context);
-    }
+        }
 
-    @Override
-    public void onNewCall() {
+@Override
+public void onNewCall() {
         jump2CallActivity(context);
-    }
+        }
 
-    @Override
-    public void onCallWaiting() {
+@Override
+public void onCallWaiting() {
         EventBus.getDefault().post(new CallWaitingEvent());
         SoundManager.getInstance().startPlay(context, YlsConstant.SOUND_CALL_WAITING_TYPE);
-    }
+        }
 
-    @Override
-    public void onMissCallClick() {
+@Override
+public void onMissCallClick() {
 
-    }
+        }
 
-    @Override
-    public void onStopMicroPhoneService() {
+@Override
+public void onStopMicroPhoneService() {
 
-    }
+        }
 
-    @Override
-    public void onDismissPopupView() {
+@Override
+public void onDismissPopupView() {
         dismissPopupView();
-    }
+        }
 
-    @Override
-    public void onNotifyAudioChange() {
+@Override
+public void onNotifyAudioChange() {
         notifyAudioChange();
-    }
-});
+        }
+        });
 ```
 
 
@@ -433,22 +435,22 @@ YlsCallManager.getInstance().setActionCallback(new ActionCallback() {
  */
 public void setPushInfo(String mode, String token, RequestCallback requestCallback)
 //使用方法示例
-YlsBaseManager.getInstance().setPushInfo("GETUI", clientid, new RequestCallback() {
-    @Override
-    public void onSuccess(Object result) {
+        YlsBaseManager.getInstance().setPushInfo("GETUI", clientid, new RequestCallback() {
+@Override
+public void onSuccess(Object result) {
 
-    }
+        }
 
-    @Override
-    public void onFailed(int code) {
+@Override
+public void onFailed(int code) {
 
-    }
+        }
 
-    @Override
-    public void onException(Throwable exception) {
+@Override
+public void onException(Throwable exception) {
 
-    }
-});
+        }
+        });
 ```
 
 
@@ -457,13 +459,13 @@ YlsBaseManager.getInstance().setPushInfo("GETUI", clientid, new RequestCallback(
 
 ```java
 String data = new String(payload);
-JSONObject jsonObject = null;
-try {
-    jsonObject = new JSONObject(data);
-} catch (JSONException e) {
-    e.printStackTrace();
-}
-YlsCallManager.getInstance().handlerPushMessage(context, jsonObject);
+        JSONObject jsonObject = null;
+        try {
+        jsonObject = new JSONObject(data);
+        } catch (JSONException e) {
+        e.printStackTrace();
+        }
+        YlsCallManager.getInstance().handlerPushMessage(context, jsonObject);
 ```
 
 
@@ -482,7 +484,7 @@ YlsCallManager.getInstance().handlerPushMessage(context, jsonObject);
  */
 public List<CdrVo> getCdrList(int limit);
 //调用示例
-List<CdrVo> cdrVoList = YlsCallLogManager.getInstance().getCdrList(1000);
+        List<CdrVo> cdrVoList = YlsCallLogManager.getInstance().getCdrList(1000);
 ```
 
 #### 2.6.2 删除通话记录
@@ -507,7 +509,7 @@ public int deleteCdr(String cdrIds)
  */
 public int deleteAllCdr()
 //调用示例
-btnCdrClear.setOnClickListener(v -> YlsCallLogManager.getInstance().deleteAllCdr());
+        btnCdrClear.setOnClickListener(v -> YlsCallLogManager.getInstance().deleteAllCdr());
 ```
 
 #### 2.6.4 标记所有未读为已读
@@ -576,7 +578,7 @@ public void muteSingleMember(InCallVo inCallVo)
  * 多方通话中所有通话的callID数组
  */
 public int[] getCallIdArrays()
-    
+
 /**
  * 多方通话中所有mute通话的callID数组
  */
@@ -586,7 +588,7 @@ public int[] getMuteArrays()
  * 多方通话中所有hold通话的callID数组
  */
 public int[] getHoldArrays()
-    
+
 /**
  * 是否在多方通话中
  *
@@ -669,11 +671,218 @@ public boolean isMultiPartyCallAlwaysRecordDisable()
 
 ### 2.8 会议室
 
+#### 2.8.1会议室功能初始化
+
+> 会议室初始化最好在Application主进程进行
+
+```java
+YlsConferenceManager.getInstance().setConferenceCallback(context, new ConferenceCallback() {
+    @Override
+    public void onConferenceException(ConferenceVo conferenceVo) {
+        //异常会议室回调
+        EventBus.getDefault().postSticky(new ConferenceExceptionEvent(conferenceVo));
+    }
+
+    @Override
+    public void onConferenceStatusChange(String conferenceId, String number, int status) {
+        //会议室成员状态回调
+        EventBus.getDefault().post(new ConferenceStatusEvent(conferenceId, number, status));
+    }
+});
+```
+
+#### 2.8.2 获取会议室记录列表
+
+```java
+conferenceModelList = YlsConferenceManager.getInstance().getConferenceList();
+```
+
+#### 2.8.3 开始会议室
+
+```java
+    /**
+     * 发起会议室
+     *
+     * @param context
+     * @param conferenceName
+     * @param memberArray
+     * @param requestCallback
+     */
+    public void startConference(Context context, String conferenceName, String[] memberArray, RequestCallback requestCallback)
+```
+
+#### 2.8.4 返回异常会议室
+
+```java
+/**
+ * 返回异常会议室
+ *
+ * @param context
+ * @param conferenceId
+ * @param member
+ * @return
+ */
+public ResultVo returnConferenceBlock(Context context, String conferenceId, String member)
+```
+
+#### 2.8.5 会议进行中的接口
+
+```java
+    /**
+     * 会议室中
+     * 会议室主持人
+     * 静音/取消静音 单个会议室成员
+     *
+     * @param context
+     * @param conferenceId
+     * @param number
+     * @param isMute
+     */
+    public ResultVo muteConferenceMemberBlock(Context context, String conferenceId, String number, boolean isMute)
+        
+    /**
+     * 会议室中
+     * 会议室主持人
+     * 静音/取消静音 所有成员
+     *
+     * @param context
+     * @param conferenceId
+     * @param member
+     * @param isMute
+     */
+    public ResultVo muteAllConferenceMemberBlock(Context context, String conferenceId, String member, boolean isMute)
+
+    /**
+     * 会议室中
+     * 会议室主持人
+     * 删除成员
+     *
+     * @param context
+     * @param conferenceId
+     * @param number
+     */
+    public ResultVo kickConferenceMemberBlock(Context context, String conferenceId, String number)
+        
+    /**
+     * 会议室中
+     * 邀请成员
+     *
+     * @param context
+     * @param conferenceId
+     * @param number
+     */
+    public ResultVo inviteConferenceMemberBlock(Context context, String conferenceId, String number)
+        
+    /**
+     * 会议室中
+     * 重新邀请会议室成员(之前邀请了,但未进入的成员)
+     *
+     * @param context
+     * @param conferenceId
+     * @param number
+     */
+    public ResultVo reInviteConferenceMemberBlock(Context context, String conferenceId, String number)
+        
+    /**
+     * 结束会议室
+     *
+     * @param context
+     * @param conferenceId
+     * @param number
+     * @return
+     */
+    public ResultVo endConferenceBlock(Context context, String conferenceId, String number)
+        
+    /**
+     * 返回异常会议室
+     *
+     * @param context
+     * @param conferenceId
+     * @param member
+     * @return
+     */
+    public ResultVo returnConferenceBlock(Context context, String conferenceId, String member)
+        
+```
+
+#### 2.8.6 会议室其他接口
+
+```java
+    /**
+     * 获取当前会议室缓存
+     * @return
+     */
+    public ConferenceVo getConferenceVo() 
+
+    /**
+     * 设置当前会议室缓存
+     * @param conferenceVo
+     */
+    public void setConferenceVo(ConferenceVo conferenceVo)        
+
+	/**
+     * 获取会议室倒计时的时间
+     * 只有倒计时为负数时可以发起新的会议室
+     *
+     * @return
+     */
+    public long getCountDownTime()
+        
+    /**
+     * 设置会议室结束时间
+     *
+     * @param endConferenceTime
+     */
+    public void setEndConferenceTime(long endConferenceTime)
+        
+    /**
+     * 删除会议室记录
+     *
+     * @param conferenceId
+     */
+    public void deleteConferenceLog(String conferenceId)
+        
+    /**
+     * 在小于9个成员前需要添加 [新增成员选项]
+     *
+     * @param memberList
+     */
+    public void addNullMember(List<ConferenceMemberVo> memberList)
+        
+    /**
+     * 会议室主持人
+     * 在小于9个成员的时候添加 [新增成员选项]
+     * 在大于1个成员的时候添加 [删除成员选项]
+     *
+     * @param memberList 成员list
+     */
+    public void addNullMemberByAdmin(List<ConferenceMemberVo> memberList)
+        
+    /**
+     * 删除 [新增成员选项]
+     *
+     * @param memberList
+     */
+    public void removeNullMember(List<ConferenceMemberVo> memberList)
+        
+    /**
+     * 删除所有的会议室记录
+     */
+    public void deleteAllConferenceLog()        
+```
+
+
+
 ### 2.9 其他事项
 
 > 其他未尽事项可以结合demo来看
 
 ## 3. 更新日志
 
+- 2023/07/10 提交1.0.9版本
+  1. 新增多方通话功能
+  2. 新增会议室功能
+  3. SDK初始化接口变更，新增数据库加密秘钥设置
+  4. SDK版本升级到1.0.9
 - 2023/06/28 提交1.0.8版本
 - 2023/06/26 默认关闭callwaiting，新增cdr获取接口配置项，提交1.0.7版本

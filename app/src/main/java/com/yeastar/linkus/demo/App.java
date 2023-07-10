@@ -9,11 +9,13 @@ import com.hjq.toast.ToastUtils;
 import com.igexin.sdk.PushManager;
 import com.yeastar.linkus.demo.base.BaseActivityLifecycleCallbacks;
 import com.yeastar.linkus.demo.call.CallManager;
+import com.yeastar.linkus.demo.conference.ConferenceManager;
 import com.yeastar.linkus.demo.eventbus.CallLogChangeEvent;
 import com.yeastar.linkus.demo.utils.NotificationUtils;
 import com.yeastar.linkus.demo.utils.Utils;
 import com.yeastar.linkus.demo.widget.MToastStyle;
 import com.yeastar.linkus.service.base.YlsBaseManager;
+import com.yeastar.linkus.service.base.YlsInitConfig;
 import com.yeastar.linkus.service.callback.SdkCallback;
 
 import org.greenrobot.eventbus.EventBus;
@@ -39,7 +41,9 @@ public class App extends Application {
         if (Utils.isMainProcesses(this)) {
             context = this.getApplicationContext();
             instance = this;
-            YlsBaseManager.getInstance().initYlsSDK(this, null);
+            String projectPath = YlsBaseManager.getInstance().getProjectPath(this);
+            YlsInitConfig config = new YlsInitConfig.Builder(projectPath).key("123").build();
+            YlsBaseManager.getInstance().initYlsSDK(this, config);
             CallManager.getInstance().initCallBack(this);
             NotificationUtils.createNotificationChannel(this);
             registerActivityLifecycleCallbacks(new BaseActivityLifecycleCallbacks());
@@ -60,6 +64,7 @@ public class App extends Application {
                     context.startActivity(intent);
                 }
             });
+            ConferenceManager.getInstance().init(this);
         }
     }
 

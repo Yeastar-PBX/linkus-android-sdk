@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dim_32"
+    android:background="@color/background_2"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/alphalist_catalog_tv"
+        style="@style/tv_text_sp12_gray7_style"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/dim_padding"
+        android:layout_marginTop="@dimen/dim_9"
+        android:layout_marginBottom="@dimen/dim_9"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="left|center_vertical"
+        android:includeFontPadding="false"
+        tools:text="A" />
+
+</LinearLayout>

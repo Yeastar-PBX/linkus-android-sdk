@@ -14,6 +14,7 @@ import android.os.PowerManager;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyCallback;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -27,6 +28,8 @@ import com.yeastar.linkus.demo.Constant;
 import com.yeastar.linkus.demo.R;
 import com.yeastar.linkus.demo.base.BaseActivity;
 import com.yeastar.linkus.demo.call.ring.RingFragment;
+import com.yeastar.linkus.demo.conference.ConferenceInCallFragment;
+import com.yeastar.linkus.demo.conference.ConferenceLoadingFragment;
 import com.yeastar.linkus.demo.utils.StatusBarUtil;
 import com.yeastar.linkus.demo.utils.Utils;
 import com.yeastar.linkus.service.call.YlsCallManager;
@@ -176,21 +179,40 @@ public class CallContainerActivity extends BaseActivity {
 
     private void initIntent() {
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra(Constant.EXTRA_DATA)) {
-            InCallVo inCallVo = (InCallVo) intent.getSerializableExtra(Constant.EXTRA_DATA);
-            if (!YlsCallManager.getInstance().isInCall()) {
-                YlsCallManager.getInstance().getCallList().add(inCallVo);
+
+        //发起会议室或返回异常会议室
+        if (intent != null) {
+            if (intent.hasExtra(Constant.EXTRA_CONFERENCE)) {
+                ConferenceInCallFragment conferenceInCall = new ConferenceInCallFragment();
+                conferenceInCall.setContainerId(R.id.call_container);
+                switchContent(conferenceInCall);
+                return;
+            } else if (intent.hasExtra(Constant.EXTRA_DATA)) {
+                InCallVo inCallModel = (InCallVo) intent.getSerializableExtra(Constant.EXTRA_DATA);
+                if (!YlsCallManager.getInstance().isInCall()) {
+                    YlsCallManager.getInstance().getCallList().add(inCallModel);
+                }
             }
         }
         LinkedList<InCallVo> list = new LinkedList<>(YlsCallManager.getInstance().getCallList());
         if (CommonUtil.isListNotEmpty(list)) {
-            InCallVo inCallVo = list.getFirst();
-            if (inCallVo.isAccept() || inCallVo.isAnswer()) {//已接听
+            InCallVo inCallModel = list.getFirst();
+            if (inCallModel.isAccept() || inCallModel.isAnswer()) {//已接听
+                if (TextUtils.isEmpty(inCallModel.getConfId())) {//普通来电
                     InCallFragment inCall = new InCallFragment();
                     inCall.setContainerId(R.id.call_container);
                     switchContent(inCall, Constant.TAG_FRAGMENT_CALL);
+                } else if (!Constant.PUSH_CONFERENCE.equals(inCallModel.getConfId())) {//会议室来电
+                    ConferenceInCallFragment conferenceInCall = new ConferenceInCallFragment();
+                    conferenceInCall.setContainerId(R.id.call_container);
+                    switchContent(conferenceInCall);
+                } else {//会议室加载页面
+                    ConferenceLoadingFragment loadingFragment = new ConferenceLoadingFragment();
+                    loadingFragment.setContainerId(R.id.call_container);
+                    switchContent(loadingFragment);
+                }
             } else {
-                if (inCallVo.isCallOut()) {
+                if (inCallModel.isCallOut()) {
                     InCallFragment inCall = new InCallFragment();
                     inCall.setContainerId(R.id.call_container);
                     switchContent(inCall, Constant.TAG_FRAGMENT_CALL);
@@ -203,6 +225,7 @@ public class CallContainerActivity extends BaseActivity {
         } else {//异常情况进入通话页面需要结束掉
             finish();
         }
+        
     }
 
     @Override

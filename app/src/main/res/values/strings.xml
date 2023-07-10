@@ -36,7 +36,6 @@
     <string name="login_tip_login_exception">Failed to connect to server</string>
 
 
-
     <string name="about_check_faild">Failed to update, please check your network settings.</string>
     <string name="about_check_forupdate">Check for Updates</string>
     <string name="about_check_update">Checking for new updates</string>

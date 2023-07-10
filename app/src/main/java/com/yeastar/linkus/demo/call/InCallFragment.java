@@ -153,26 +153,6 @@ public class InCallFragment extends InCallRelatedFragment implements InCallContr
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
-    public void handleCallKitAction(String action) {
-        LogUtil.w("InCallFragment callKit Action = %s", action);
-        if (Constant.EVENT_ON_HOLD.equals(action)) {//系统通话解hold,linkus需要hold住?
-            LogUtil.w("通话界面 系统通话接听 hold linkus通话");
-            inCallPresenter.hold();
-            EventBus.getDefault().removeStickyEvent(action);
-        } else if (Constant.EVENT_ON_UN_HOLD.equals(action)) {
-            LogUtil.w("通话界面 系统通话挂断 unHold linkus通话");
-            inCallPresenter.hold();
-            EventBus.getDefault().removeStickyEvent(action);
-        } else if (Constant.EVENT_ON_DISCONNECT_OR_ABORT.equals(action)) {
-            inCallPresenter.hangupPhone();
-            EventBus.getDefault().removeStickyEvent(action);
-        } else if (Constant.EVENT_OUTGOING_FAILED.equals(action)) {
-            inCallPresenter.hangupPhone();
-            EventBus.getDefault().removeStickyEvent(action);
-        }
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void handlerAudioRoute(AudioRouteEvent event) {
         LogUtil.w("通话界面 收到AudioRoute事件通知");

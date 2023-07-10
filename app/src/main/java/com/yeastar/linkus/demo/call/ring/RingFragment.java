@@ -18,6 +18,7 @@ import com.yeastar.linkus.demo.call.CallManager;
 import com.yeastar.linkus.demo.call.InCallContractItem;
 import com.yeastar.linkus.demo.call.InCallFragment;
 import com.yeastar.linkus.demo.call.InCallRelatedFragment;
+import com.yeastar.linkus.demo.conference.ConferenceInCallFragment;
 import com.yeastar.linkus.demo.eventbus.CallStateEvent;
 import com.yeastar.linkus.demo.eventbus.ConnectionChangeEvent;
 import com.yeastar.linkus.demo.utils.StatusBarUtil;
@@ -73,20 +74,6 @@ public class RingFragment extends InCallRelatedFragment {
         }
     }
 
-
-    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
-    public void handleCallKitAction(String action) {
-        LogUtil.w("RingFragment callKit Action = %s", action);
-        if (Constant.EVENT_ANSWER_CALL.equals(action)) {
-            answerAction();
-        } else if (Constant.EVENT_REJECT_CALL.equals(action)
-                || Constant.EVENT_INCOMING_FAILED.equals(action)
-                || Constant.EVENT_ON_DISCONNECT_OR_ABORT.equals(action)) {
-            rejectAction();
-        }
-        EventBus.getDefault().removeStickyEvent(action);
-    }
-
     /**
      * 在初始化过程中,通话状态变更后切换页面
      */
@@ -98,9 +85,15 @@ public class RingFragment extends InCallRelatedFragment {
         }
         LogUtil.w("switchInCallFragment");
         //判断会议室还是普通来电
-        InCallFragment inCallFragment = new InCallFragment();
-        inCallFragment.setContainerId(R.id.call_container);
-        ((BaseActivity) activity).switchContent(inCallFragment, Constant.TAG_FRAGMENT_CALL);
+        if (TextUtils.isEmpty(inCallVo.getConfId())) {
+            InCallFragment inCallFragment = new InCallFragment();
+            inCallFragment.setContainerId(R.id.call_container);
+            ((BaseActivity) activity).switchContent(inCallFragment, Constant.TAG_FRAGMENT_CALL);
+        } else {
+            ConferenceInCallFragment conferenceInCall = new ConferenceInCallFragment();
+            conferenceInCall.setContainerId(R.id.call_container);
+            ((BaseActivity) activity).switchContent(conferenceInCall);
+        }
         startTime = System.currentTimeMillis();
     }
 

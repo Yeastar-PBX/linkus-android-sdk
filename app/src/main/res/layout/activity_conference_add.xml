@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".conference.ConferenceAddActivity">
+    <LinearLayout
+        android:id="@+id/tab_dial_pad_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_dial_pad"
+        android:clickable="true"
+        android:elevation="12dp"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.yeastar.linkus.demo.widget.Dialpad.DialPadLayout
+            android:id="@+id/dial_pad_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:paste="true"
+            app:transparent="false" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tab_dial_cl"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:paddingBottom="20dp">
+
+            <com.yeastar.linkus.demo.widget.ClickImageView
+                android:id="@+id/dial_pad_fold"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/shape_circle_blue_with_shadow"
+                android:scaleType="center"
+                android:src="@mipmap/ic_call_expand"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

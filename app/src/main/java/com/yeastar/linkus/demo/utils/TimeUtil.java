@@ -446,4 +446,67 @@ public class TimeUtil {
             chronometer.setFormat("%s");
         }
     }
+
+    public static String getSimpleDateStr(Context context, Date date) {
+        Calendar nowCalendar = Calendar.getInstance(Locale.getDefault());
+        Calendar cdrCalendar = Calendar.getInstance(Locale.getDefault());
+        cdrCalendar.setTime(date);
+        boolean sameYear = cdrCalendar.get(Calendar.YEAR) == nowCalendar.get(Calendar.YEAR);
+        boolean sameDay = cdrCalendar.get(Calendar.DAY_OF_YEAR) == nowCalendar.get(Calendar.DAY_OF_YEAR);
+        //同一天显示时间
+        if (sameYear && sameDay) {
+            return getTodayTimeBucket2(context, date);
+        } else {//其他日期显示格式统一(区分12/24小时制):2001-12-5 下午01:15 / 2001-12-5 13:15
+            String prefix = DateToStr(date, "yyyy-MM-dd ");
+            String suffix = getTodayTimeBucket2(context, date);
+            return prefix + suffix;
+        }
+    }
+
+    /**
+     * 日期转换成字符串
+     * @param date 日期
+     * @param formatPattern 字符串日期模板
+     * @return str
+     */
+    public static String DateToStr(Date date, String formatPattern) {
+
+        SimpleDateFormat format = new SimpleDateFormat(formatPattern, Locale.getDefault());
+        return format.format(date);
+    }
+
+    /**
+     * 根据不同时间段，显示不同时间(精确到秒)
+     *
+     * @param date 日期
+     * @return 获取12小时或24小时制的时分如: 下午01:24 / 13:24
+     */
+    public static String getTodayTimeBucket2(Context context, Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        SimpleDateFormat timeFormatter1to12 = new SimpleDateFormat("hh:mm:ss", Locale.getDefault());
+        if (is24HourMode(context)) {
+            SimpleDateFormat timeFormatter1to24 = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+            return timeFormatter1to24.format(date);
+        } else {
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            if (hour >= 0 && hour < 12) {
+                return context.getString(R.string.public_am, timeFormatter1to12.format(date));
+            } else if (24 > hour && hour >= 12) {
+                return context.getString(R.string.public_pm, timeFormatter1to12.format(date));
+            }
+        }
+        return "";
+    }
+
+    /**
+     * @param context c
+     * @return 是否24小时制
+     */
+    public static boolean is24HourMode(final Context context) {
+        if (context != null) {
+            return android.text.format.DateFormat.is24HourFormat(context);
+        }
+        return true;
+    }
 }

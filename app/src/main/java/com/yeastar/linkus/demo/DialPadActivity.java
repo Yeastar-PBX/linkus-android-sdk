@@ -1,41 +1,50 @@
 package com.yeastar.linkus.demo;
 
+import static com.yeastar.linkus.demo.utils.ToastUtil.showToast;
+
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.motion.widget.MotionLayout;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
-import com.chad.library.adapter.base.listener.OnItemLongClickListener;
+import com.yeastar.linkus.demo.call.CallContainerActivity;
 import com.yeastar.linkus.demo.call.CallManager;
+import com.yeastar.linkus.demo.conference.ConferenceListActivity;
 import com.yeastar.linkus.demo.eventbus.CallLogChangeEvent;
 import com.yeastar.linkus.demo.eventbus.ClearNumberEvent;
+import com.yeastar.linkus.demo.eventbus.ConferenceExceptionEvent;
 import com.yeastar.linkus.demo.eventbus.ToggleDialPadEvent;
+import com.yeastar.linkus.demo.utils.permission.PermissionRequest;
 import com.yeastar.linkus.demo.widget.ActionSheetDialog;
 import com.yeastar.linkus.demo.widget.ClickImageView;
 import com.yeastar.linkus.demo.widget.CrossFadeImageView;
 import com.yeastar.linkus.demo.widget.CustomProgressDialog;
 import com.yeastar.linkus.demo.widget.Dialpad.DialPadLayout;
 import com.yeastar.linkus.demo.widget.VerticalRecyclerView;
+import com.yeastar.linkus.service.base.ConnectionUtils;
 import com.yeastar.linkus.service.base.YlsBaseManager;
-import com.yeastar.linkus.service.call.YlsCallManager;
+import com.yeastar.linkus.service.base.vo.ResultVo;
 import com.yeastar.linkus.service.call.vo.CdrVo;
 import com.yeastar.linkus.service.callback.RequestCallback;
 import com.yeastar.linkus.service.cdr.YlsCallLogManager;
+import com.yeastar.linkus.service.conference.YlsConferenceManager;
+import com.yeastar.linkus.service.conference.vo.ConferenceVo;
 import com.yeastar.linkus.service.log.LogUtil;
 import com.yeastar.linkus.service.login.YlsLoginManager;
+import com.yeastar.linkus.utils.BetterAsyncTask;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -49,12 +58,13 @@ public class DialPadActivity extends AppCompatActivity {
     private MotionLayout mMotionLayout;
     private ClickImageView mDialPadFold;
     private VerticalRecyclerView rv;
-
     private String number;
     private boolean dialPadShown = true;
     private DialPadLayout mDialPadLayout;
     private CdrAdapter adapter;
     private CustomProgressDialog progressDialog;
+    private TextView tvTip;
+    private static BetterAsyncTask<Void, Void, Integer> conferenceExceptionTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +75,7 @@ public class DialPadActivity extends AppCompatActivity {
         mMotionLayout = findViewById(R.id.motionLayout);
         mDialPadFold = findViewById(R.id.dial_pad_fold);
         callIv = findViewById(R.id.tab_dial_call_iv);
+        tvTip = findViewById(R.id.tv_tip);
         rv = findViewById(R.id.rv);
         adapter = new CdrAdapter();
         rv.setAdapter(adapter);
@@ -93,6 +104,14 @@ public class DialPadActivity extends AppCompatActivity {
         updateCdr();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void handleConferenceException(ConferenceExceptionEvent conferenceExceptionEvent) {
+        if (conferenceExceptionEvent.getConferenceVo() != null) {
+            tvTip.setVisibility(View.VISIBLE);
+        } else {
+            tvTip.setVisibility(View.GONE);
+        }
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     public void setListener() {
@@ -136,6 +155,9 @@ public class DialPadActivity extends AppCompatActivity {
         });
         mDialPadFold.setOnClickListener(v -> {
             toggleDialPad(false);
+        });
+        tvTip.setOnClickListener(v -> {
+            requestConferencePermission(DialPadActivity.this);
         });
     }
 
@@ -252,14 +274,21 @@ public class DialPadActivity extends AppCompatActivity {
                 // 处理关闭主动降噪的点击事件
                 YlsBaseManager.getInstance().ncSetting(false);
                 return true;
+            case R.id.menu_conference:
+                ConferenceListActivity.start(DialPadActivity.this);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
     private void showLargeProgressDialog() {
+        showProgressDialog(R.string.setting_logging_out);
+    }
+
+    private void showProgressDialog(int tipRes) {
         if (progressDialog == null) {
-            progressDialog = new CustomProgressDialog(this, CustomProgressDialog.TYPE_TEXT_MULTIPLE, R.string.setting_logging_out, true);
+            progressDialog = new CustomProgressDialog(this, CustomProgressDialog.TYPE_TEXT_MULTIPLE, tipRes, true);
         }
         if (!isDestroyed() && !isFinishing()) {
             progressDialog.show();
@@ -275,4 +304,84 @@ public class DialPadActivity extends AppCompatActivity {
             progressDialog = null;
         }
     }
+
+    /**
+     * 返回异常会议室先请求权限
+     */
+    private void requestConferencePermission(Activity activity) {
+        PermissionRequest request = new PermissionRequest(activity, new PermissionRequest.PermissionCallback() {
+            @Override
+            public void onSuccessful(List<String> permissions) {
+                returnExceptionConference(activity);
+            }
+
+            @Override
+            public void onFailure(List<String> permissions) {
+            }
+
+        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            request.hasPermission(android.Manifest.permission.READ_PHONE_STATE, android.Manifest.permission.RECORD_AUDIO, android.Manifest.permission.BLUETOOTH_CONNECT);
+        } else {
+            request.hasPermission(android.Manifest.permission.READ_PHONE_STATE, Manifest.permission.RECORD_AUDIO);
+        }
+    }
+
+    private void returnExceptionConference(Activity activity) {
+        //判断网络是否可用，服务器是否连上
+        if (YlsLoginManager.getInstance().isConnected() && ConnectionUtils.isRegister()) {
+            showProgressDialog(R.string.conference_tip_get_information);
+            ConferenceExceptionEvent conferenceExceptionEvent = EventBus.getDefault().getStickyEvent(ConferenceExceptionEvent.class);
+            if (conferenceExceptionEvent != null && conferenceExceptionEvent.getConferenceVo() != null) {
+                ConferenceVo conferenceVo = conferenceExceptionEvent.getConferenceVo();
+                YlsConferenceManager.getInstance().setConferenceVo(conferenceVo);
+                conferenceExceptionTask = new BetterAsyncTask<Void, Void, Integer>() {
+                    @Override
+                    public Integer doInBackground(Void... params) {
+                        if (!TextUtils.isEmpty(YlsLoginManager.getInstance().getMyExtension())) {
+                            ResultVo resultVo = YlsConferenceManager.getInstance().returnConferenceBlock(activity, conferenceVo.getConferenceId(), YlsLoginManager.getInstance().getMyExtension());
+                            return resultVo.getCode();
+                        } else {
+                            return 1;
+                        }
+                    }
+
+                    @Override
+                    public void onPostExecute(Integer returnFlag) {
+                        //0.成功 1.失败 2.超时 3.服务器异常 4.会议结束
+                        if (returnFlag == 0) {
+                            EventBus.getDefault().removeStickyEvent(ConferenceExceptionEvent.class);
+                            returnException(activity, conferenceVo);
+
+                        } else if (returnFlag == 4) {
+                            showToast(R.string.conference_tip_end);
+                            YlsConferenceManager.getInstance().setConferenceVo(null);
+                            EventBus.getDefault().removeStickyEvent(ConferenceExceptionEvent.class);
+                        } else {
+                            YlsConferenceManager.getInstance().setConferenceVo(null);
+                            showToast(R.string.nonetworktip_error);
+                        }
+                        tvTip.setVisibility(View.GONE);
+                        closeProgressDialog();
+                    }
+                };
+                conferenceExceptionTask.executeParallel();
+            } else {
+                closeProgressDialog();
+            }
+        }
+    }
+
+    private void returnException(Context context, ConferenceVo conferenceVo) {
+        LogUtil.w("返回异常会议室");
+        Intent intent = new Intent(context, CallContainerActivity.class);
+        intent.putExtra(Constant.EXTRA_CONFERENCE, conferenceVo);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+        //已经有microphone前台服务不用重新启动
+        if (CallManager.getInstance().getMicroPhoneServiceIntent() == null) {
+            CallManager.getInstance().makeMicroPhoneNotification(context);
+        }
+    }
+
 }

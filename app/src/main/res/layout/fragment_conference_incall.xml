@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/conference_call_top_color">
+
+    <TextView
+        android:id="@+id/conference_name_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dim_padding"
+        android:layout_marginTop="@dimen/dim_10"
+        android:layout_marginEnd="@dimen/dim_padding"
+        android:ellipsize="end"
+        android:gravity="start|center_vertical"
+        android:singleLine="true"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/conference_time_tv"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="会议室名称会议室名称会议室名称会议室名称会议室名称" />
+
+    <Chronometer
+        android:id="@+id/conference_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dim_padding"
+        tools:text="00:35:59"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/conference_name_tv"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/conference_name_tv" />
+
+    <TextView
+        android:id="@+id/tv_tx_level"
+        style="@style/tv_tx_level_style"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_admin_contain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/conference_name_tv"
+        app:layout_constraintVertical_bias="0.005">
+
+        <RelativeLayout
+            android:id="@+id/avatar_container"
+            android:layout_width="53dp"
+            android:layout_height="53dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginBottom="22dp"
+            android:background="@drawable/colorful_ring"
+            android:padding="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.yeastar.linkus.demo.widget.AvatarImageView
+                android:id="@+id/admin_photo_civ"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                tools:src="@mipmap/default_contact_avatar" />
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/admin_name_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_16"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:layout_marginEnd="@dimen/dim_padding"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@+id/avatar_container"
+            app:layout_constraintTop_toTopOf="@+id/avatar_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Host: 会议发起人会议发起人会议发起人会议发起人会议发起人" />
+
+        <ImageView
+            android:id="@+id/admin_call_status_iv"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="@dimen/dim_5"
+            android:scaleType="fitCenter"
+            android:src="@drawable/conference_status_succ"
+            app:layout_constraintStart_toEndOf="@+id/avatar_container"
+            app:layout_constraintTop_toBottomOf="@+id/admin_name_tv" />
+
+        <TextView
+            android:id="@+id/admin_number_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/incall_number_color"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintBottom_toBottomOf="@+id/admin_call_status_iv"
+            app:layout_constraintStart_toEndOf="@+id/admin_call_status_iv"
+            app:layout_constraintTop_toTopOf="@+id/admin_call_status_iv"
+            tools:text="18850599999" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/conference_call_bottom_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_admin_contain">
+
+        <GridView
+            android:id="@+id/conference_member_gv"
+            android:layout_width="match_parent"
+            android:layout_height="330dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/dim_10"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="@dimen/dim_10"
+            android:gravity="center_horizontal"
+            android:listSelector="@android:color/transparent"
+            android:numColumns="3"
+            android:scrollbars="none"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="@dimen/dim_8"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/item_conference_incall" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dim_30"
+            android:paddingLeft="@dimen/dim_5"
+            android:paddingRight="@dimen/dim_5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <ImageView
+                android:id="@+id/conference_mute_iv"
+                android:layout_width="@dimen/dim_40"
+                android:layout_height="@dimen/dim_40"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dim_5"
+                android:layout_toStartOf="@+id/conference_exit_btn"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/icon_mute" />
+            <ImageView
+                android:id="@+id/conference_speaker_iv"
+                android:layout_width="@dimen/dim_40"
+                android:layout_height="@dimen/dim_40"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/dim_5"
+                android:layout_toEndOf="@+id/conference_exit_btn"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/icon_speaker" />
+
+            <Button
+                android:id="@+id/conference_exit_btn"
+                android:layout_width="170dp"
+                android:layout_height="44dp"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="@dimen/dim_20"
+                android:layout_marginRight="@dimen/dim_20"
+                android:background="@drawable/shape_conference_incall_bg"
+                android:gravity="center"
+                android:text="@string/conference_exit"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_20" />
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

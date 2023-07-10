@@ -9,4 +9,5 @@
     <item android:id="@+id/menu_ec_close" android:title="关闭回音消除"/>
     <item android:id="@+id/menu_nc_open" android:title="开启主动降噪"/>
     <item android:id="@+id/menu_nc_close" android:title="关闭主动降噪"/>
+    <item android:id="@+id/menu_conference" android:title="会议室"/>
 </menu>
