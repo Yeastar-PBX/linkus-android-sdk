@@ -37,12 +37,12 @@ import com.yeastar.linkus.nativecode.YlsCall;
 import com.yeastar.linkus.service.base.vo.ResultVo;
 import com.yeastar.linkus.service.call.YlsCallManager;
 import com.yeastar.linkus.service.call.vo.InCallVo;
+import com.yeastar.linkus.service.callback.RequestCallback;
 import com.yeastar.linkus.service.conference.YlsConferenceManager;
 import com.yeastar.linkus.service.conference.vo.ConferenceMemberVo;
 import com.yeastar.linkus.service.conference.vo.ConferenceVo;
 import com.yeastar.linkus.service.log.LogUtil;
 import com.yeastar.linkus.service.login.YlsLoginManager;
-import com.yeastar.linkus.utils.BetterAsyncTask;
 import com.yeastar.linkus.utils.CommonUtil;
 import com.yeastar.linkus.utils.MediaUtil;
 import com.yeastar.linkus.utils.NetWorkUtil;
@@ -497,34 +497,24 @@ public class ConferenceInCallFragment extends InCallRelatedFragment implements V
      * 其他情况直接挂断通话即可
      */
     private void exitConference() {
-        if (NetWorkUtil.isNetworkConnected(activity) && isAdmin()) {
-            new BetterAsyncTask<Void, Void, ResultVo>() {
+        if (NetWorkUtil.isNetworkConnected(activity)) {
+            YlsConferenceManager.getInstance().endConferenceBlock(getContext(), inCallVo.getCallId(), conferenceVo, new RequestCallback() {
                 @Override
-                public ResultVo doInBackground(Void... voids) {
-                    return YlsConferenceManager.getInstance().endConferenceBlock(getContext(), conferenceId, YlsLoginManager.getInstance().getMyExtension());
+                public void onSuccess(Object result) {
+                    activity.finish();
                 }
 
                 @Override
-                public void onPostExecute(ResultVo resultVo) {
-                    super.onPostExecute(resultVo);
-                    if (resultVo.getCode() != YlsConstant.OPERATE_SUCCESS) {
-                        ToastUtil.showLongToast(R.string.connectiontip_connect_fail);
-                    } else {
-                        doHangup();
-                    }
+                public void onFailed(int code) {
+                    ToastUtil.showLongToast(R.string.connectiontip_connect_fail);
                 }
-            }.executeParallel();
-        } else {
-            doHangup();
-        }
-    }
 
-    private void doHangup() {
-        if (inCallVo != null) {
-            YlsCallManager.getInstance().hangUpCall(activity, inCallVo.getCallId());
+                @Override
+                public void onException(Throwable exception) {
+                    ToastUtil.showLongToast(R.string.connectiontip_connect_fail);
+                }
+            });
         }
-        YlsConferenceManager.getInstance().setConferenceVo(null);
-        activity.finish();
     }
 
     private void setStartTime() {
