@@ -112,7 +112,10 @@ public class ConferenceInCallFragment extends InCallRelatedFragment implements V
         if (resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 String number = data.getStringExtra(Constant.EXTRA_NUMBER);
-                YlsConferenceManager.getInstance().inviteConferenceMemberBlock(getContext(), conferenceVo.getConferenceId(), number);
+                ResultVo resultVo = YlsConferenceManager.getInstance().inviteConferenceMemberBlock(conferenceVo.getConferenceId(), number);
+                if (resultVo != null && resultVo.getCode() != YlsConstant.OPERATE_SUCCESS) {
+                    ToastUtil.showToast(getString(R.string.invite_fail, resultVo.getCode()));
+                }
             }
         } else {
             conferenceVo = (ConferenceVo) CommonUtil.deepClone(YlsConferenceManager.getInstance().getConferenceVo());
@@ -317,7 +320,7 @@ public class ConferenceInCallFragment extends InCallRelatedFragment implements V
         if (checkLoginStatusInvalid() || checkConferenceIdValid()) {
             return;
         }
-        ResultVo resultVo = YlsConferenceManager.getInstance().muteAllConferenceMemberBlock(getContext(), conferenceId, myExtension, true);
+        ResultVo resultVo = YlsConferenceManager.getInstance().muteAllConferenceMemberBlock(conferenceId, myExtension, true);
         switch (resultVo.getCode()) {
             case YlsConstant.CONFERENCE_PERMISSION_ERROR:
                 ToastUtil.showToast("非会议室管理员不能操作!");
@@ -338,7 +341,7 @@ public class ConferenceInCallFragment extends InCallRelatedFragment implements V
         if (checkLoginStatusInvalid() || checkConferenceIdValid()) {
             return;
         }
-        ResultVo resultVo = YlsConferenceManager.getInstance().muteAllConferenceMemberBlock(getContext(), conferenceId, myExtension, false);
+        ResultVo resultVo = YlsConferenceManager.getInstance().muteAllConferenceMemberBlock(conferenceId, myExtension, false);
         switch (resultVo.getCode()) {
             case YlsConstant.CONFERENCE_PERMISSION_ERROR:
                 ToastUtil.showToast("非会议室管理员不能操作!");
@@ -359,7 +362,7 @@ public class ConferenceInCallFragment extends InCallRelatedFragment implements V
         if (checkLoginStatusInvalid() || checkConferenceIdValid() || checkMemberValid(vo)) {
             return;
         }
-        YlsConferenceManager.getInstance().reInviteConferenceMemberBlock(getContext(), conferenceId, vo.getNumber());
+        YlsConferenceManager.getInstance().reInviteConferenceMemberBlock(conferenceId, vo.getNumber());
     }
 
     private void muteMember(final ConferenceMemberVo vo) {
@@ -367,7 +370,7 @@ public class ConferenceInCallFragment extends InCallRelatedFragment implements V
             return;
         }
         final boolean mute = !vo.isMute();
-        ResultVo resultVo = YlsConferenceManager.getInstance().muteConferenceMemberBlock(getContext(), conferenceId, vo.getNumber(), mute);
+        ResultVo resultVo = YlsConferenceManager.getInstance().muteConferenceMemberBlock(conferenceId, vo.getNumber(), mute);
         switch (resultVo.getCode()) {
             case YlsConstant.CONFERENCE_PERMISSION_ERROR:
                 ToastUtil.showToast("非会议室管理员不能操作!");
@@ -388,7 +391,7 @@ public class ConferenceInCallFragment extends InCallRelatedFragment implements V
         if (checkLoginStatusInvalid() || checkConferenceIdValid() || checkMemberValid(vo)) {
             return;
         }
-        ResultVo resultVo = YlsConferenceManager.getInstance().kickConferenceMemberBlock(getContext(), conferenceId, vo.getNumber());
+        ResultVo resultVo = YlsConferenceManager.getInstance().kickConferenceMemberBlock(conferenceId, vo.getNumber());
         switch (resultVo.getCode()) {
             case YlsConstant.CONFERENCE_PERMISSION_ERROR:
                 ToastUtil.showToast("非会议室管理员不能操作!");
@@ -498,7 +501,11 @@ public class ConferenceInCallFragment extends InCallRelatedFragment implements V
      */
     private void exitConference() {
         if (NetWorkUtil.isNetworkConnected(activity)) {
-            YlsConferenceManager.getInstance().endConferenceBlock(getContext(), inCallVo.getCallId(), conferenceVo, new RequestCallback() {
+            int callId = -1;
+            if (inCallVo != null) {
+                callId = inCallVo.getCallId();
+            }
+            YlsConferenceManager.getInstance().endConferenceBlock(getContext(), callId, conferenceVo, new RequestCallback() {
                 @Override
                 public void onSuccess(Object result) {
                     activity.finish();

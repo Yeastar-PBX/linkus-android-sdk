@@ -37,13 +37,24 @@
             android:name="GETUI_APPID"
             android:value="${GETUI_APPID}" />
         <service
-            android:name=".call.DemoIntentService"
+            android:name=".push.DemoIntentService"
             android:exported="false" />
         <service
-            android:name=".call.DemoPushService"
+            android:name=".push.DemoPushService"
             android:exported="false"
             android:label="PushService"
+            android:directBootAware="true"
             android:process=":pushservice" />
+        <meta-data
+            android:name="push_kit_auto_init_enabled"
+            android:value="true"/>
+
+        <service android:name=".push.DemoHmsMessageService" android:exported="false">
+            <intent-filter>
+                <action android:name="com.huawei.push.action.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
         <service
             android:name=".utils.MicroPhoneService"
             android:foregroundServiceType="phoneCall" />

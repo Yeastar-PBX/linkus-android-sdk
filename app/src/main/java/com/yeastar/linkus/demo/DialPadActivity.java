@@ -110,6 +110,7 @@ public class DialPadActivity extends AppCompatActivity {
             tvTip.setVisibility(View.VISIBLE);
         } else {
             tvTip.setVisibility(View.GONE);
+            EventBus.getDefault().removeStickyEvent(conferenceExceptionEvent);
         }
     }
 
@@ -339,7 +340,7 @@ public class DialPadActivity extends AppCompatActivity {
                     @Override
                     public Integer doInBackground(Void... params) {
                         if (!TextUtils.isEmpty(YlsLoginManager.getInstance().getMyExtension())) {
-                            ResultVo resultVo = YlsConferenceManager.getInstance().returnConferenceBlock(activity, conferenceVo.getConferenceId(), YlsLoginManager.getInstance().getMyExtension());
+                            ResultVo resultVo = YlsConferenceManager.getInstance().returnConferenceBlock(conferenceVo.getConferenceId(), YlsLoginManager.getInstance().getMyExtension());
                             return resultVo.getCode();
                         } else {
                             return 1;
@@ -350,17 +351,16 @@ public class DialPadActivity extends AppCompatActivity {
                     public void onPostExecute(Integer returnFlag) {
                         //0.成功 1.失败 2.超时 3.服务器异常 4.会议结束
                         if (returnFlag == 0) {
-                            EventBus.getDefault().removeStickyEvent(ConferenceExceptionEvent.class);
                             returnException(activity, conferenceVo);
 
                         } else if (returnFlag == 4) {
                             showToast(R.string.conference_tip_end);
                             YlsConferenceManager.getInstance().setConferenceVo(null);
-                            EventBus.getDefault().removeStickyEvent(ConferenceExceptionEvent.class);
                         } else {
                             YlsConferenceManager.getInstance().setConferenceVo(null);
                             showToast(R.string.nonetworktip_error);
                         }
+                        EventBus.getDefault().removeStickyEvent(ConferenceExceptionEvent.class);
                         tvTip.setVisibility(View.GONE);
                         closeProgressDialog();
                     }

@@ -1,2 +1,3 @@
 rootProject.name = "linkus-android-sdk-vivo"
 include ':app'
+include ':linkus-sdk-android'

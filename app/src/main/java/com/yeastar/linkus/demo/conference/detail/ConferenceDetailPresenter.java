@@ -118,10 +118,11 @@ public class ConferenceDetailPresenter implements ConferenceDetailContract.Prese
                 view.dismissProgressDialog();
                 YlsConferenceManager.getInstance().setConferenceVo(null);
                 switch (code) {
-                    case YlsConstant.CONFERENCE_NAME_REGEX_ERROR:
-                        ToastUtil.showToast("会议室名称长度不能超过63个字节");
                     case YlsConstant.CONFERENCE_NAME_LENGTH_ERROR:
-                        ToastUtil.showLongToast("会议室名称不能使用包含不包含 :、!、$、(、)、/、#、;、,、[、]、\"、=、<、>、&、\\、'、```、^、%、@、{、}、|、空格");
+                        ToastUtil.showToast("会议室名称长度不能超过63个字节");
+                        break;
+                    case YlsConstant.CONFERENCE_NAME_REGEX_ERROR:
+                        ToastUtil.showLongToast("会议室名称不能使用包含 :、!、$、(、)、/、#、;、,、[、]、\"、=、<、>、&、\\、'、```、^、%、@、{、}、|、空格");
                         break;
                     case YlsConstant.CONFERENCE_IN_USE_ERROR:
                         ToastUtil.showToast(R.string.conference_tip_meeting);

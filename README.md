@@ -48,13 +48,13 @@ YlsBaseManager.getInstance().initYlsSDK(this, null);
 
 ```java
 YlsInitConfig config = new YlsInitConfig.Builder(projectPath)//SDK信息保存地址（包括SDK日志信息的地址）
-					.supportCallWaiting(false)//是否支持CallWaiting
-                    .agc(true)//开启自动增益
-                    .ec(true)//开启回音消除
-                    .nc(true)//开启主动降噪
-                    .key("")//数据库密码
-                    .build();
-YlsBaseManager.getInstance().initYlsSDK(this, config);
+        .supportCallWaiting(false)//是否支持CallWaiting
+        .agc(true)//开启自动增益
+        .ec(true)//开启回音消除
+        .nc(true)//开启主动降噪
+        .key("")//数据库密码
+        .build();
+        YlsBaseManager.getInstance().initYlsSDK(this, config);
 ```
 
 #### 2.2.3 自动增益开关
@@ -699,12 +699,18 @@ conferenceModelList = YlsConferenceManager.getInstance().getConferenceList();
 
 #### 2.8.3 开始会议室
 
+> 会议室名称限制：
+>
+> 1.不能使用包含 :、!、$、(、)、/、#、;、,、[、]、"、=、<、>、&、\、'、```、^、%、@、{、}、|、空格
+>
+> 2.长度不能超过63g
+
 ```java
     /**
      * 发起会议室
      *
      * @param context
-     * @param conferenceName
+     * @param conferenceName 
      * @param memberArray
      * @param requestCallback
      */
@@ -714,15 +720,14 @@ conferenceModelList = YlsConferenceManager.getInstance().getConferenceList();
 #### 2.8.4 返回异常会议室
 
 ```java
-/**
- * 返回异常会议室
- *
- * @param context
- * @param conferenceId
- * @param member
- * @return
- */
-public ResultVo returnConferenceBlock(Context context, String conferenceId, String member)
+    /**
+     * 返回异常会议室
+     *
+     * @param conferenceId
+     * @param member
+     * @return
+     */
+    public ResultVo returnConferenceBlock(String conferenceId, String member)
 ```
 
 #### 2.8.5 会议进行中的接口
@@ -731,67 +736,63 @@ public ResultVo returnConferenceBlock(Context context, String conferenceId, Stri
     /**
      * 会议室中
      * 会议室主持人
-     * 静音/取消静音 单个会议室成员
-     *
-     * @param context
-     * @param conferenceId
-     * @param number
-     * @param isMute
-     */
-    public ResultVo muteConferenceMemberBlock(Context context, String conferenceId, String number, boolean isMute)
-        
-    /**
-     * 会议室中
-     * 会议室主持人
      * 静音/取消静音 所有成员
      *
-     * @param context
      * @param conferenceId
      * @param member
      * @param isMute
      */
-    public ResultVo muteAllConferenceMemberBlock(Context context, String conferenceId, String member, boolean isMute)
+    public ResultVo muteAllConferenceMemberBlock(String conferenceId, String member, boolean isMute)
+        
+    /**
+     * 会议室中
+     * 会议室主持人
+     * 静音/取消静音 单个会议室成员
+     *
+     * @param conferenceId
+     * @param number
+     * @param isMute
+     */
+    public ResultVo muteConferenceMemberBlock(String conferenceId, String number, boolean isMute)
 
     /**
      * 会议室中
      * 会议室主持人
      * 删除成员
      *
-     * @param context
      * @param conferenceId
      * @param number
      */
-    public ResultVo kickConferenceMemberBlock(Context context, String conferenceId, String number)
+    public ResultVo kickConferenceMemberBlock(String conferenceId, String number)
         
     /**
      * 会议室中
-     * 邀请成员
+     * 邀请成员参加会议室
      *
-     * @param context
      * @param conferenceId
      * @param number
      */
-    public ResultVo inviteConferenceMemberBlock(Context context, String conferenceId, String number)
+    public ResultVo inviteConferenceMemberBlock(String conferenceId, String number)
         
     /**
      * 会议室中
      * 重新邀请会议室成员(之前邀请了,但未进入的成员)
      *
-     * @param context
      * @param conferenceId
      * @param number
      */
-    public ResultVo reInviteConferenceMemberBlock(Context context, String conferenceId, String number)
+    public ResultVo reInviteConferenceMemberBlock(String conferenceId, String number)
         
     /**
      * 结束会议室
      *
      * @param context
-     * @param conferenceId
-     * @param number
+     * @param callId
+     * @param conferenceVo
+     * @param callback
      * @return
      */
-    public ResultVo endConferenceBlock(Context context, String conferenceId, String number)
+    public void endConferenceBlock(Context context, int callId, ConferenceVo conferenceVo, RequestCallback callback)
         
     /**
      * 返回异常会议室
@@ -809,66 +810,66 @@ public ResultVo returnConferenceBlock(Context context, String conferenceId, Stri
 
 ```java
     /**
-     * 获取当前会议室缓存
-     * @return
-     */
-    public ConferenceVo getConferenceVo() 
+ * 获取当前会议室缓存
+ * @return
+ */
+public ConferenceVo getConferenceVo()
 
-    /**
-     * 设置当前会议室缓存
-     * @param conferenceVo
-     */
-    public void setConferenceVo(ConferenceVo conferenceVo)        
+/**
+ * 设置当前会议室缓存
+ * @param conferenceVo
+ */
+public void setConferenceVo(ConferenceVo conferenceVo)
 
-	/**
-     * 获取会议室倒计时的时间
-     * 只有倒计时为负数时可以发起新的会议室
-     *
-     * @return
-     */
-    public long getCountDownTime()
-        
-    /**
-     * 设置会议室结束时间
-     *
-     * @param endConferenceTime
-     */
-    public void setEndConferenceTime(long endConferenceTime)
-        
-    /**
-     * 删除会议室记录
-     *
-     * @param conferenceId
-     */
-    public void deleteConferenceLog(String conferenceId)
-        
-    /**
-     * 在小于9个成员前需要添加 [新增成员选项]
-     *
-     * @param memberList
-     */
-    public void addNullMember(List<ConferenceMemberVo> memberList)
-        
-    /**
-     * 会议室主持人
-     * 在小于9个成员的时候添加 [新增成员选项]
-     * 在大于1个成员的时候添加 [删除成员选项]
-     *
-     * @param memberList 成员list
-     */
-    public void addNullMemberByAdmin(List<ConferenceMemberVo> memberList)
-        
-    /**
-     * 删除 [新增成员选项]
-     *
-     * @param memberList
-     */
-    public void removeNullMember(List<ConferenceMemberVo> memberList)
-        
-    /**
-     * 删除所有的会议室记录
-     */
-    public void deleteAllConferenceLog()        
+/**
+ * 获取会议室倒计时的时间
+ * 只有倒计时为负数时可以发起新的会议室
+ *
+ * @return
+ */
+public long getCountDownTime()
+
+/**
+ * 设置会议室结束时间
+ *
+ * @param endConferenceTime
+ */
+public void setEndConferenceTime(long endConferenceTime)
+
+/**
+ * 删除会议室记录
+ *
+ * @param conferenceId
+ */
+public void deleteConferenceLog(String conferenceId)
+
+/**
+ * 在小于9个成员前需要添加 [新增成员选项]
+ *
+ * @param memberList
+ */
+public void addNullMember(List<ConferenceMemberVo> memberList)
+
+/**
+ * 会议室主持人
+ * 在小于9个成员的时候添加 [新增成员选项]
+ * 在大于1个成员的时候添加 [删除成员选项]
+ *
+ * @param memberList 成员list
+ */
+public void addNullMemberByAdmin(List<ConferenceMemberVo> memberList)
+
+/**
+ * 删除 [新增成员选项]
+ *
+ * @param memberList
+ */
+public void removeNullMember(List<ConferenceMemberVo> memberList)
+
+/**
+ * 删除所有的会议室记录
+ */
+public void deleteAllConferenceLog()        
 ```
 
 
@@ -883,6 +884,5 @@ public ResultVo returnConferenceBlock(Context context, String conferenceId, Stri
   1. 新增多方通话功能
   2. 新增会议室功能
   3. SDK初始化接口变更，新增数据库加密秘钥设置
-  4. SDK版本升级到1.0.9
 - 2023/06/28 提交1.0.8版本
 - 2023/06/26 默认关闭callwaiting，新增cdr获取接口配置项，提交1.0.7版本
