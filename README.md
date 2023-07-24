@@ -113,29 +113,37 @@ public void ncSetting(boolean isOpen)
  * @return
  */
 public void loginBlock(Context context, String userName, String passWord, String localeIp, int localePort,
-                       String remoteIp, int remotePort, RequestCallback<Boolean> requestCallback)
+        String remoteIp, int remotePort, RequestCallback<Boolean> requestCallback)
 //手动登录示例
-YlsLoginManager.getInstance().loginBlock(this, userName, password, localeIp,
+        YlsLoginManager.getInstance().loginBlock(this, userName, password, localeIp,
         localePortI, remoteIp, remotePortI, new RequestCallback<>() {
-            @Override
-            public void onSuccess(Boolean result) {
-                closeProgressDialog();
-                startActivity(new Intent(LoginActivity.this, DialPadActivity.class));
-            }
+@Override
+public void onSuccess(Boolean result) {
+        closeProgressDialog();
+        startActivity(new Intent(LoginActivity.this, DialPadActivity.class));
+        }
 
-            @Override
-            public void onFailed(int code) {
-                closeProgressDialog();
-                Toast.makeText(LoginActivity.this, R.string.login_tip_login_failed, Toast.LENGTH_LONG).show();
-            }
+@Override
+public void onFailed(int code) {
+        closeProgressDialog();
+        Toast.makeText(LoginActivity.this, R.string.login_tip_login_failed, Toast.LENGTH_LONG).show();
+        }
 
-            @Override
-            public void onException(Throwable exception) {
-                closeProgressDialog();
-                Toast.makeText(LoginActivity.this, R.string.login_tip_login_failed, Toast.LENGTH_LONG).show();
-            }
+@Override
+public void onException(Throwable exception) {
+        closeProgressDialog();
+        Toast.makeText(LoginActivity.this, R.string.login_tip_login_failed, Toast.LENGTH_LONG).show();
+        }
         });
 ```
+
+>linkus sdk mobile端登录错误码：
+>1： 连接不上服务器
+>-5： 连接服务器成功但是登录请求没有响应
+>403：用户名或密码错误
+>405：客户端被禁用
+>407：账号被锁定
+>416：请求ip被禁止（pbx开启国家防御）
 
 #### 2.3.2 缓存登录
 
@@ -880,6 +888,7 @@ public void deleteAllConferenceLog()
 
 ## 3. 更新日志
 
+- 2023/07/24 更新登录错误码
 - 2023/07/10 提交1.0.9版本
   1. 新增多方通话功能
   2. 新增会议室功能
