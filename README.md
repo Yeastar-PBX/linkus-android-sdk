@@ -48,11 +48,11 @@ YlsBaseManager.getInstance().initYlsSDK(this, null);
 
 ```java
 YlsInitConfig config = new YlsInitConfig.Builder(projectPath)//SDK信息保存地址（包括SDK日志信息的地址）
-                    	.supportCallWaiting(true)//是否支持CallWaiting
-                    	.agc(true)//开启自动增益
-                    	.ec(true)//开启回音消除
-                    	.nc(true).build();//开启主动降噪
-YlsBaseManager.getInstance().initYlsSDK(this, config);
+        .supportCallWaiting(true)//是否支持CallWaiting
+        .agc(true)//开启自动增益
+        .ec(true)//开启回音消除
+        .nc(true).build();//开启主动降噪
+        YlsBaseManager.getInstance().initYlsSDK(this, config);
 ```
 
 #### 2.2.3 自动增益开关
@@ -111,29 +111,38 @@ public void ncSetting(boolean isOpen)
  * @return
  */
 public void loginBlock(Context context, String userName, String passWord, String localeIp, int localePort,
-                       String remoteIp, int remotePort, RequestCallback<Boolean> requestCallback)
+        String remoteIp, int remotePort, RequestCallback<Boolean> requestCallback)
 //手动登录示例
-YlsLoginManager.getInstance().loginBlock(this, userName, password, localeIp,
+        YlsLoginManager.getInstance().loginBlock(this, userName, password, localeIp,
         localePortI, remoteIp, remotePortI, new RequestCallback<>() {
-            @Override
-            public void onSuccess(Boolean result) {
-                closeProgressDialog();
-                startActivity(new Intent(LoginActivity.this, DialPadActivity.class));
-            }
+@Override
+public void onSuccess(Boolean result) {
+        closeProgressDialog();
+        startActivity(new Intent(LoginActivity.this, DialPadActivity.class));
+        }
 
-            @Override
-            public void onFailed(int code) {
-                closeProgressDialog();
-                Toast.makeText(LoginActivity.this, R.string.login_tip_login_failed, Toast.LENGTH_LONG).show();
-            }
+@Override
+public void onFailed(int code) {
+        closeProgressDialog();
+        Toast.makeText(LoginActivity.this, R.string.login_tip_login_failed, Toast.LENGTH_LONG).show();
+        }
 
-            @Override
-            public void onException(Throwable exception) {
-                closeProgressDialog();
-                Toast.makeText(LoginActivity.this, R.string.login_tip_login_failed, Toast.LENGTH_LONG).show();
-            }
+@Override
+public void onException(Throwable exception) {
+        closeProgressDialog();
+        Toast.makeText(LoginActivity.this, R.string.login_tip_login_failed, Toast.LENGTH_LONG).show();
+        }
         });
 ```
+
+> linkus sdk mobile端登录错误码：
+> 1： 连接不上服务器
+> -5： 连接服务器成功但是登录请求没有响应
+> 403：用户名或密码错误
+> 405：客户端被禁用
+> 407：账号被锁定
+> 416：请求ip被禁止（pbx开启国家防御）
+
 
 #### 2.3.2 缓存登录
 
@@ -521,4 +530,5 @@ public int getMissCallCdrCount();
 
 ## 3. 更新日志
 
+- 2023/07/24 新增登录错误码
 - 2023/06/26 默认关闭callwaiting，新增cdr获取接口配置项，提交1.0.7版本
