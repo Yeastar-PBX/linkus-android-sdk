@@ -287,6 +287,9 @@ public class ConferenceDetailActivity extends BaseActivity implements Conference
 
     private void initName() {
         String name = nameEt.getText().toString();
+        if (TextUtils.isEmpty(name)) {
+            name = getString(R.string.conference_conference);
+        }
         conferenceVo.setName(name);
     }
 
