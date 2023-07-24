@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.yeastar.linkus.demo.base.fragmentBackHandler.BackHandlerHelper;
 import com.yeastar.linkus.service.log.LogUtil;
 import com.yeastar.linkus.demo.R;
 import com.yeastar.linkus.demo.utils.StatusBarUtil;
@@ -290,6 +291,13 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseActi
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!BackHandlerHelper.handleBackPress(this)) {
+            super.onBackPressed();
+        }
     }
 
 
