@@ -11,6 +11,7 @@ import com.yeastar.linkus.demo.call.InCallRelatedFragment;
 import com.yeastar.linkus.demo.eventbus.AgentEvent;
 import com.yeastar.linkus.demo.widget.Dialpad.DialPadLayout;
 import com.yeastar.linkus.service.call.YlsCallManager;
+import com.yeastar.linkus.service.call.vo.InCallVo;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -51,6 +52,8 @@ public class MultipartyCallFragment extends InCallRelatedFragment {
         mBackLayout.setOnClickListener(v -> {
             doBackPressed();
             activity.getSupportFragmentManager().popBackStack();
+            InCallVo inCallVo = YlsCallManager.getInstance().getFirstCall();
+            YlsCallManager.getInstance().unHoldCall(getContext(), inCallVo);
         });
 
         dialpadLayout.setDialPadCallBack(number -> {

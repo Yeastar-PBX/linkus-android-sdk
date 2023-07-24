@@ -27,6 +27,7 @@ import com.yeastar.linkus.demo.App;
 import com.yeastar.linkus.demo.Constant;
 import com.yeastar.linkus.demo.R;
 import com.yeastar.linkus.demo.base.BaseActivity;
+import com.yeastar.linkus.demo.call.multipartyCall.MultipartyCallFragment;
 import com.yeastar.linkus.demo.call.ring.RingFragment;
 import com.yeastar.linkus.demo.conference.ConferenceInCallFragment;
 import com.yeastar.linkus.demo.conference.ConferenceLoadingFragment;
@@ -225,7 +226,7 @@ public class CallContainerActivity extends BaseActivity {
         } else {//异常情况进入通话页面需要结束掉
             finish();
         }
-        
+
     }
 
     @Override
@@ -305,9 +306,13 @@ public class CallContainerActivity extends BaseActivity {
     public void backPressed(boolean isBackPress) {
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.call_container);
         if (fragment instanceof RingFragment) {
-            backToHome(false, isBackPress);
+            backToHome(isBackPress);
         } else if (fragment instanceof InCallFragment) {
-            backToHome(false, isBackPress);
+            backToHome(isBackPress);
+        } else if (fragment instanceof ConferenceInCallFragment) {
+            backToHome(isBackPress);
+        } else if (fragment instanceof MultipartyCallFragment) {
+            ((MultipartyCallFragment) fragment).doBackPressed();
         }
     }
 
@@ -342,10 +347,8 @@ public class CallContainerActivity extends BaseActivity {
         LogUtil.w("音量调节 当前通话音量=%d", streamVolume);
     }
 
-    private void backToHome(boolean isConference, boolean isBack) {
-        if (isBack) {
-            moveTaskToBack(true);
-        }
+    private void backToHome(boolean isBack) {
+        moveTaskToBack(true);
     }
 
     @Override
