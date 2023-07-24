@@ -135,7 +135,7 @@ public class MultipartyCallManagerFragment extends InCallRelatedFragment {
             int[] callIds = YlsCallManager.getInstance().getCallIdArrays();
             List<CallQualityVo> list = new ArrayList<>();
             for (int aCallId : callIds) {
-                CallQualityVo callQualityVo = YlsCallManager.getInstance().getCallQuality();
+                CallQualityVo callQualityVo = YlsCallManager.getInstance().getCallQualityByCallId(aCallId);
                 if (callQualityVo == null) {
                     callQualityVo = new CallQualityVo("--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--");
                 }

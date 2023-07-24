@@ -1,10 +1,10 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {
+        mavenCentral()
         maven {url 'https://developer.huawei.com/repo/'}
         maven { url 'https://jitpack.io' }
         google()
-        mavenCentral()
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.1.1"
@@ -17,10 +17,11 @@ buildscript {
 
 allprojects {
     repositories {
+        mavenCentral()
         maven {url 'https://developer.huawei.com/repo/'}
         maven { url 'https://jitpack.io' }
         google()
-        mavenCentral()
+        mavenLocal()
         jcenter() // Warning: this repository is going to shut down soon
         maven {
             url "https://mvn.getui.com/nexus/content/repositories/releases/"
