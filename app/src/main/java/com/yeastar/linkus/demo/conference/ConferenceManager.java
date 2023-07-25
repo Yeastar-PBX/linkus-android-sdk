@@ -12,6 +12,7 @@ import org.greenrobot.eventbus.EventBus;
 
 public class ConferenceManager {
     private volatile static ConferenceManager instance;
+    private boolean isAdd = false;
 
     public static ConferenceManager getInstance() {
         if (instance == null) {
@@ -22,6 +23,14 @@ public class ConferenceManager {
             }
         }
         return instance;
+    }
+
+    public boolean isAdd() {
+        return isAdd;
+    }
+
+    public void setAdd(boolean add) {
+        isAdd = add;
     }
 
     public void init(Context context) {

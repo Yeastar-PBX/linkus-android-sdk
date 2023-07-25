@@ -13,6 +13,7 @@ public class Constant {
     public final static String EVENT_OUTGOING_FAILED = "OUTGOING_FAILED";
     public static final String EXTRA_DATA = "data";
     public static final String TAG_FRAGMENT_CALL = "tag_fragment_call";
+    public static final String TAG_FRAGMENT_CONFERENCE = "tag_fragment_conference";
     public static final String EXTRA_ON_NEW_INTENT = "onNewIntent";
     public static final String EXTRA_NUMBER = "number";
     public static final String EXTRA_FROM = "from";

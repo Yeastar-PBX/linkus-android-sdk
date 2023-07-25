@@ -52,8 +52,7 @@ public class MultipartyCallFragment extends InCallRelatedFragment {
         mBackLayout.setOnClickListener(v -> {
             doBackPressed();
             activity.getSupportFragmentManager().popBackStack();
-            InCallVo inCallVo = YlsCallManager.getInstance().getFirstCall();
-            YlsCallManager.getInstance().unHoldCall(getContext(), inCallVo);
+            YlsCallManager.getInstance().unHoldAllMember();
         });
 
         dialpadLayout.setDialPadCallBack(number -> {

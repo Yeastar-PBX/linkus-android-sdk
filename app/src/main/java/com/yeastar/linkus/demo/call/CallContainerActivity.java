@@ -31,6 +31,7 @@ import com.yeastar.linkus.demo.call.multipartyCall.MultipartyCallFragment;
 import com.yeastar.linkus.demo.call.ring.RingFragment;
 import com.yeastar.linkus.demo.conference.ConferenceInCallFragment;
 import com.yeastar.linkus.demo.conference.ConferenceLoadingFragment;
+import com.yeastar.linkus.demo.conference.ConferenceManager;
 import com.yeastar.linkus.demo.utils.StatusBarUtil;
 import com.yeastar.linkus.demo.utils.Utils;
 import com.yeastar.linkus.service.call.YlsCallManager;
@@ -207,6 +208,7 @@ public class CallContainerActivity extends BaseActivity {
                     ConferenceInCallFragment conferenceInCall = new ConferenceInCallFragment();
                     conferenceInCall.setContainerId(R.id.call_container);
                     switchContent(conferenceInCall);
+                    switchContent(conferenceInCall, Constant.TAG_FRAGMENT_CONFERENCE);
                 } else {//会议室加载页面
                     ConferenceLoadingFragment loadingFragment = new ConferenceLoadingFragment();
                     loadingFragment.setContainerId(R.id.call_container);
@@ -303,14 +305,14 @@ public class CallContainerActivity extends BaseActivity {
         }
     }
 
-    public void backPressed(boolean isBackPress) {
+    public void backPressed() {
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.call_container);
         if (fragment instanceof RingFragment) {
-            backToHome(isBackPress);
+            backToHome();
         } else if (fragment instanceof InCallFragment) {
-            backToHome(isBackPress);
-        } else if (fragment instanceof ConferenceInCallFragment) {
-            backToHome(isBackPress);
+            backToHome();
+        } else if (fragment instanceof ConferenceInCallFragment && !ConferenceManager.getInstance().isAdd()) {
+            backToHome();
         } else if (fragment instanceof MultipartyCallFragment) {
             ((MultipartyCallFragment) fragment).doBackPressed();
         }
@@ -320,12 +322,9 @@ public class CallContainerActivity extends BaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         LogUtil.i("keyCode" + keyCode + "   KeyEvent==" + event);
         switch (keyCode) {
-            case KeyEvent.KEYCODE_HOME:
-                backPressed(false);
-                return super.onKeyDown(keyCode, event);
             case KeyEvent.KEYCODE_BACK:
-                backPressed(true);
-                return super.onKeyDown(keyCode, event);
+                backPressed();
+                return true;
             case KeyEvent.KEYCODE_VOLUME_UP:
                 LogUtil.w("音量调节+");
                 SoundManager.getInstance().stopPlay();
@@ -347,13 +346,20 @@ public class CallContainerActivity extends BaseActivity {
         LogUtil.w("音量调节 当前通话音量=%d", streamVolume);
     }
 
-    private void backToHome(boolean isBack) {
-        moveTaskToBack(true);
+    private void backToHome() {
+        try {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            startActivity(intent);
+        } catch (IllegalStateException e) {
+            LogUtil.e("backToHome IllegalStateException");
+        }
     }
 
     @Override
     protected void onUserLeaveHint() {
         super.onUserLeaveHint();
-        backPressed(false);
+        backPressed();
     }
 }

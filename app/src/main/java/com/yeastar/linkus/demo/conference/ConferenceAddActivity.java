@@ -31,6 +31,7 @@ public class ConferenceAddActivity extends BaseActivity {
     }
 
     public static void start(Context context, ConferenceVo conferenceVo, int type) {
+        ConferenceManager.getInstance().setAdd(true);
         Intent starter = new Intent(context, ConferenceAddActivity.class);
         starter.putExtra(Constant.EXTRA_CONFERENCE, conferenceVo);
         starter.putExtra(Constant.EXTRA_FROM, type);
@@ -80,4 +81,9 @@ public class ConferenceAddActivity extends BaseActivity {
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ConferenceManager.getInstance().setAdd(false);
+    }
 }
