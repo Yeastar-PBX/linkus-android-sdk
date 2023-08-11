@@ -194,6 +194,9 @@ YlsBaseManager.getInstance().setSdkCallback(new SdkCallback() {
     public void onLogout(int type) {
         context.startActivity(new Intent(context, LoginActivity.class));
     }
+    //重连成功通知
+    @Override
+    public void onReconnectSuccess() {}
 });
 ```
 
@@ -216,6 +219,10 @@ SdkEventCode.P_EVENT_LOGIN_MODE_CHANGE://20008 登录模式变更
 SdkEventCode.P_EVENT_COUNTRY_IP_LIMIT://20083 ip登录限制
    
 SdkEventCode.P_EVENT_LICENSE_EXPIRE://20093 pbx未激活
+
+SdkEventCode.P_EVENT_SDK_STATUS_CHANGE://20153 sdk状态变更
+
+SdkEventCode.P_EVENT_SDK_ACCESSKEY_CHANGE://20154 sdk accesskey变更
    
 ```
 
@@ -888,6 +895,7 @@ public void deleteAllConferenceLog()
 
 ## 3. 更新日志
 
+- 2023/08/11 新增退出的回调码【SdkEventCode.P_EVENT_SDK_STATUS_CHANGE://20153 sdk状态变更关闭sdk 或 sdk到期通知; SdkEventCode.P_EVENT_SDK_ACCESSKEY_CHANGE ：刷新access_key】 新增onReconnectSuccess()回调接口
 - 2023/07/24 更新登录错误码
 - 2023/07/10 提交1.0.9版本
   1. 新增多方通话功能
