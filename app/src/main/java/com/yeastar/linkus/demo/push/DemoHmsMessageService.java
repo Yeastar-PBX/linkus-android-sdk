@@ -30,7 +30,7 @@ public class DemoHmsMessageService extends HmsMessageService {
     public void onNewToken(String s) {
         super.onNewToken(s);
         LogUtil.i("onNewToken -> " + "clientid = " + s);
-        YlsBaseManager.getInstance().setPushInfo("HUAWEI", s, new RequestCallback() {
+        YlsBaseManager.getInstance().setPushInfo("huawei", s, new RequestCallback() {
             @Override
             public void onSuccess(Object o) {
 

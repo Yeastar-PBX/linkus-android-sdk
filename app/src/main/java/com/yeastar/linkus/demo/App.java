@@ -16,6 +16,7 @@ import com.yeastar.linkus.demo.utils.Utils;
 import com.yeastar.linkus.demo.widget.MToastStyle;
 import com.yeastar.linkus.service.base.YlsBaseManager;
 import com.yeastar.linkus.service.base.YlsInitConfig;
+import com.yeastar.linkus.service.callback.RequestCallback;
 import com.yeastar.linkus.service.callback.SdkCallback;
 
 import org.greenrobot.eventbus.EventBus;
@@ -62,6 +63,27 @@ public class App extends Application {
                     Intent intent = new Intent(context, LoginActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
+                }
+
+                //重连成功通知
+                @Override
+                public void onReconnectSuccess() {
+                    YlsBaseManager.getInstance().setPushInfo("getui", PushManager.getInstance().getClientid(getContext()), new RequestCallback() {
+                        @Override
+                        public void onSuccess(Object result) {
+
+                        }
+
+                        @Override
+                        public void onFailed(int code) {
+
+                        }
+
+                        @Override
+                        public void onException(Throwable exception) {
+
+                        }
+                    });
                 }
             });
             ConferenceManager.getInstance().init(this);

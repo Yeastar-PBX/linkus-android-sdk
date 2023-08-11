@@ -47,7 +47,7 @@ public class DemoIntentService extends GTIntentService {
     @Override
     public void onReceiveClientId(Context context, String clientid) {
         LogUtil.i("onReceiveClientId -> " + "clientid = " + clientid);
-        YlsBaseManager.getInstance().setPushInfo("GETUI", clientid, new RequestCallback() {
+        YlsBaseManager.getInstance().setPushInfo("getui", clientid, new RequestCallback() {
             @Override
             public void onSuccess(Object result) {
 
