@@ -17,7 +17,7 @@
         android:layout_marginTop="48dp"
         android:hint="@string/prompt_user"
         android:selectAllOnFocus="true"
-        android:text="1006"
+        android:text="1000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -29,7 +29,7 @@
         android:layout_marginTop="8dp"
         android:hint="@string/prompt_password"
         android:selectAllOnFocus="true"
-        android:text="eyJleHBpcmUiOjE2ODcyNjE0MTYsInNpZ24iOiJYb3MvclE4RExvU3FUTkwvdHkrellqcVQ0MytTSHF6aHd1NVlPWkJGeGRzPSIsInVzZXJuYW1lIjoiMTAwNiIsInZlcnNpb24iOiIxLjAifQ__"
+        android:text="eyJleHBpcmUiOjAsInNpZ24iOiIra0svbk8yaldyYkcrZ1Q2cHVoWTBzbkJ2YWUrd09FRXB5dDJIODUyanVVPSIsInVzZXJuYW1lIjoiMTAwMCIsInZlcnNpb24iOiIxLjAifQ__"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_username" />
@@ -41,7 +41,7 @@
         android:layout_marginTop="8dp"
         android:hint="@string/prompt_locale_ip"
         android:selectAllOnFocus="true"
-        android:text="192.168.25.110"
+        android:text="192.168.21.252"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_password" />
