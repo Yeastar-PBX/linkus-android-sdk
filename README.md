@@ -148,7 +148,7 @@ public void onException(Throwable exception) {
 
 ```java
 int networkType = NetWorkUtil.getNetWorkType(this);
-YlsLoginManager.getInstance().cacheLogin(networkType);
+        YlsLoginManager.getInstance().cacheLogin(networkType);
 ```
 
 #### 2.3.3 登录状态
@@ -193,6 +193,9 @@ YlsBaseManager.getInstance().setSdkCallback(new SdkCallback() {
     public void onLogout(int type) {
         context.startActivity(new Intent(context, LoginActivity.class));
     }
+    //重连成功通知
+    @Override
+    public void onReconnectSuccess() {}
 });
 ```
 
@@ -529,6 +532,6 @@ public int getMissCallCdrCount();
 > 其他未尽事项可以结合demo来看
 
 ## 3. 更新日志
-
+- 2023/08/11 新增onLogout回调码【20153 ：关闭sdk 或 sdk到期通知、20154 ：刷新access_key】 新增onReconnectSuccess()回调接口
 - 2023/07/24 新增登录错误码
 - 2023/06/26 默认关闭callwaiting，新增cdr获取接口配置项，提交1.0.7版本
