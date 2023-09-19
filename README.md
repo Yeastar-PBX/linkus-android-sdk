@@ -149,7 +149,7 @@ public void onException(Throwable exception) {
 
 ```java
 int networkType = NetWorkUtil.getNetWorkType(this);
-YlsLoginManager.getInstance().cacheLogin(networkType);
+        YlsLoginManager.getInstance().cacheLogin(networkType);
 ```
 
 #### 2.3.3 登录状态
@@ -161,7 +161,7 @@ YlsLoginManager.getInstance().cacheLogin(networkType);
  */
 public boolean isLoginEd()
 //调用示例
-boolean isLoginEd = YlsLoginManager.getInstance().isLoginEd();
+        boolean isLoginEd = YlsLoginManager.getInstance().isLoginEd();
 ```
 
 
@@ -175,7 +175,7 @@ boolean isLoginEd = YlsLoginManager.getInstance().isLoginEd();
  */
 public synchronized boolean isConnected()
 //调用示例
-YlsLoginManager.getInstance().isConnected();
+        YlsLoginManager.getInstance().isConnected();
 ```
 
 
@@ -184,20 +184,20 @@ YlsLoginManager.getInstance().isConnected();
 
 ```java
 YlsBaseManager.getInstance().setSdkCallback(new SdkCallback() {
-    //cdr变更通知
-    @Override
-    public void onCdrChange(int syncResult) {
+//cdr变更通知
+@Override
+public void onCdrChange(int syncResult) {
         EventBus.getDefault().post(new CallLogChangeEvent(syncResult));
-    }
-    //退出登录通知
-    @Override
-    public void onLogout(int type) {
+        }
+//退出登录通知
+@Override
+public void onLogout(int type) {
         context.startActivity(new Intent(context, LoginActivity.class));
-    }
-    //重连成功通知
-    @Override
-    public void onReconnectSuccess() {}
-});
+        }
+//重连成功通知
+@Override
+public void onReconnectSuccess() {}
+        });
 ```
 
 
@@ -692,18 +692,18 @@ public boolean isMultiPartyCallAlwaysRecordDisable()
 
 ```java
 YlsConferenceManager.getInstance().setConferenceCallback(context, new ConferenceCallback() {
-    @Override
-    public void onConferenceException(ConferenceVo conferenceVo) {
+@Override
+public void onConferenceException(ConferenceVo conferenceVo) {
         //异常会议室回调
         EventBus.getDefault().postSticky(new ConferenceExceptionEvent(conferenceVo));
-    }
+        }
 
-    @Override
-    public void onConferenceStatusChange(String conferenceId, String number, int status) {
+@Override
+public void onConferenceStatusChange(String conferenceId, String number, int status) {
         //会议室成员状态回调
         EventBus.getDefault().post(new ConferenceStatusEvent(conferenceId, number, status));
-    }
-});
+        }
+        });
 ```
 
 #### 2.8.2 获取会议室记录列表
@@ -722,103 +722,103 @@ conferenceModelList = YlsConferenceManager.getInstance().getConferenceList();
 
 ```java
     /**
-     * 发起会议室
-     *
-     * @param context
-     * @param conferenceName 
-     * @param memberArray
-     * @param requestCallback
-     */
-    public void startConference(Context context, String conferenceName, String[] memberArray, RequestCallback requestCallback)
+ * 发起会议室
+ *
+ * @param context
+ * @param conferenceName
+ * @param memberArray
+ * @param requestCallback
+ */
+public void startConference(Context context, String conferenceName, String[] memberArray, RequestCallback requestCallback)
 ```
 
 #### 2.8.4 返回异常会议室
 
 ```java
     /**
-     * 返回异常会议室
-     *
-     * @param conferenceId
-     * @param member
-     * @return
-     */
-    public ResultVo returnConferenceBlock(String conferenceId, String member)
+ * 返回异常会议室
+ *
+ * @param conferenceId
+ * @param member
+ * @return
+ */
+public ResultVo returnConferenceBlock(String conferenceId, String member)
 ```
 
 #### 2.8.5 会议进行中的接口
 
 ```java
     /**
-     * 会议室中
-     * 会议室主持人
-     * 静音/取消静音 所有成员
-     *
-     * @param conferenceId
-     * @param member
-     * @param isMute
-     */
-    public ResultVo muteAllConferenceMemberBlock(String conferenceId, String member, boolean isMute)
-        
-    /**
-     * 会议室中
-     * 会议室主持人
-     * 静音/取消静音 单个会议室成员
-     *
-     * @param conferenceId
-     * @param number
-     * @param isMute
-     */
-    public ResultVo muteConferenceMemberBlock(String conferenceId, String number, boolean isMute)
+ * 会议室中
+ * 会议室主持人
+ * 静音/取消静音 所有成员
+ *
+ * @param conferenceId
+ * @param member
+ * @param isMute
+ */
+public ResultVo muteAllConferenceMemberBlock(String conferenceId, String member, boolean isMute)
 
-    /**
-     * 会议室中
-     * 会议室主持人
-     * 删除成员
-     *
-     * @param conferenceId
-     * @param number
-     */
-    public ResultVo kickConferenceMemberBlock(String conferenceId, String number)
-        
-    /**
-     * 会议室中
-     * 邀请成员参加会议室
-     *
-     * @param conferenceId
-     * @param number
-     */
-    public ResultVo inviteConferenceMemberBlock(String conferenceId, String number)
-        
-    /**
-     * 会议室中
-     * 重新邀请会议室成员(之前邀请了,但未进入的成员)
-     *
-     * @param conferenceId
-     * @param number
-     */
-    public ResultVo reInviteConferenceMemberBlock(String conferenceId, String number)
-        
-    /**
-     * 结束会议室
-     *
-     * @param context
-     * @param callId
-     * @param conferenceVo
-     * @param callback
-     * @return
-     */
-    public void endConferenceBlock(Context context, int callId, ConferenceVo conferenceVo, RequestCallback callback)
-        
-    /**
-     * 返回异常会议室
-     *
-     * @param context
-     * @param conferenceId
-     * @param member
-     * @return
-     */
-    public ResultVo returnConferenceBlock(Context context, String conferenceId, String member)
-        
+/**
+ * 会议室中
+ * 会议室主持人
+ * 静音/取消静音 单个会议室成员
+ *
+ * @param conferenceId
+ * @param number
+ * @param isMute
+ */
+public ResultVo muteConferenceMemberBlock(String conferenceId, String number, boolean isMute)
+
+/**
+ * 会议室中
+ * 会议室主持人
+ * 删除成员
+ *
+ * @param conferenceId
+ * @param number
+ */
+public ResultVo kickConferenceMemberBlock(String conferenceId, String number)
+
+/**
+ * 会议室中
+ * 邀请成员参加会议室
+ *
+ * @param conferenceId
+ * @param number
+ */
+public ResultVo inviteConferenceMemberBlock(String conferenceId, String number)
+
+/**
+ * 会议室中
+ * 重新邀请会议室成员(之前邀请了,但未进入的成员)
+ *
+ * @param conferenceId
+ * @param number
+ */
+public ResultVo reInviteConferenceMemberBlock(String conferenceId, String number)
+
+/**
+ * 结束会议室
+ *
+ * @param context
+ * @param callId
+ * @param conferenceVo
+ * @param callback
+ * @return
+ */
+public void endConferenceBlock(Context context, int callId, ConferenceVo conferenceVo, RequestCallback callback)
+
+/**
+ * 返回异常会议室
+ *
+ * @param context
+ * @param conferenceId
+ * @param member
+ * @return
+ */
+public ResultVo returnConferenceBlock(Context context, String conferenceId, String member)
+
 ```
 
 #### 2.8.6 会议室其他接口
@@ -887,14 +887,41 @@ public void removeNullMember(List<ConferenceMemberVo> memberList)
 public void deleteAllConferenceLog()        
 ```
 
+### 2.9 权限相关
+> 通话相关的权限已经包括在aar的AndroidManifest.xml里了，我们遵循按需获取权限的原则申请危险权限
+```java
+private void judgeCallPermission(Activity activity, String callee, String routePrefix, String name) {
+        PermissionRequest request = new PermissionRequest(activity,
+                new PermissionRequest.PermissionCallback() {
+                    @Override
+                    public void onSuccessful(List<String> permissions) {
+                        jumpToInCallFragment(activity, callee, routePrefix, name);
+                    }
 
+                    @Override
+                    public void onFailure(List<String> permissions) {
+                        for (String str : permissions) {
+                            LogUtil.w("onFailure:" + str);
+                        }
+                    }
 
-### 2.9 其他事项
+                });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            request.hasPermission(Manifest.permission.READ_PHONE_STATE, Manifest.permission.RECORD_AUDIO, Manifest.permission.BLUETOOTH_CONNECT);
+        } else {
+            request.hasPermission(Manifest.permission.READ_PHONE_STATE, Manifest.permission.RECORD_AUDIO);
+        }
+
+    }
+```
+
+### 2.10 其他事项
 
 > 其他未尽事项可以结合demo来看
 
 ## 3. 更新日志
 
+- 2023/09/19 新增权限申请说明
 - 2023/08/11 新增退出的回调码【SdkEventCode.P_EVENT_SDK_STATUS_CHANGE://20153 sdk状态变更关闭sdk 或 sdk到期通知; SdkEventCode.P_EVENT_SDK_ACCESSKEY_CHANGE ：刷新access_key】 新增onReconnectSuccess()回调接口
 - 2023/07/24 更新登录错误码
 - 2023/07/10 提交1.0.9版本
