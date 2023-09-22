@@ -397,37 +397,42 @@ public void onRecordChange(boolean isRecording) {
 YlsCallManager.getInstance().setActionCallback(new ActionCallback() {
 @Override
 public void onFinishCall() {
+    	//结束通话回调
         finishAllCall(context);
         }
 
 @Override
 public void onNewCall() {
+    	//来电弹窗回调
         jump2CallActivity(context);
         }
 
 @Override
 public void onCallWaiting() {
+    	//call waiting回调
         EventBus.getDefault().post(new CallWaitingEvent());
         SoundManager.getInstance().startPlay(context, YlsConstant.SOUND_CALL_WAITING_TYPE);
         }
 
 @Override
 public void onMissCallClick() {
-
+		//收到misscall的回调
         }
 
 @Override
 public void onStopMicroPhoneService() {
-
+		//Android11以上通话在后台时需要开启前台服务，通话结束后停止前台服务的回调
         }
 
 @Override
 public void onDismissPopupView() {
+    	//音频路由弹窗消失的回调
         dismissPopupView();
         }
 
 @Override
 public void onNotifyAudioChange() {
+    	//音频路由变更的回调
         notifyAudioChange();
         }
         });
@@ -921,6 +926,7 @@ private void judgeCallPermission(Activity activity, String callee, String routeP
 
 ## 3. 更新日志
 
+- 2023/09/22 新增通话UI回调说明
 - 2023/09/19 新增权限申请说明
 - 2023/08/11 新增退出的回调码【SdkEventCode.P_EVENT_SDK_STATUS_CHANGE://20153 sdk状态变更关闭sdk 或 sdk到期通知; SdkEventCode.P_EVENT_SDK_ACCESSKEY_CHANGE ：刷新access_key】 新增onReconnectSuccess()回调接口
 - 2023/07/24 更新登录错误码
