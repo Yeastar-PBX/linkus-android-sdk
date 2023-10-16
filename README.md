@@ -448,14 +448,14 @@ public void onNotifyAudioChange() {
 /**
  * 设置推送信息
  *
- * @param mode
+ * @param mode: GETUI, huawei, xiaomi
  * @param token
  * @param requestCallback
  * @return
  */
 public void setPushInfo(String mode, String token, RequestCallback requestCallback)
 //使用方法示例
-        YlsBaseManager.getInstance().setPushInfo("GETUI", clientid, new RequestCallback() {
+YlsBaseManager.getInstance().setPushInfo("GETUI", clientid, new RequestCallback() {
 @Override
 public void onSuccess(Object result) {
 
@@ -479,13 +479,13 @@ public void onException(Throwable exception) {
 
 ```java
 String data = new String(payload);
-        JSONObject jsonObject = null;
-        try {
-        jsonObject = new JSONObject(data);
-        } catch (JSONException e) {
-        e.printStackTrace();
-        }
-        YlsCallManager.getInstance().handlerPushMessage(context, jsonObject);
+JSONObject jsonObject = null;
+try {
+    jsonObject = new JSONObject(data);
+} catch (JSONException e) {
+    e.printStackTrace();
+}
+YlsCallManager.getInstance().handlerPushMessage(context, jsonObject);
 ```
 
 
