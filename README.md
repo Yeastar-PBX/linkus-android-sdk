@@ -448,7 +448,7 @@ public void onNotifyAudioChange() {
 /**
  * 设置推送信息
  *
- * @param mode: GETUI, huawei, xiaomi
+ * @param mode: getui, huawei, xiaomi
  * @param token
  * @param requestCallback
  * @return
@@ -470,7 +470,7 @@ public void onFailed(int code) {
 public void onException(Throwable exception) {
 
         }
-        });
+});
 ```
 
 
