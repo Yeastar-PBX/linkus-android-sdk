@@ -62,7 +62,7 @@ android {
 
 dependencies {
 
-    implementation files('libs/linkus-sdk-1.0.9.aar')
+    implementation files('libs/linkus-sdk-1.0.10.aar')
 //    implementation project(':linkus-sdk-android')
     implementation 'androidx.media:media:1.0.0'
     implementation 'com.github.li-xiaojun:XPopup:2.9.19'
