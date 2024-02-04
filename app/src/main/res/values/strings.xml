@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <string name="app_name">Linkus-demo</string>
     <!-- Strings related to login -->
@@ -1049,7 +1050,7 @@
     <string name="setting_done">Done</string>
     <string name="setting_download">Download</string>
     <string name="setting_downloading">Downloading</string>
-    <string name="setting_echo_cancellation">Echo Cancellation</string>
+    <string name="setting_agc">Echo Cancellation</string>
     <string name="setting_el">Ελληνικά（Greek）</string>
     <string name="setting_email_empty">Email cannot be empty.</string>
     <string name="setting_english">English</string>
@@ -1239,4 +1240,33 @@
     <string name="call_float_permission_title">浮窗权限未获取</string>
     <string name="call_float_permission">你的手机没有授权%s获得浮窗权限，通话最小化不能正常使用</string>
     <string name="invite_fail">邀请成员失败(%d)</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <string name="setting_ec">Echo Cancellation</string>
+    <string name="setting_nc">主动降噪</string>
+
+    <string-array name="entries_str">
+        <item>u-law</item>
+        <item>a-law</item>
+        <item>iLBC</item>
+        <item>G722</item>
+        <item>G729</item>
+        <item>Opus</item>
+    </string-array>
+    <string-array name="entries_values_str">
+        <item>ulaw</item>
+        <item>alaw</item>
+        <item>ilbc</item>
+        <item>g722</item>
+        <item>g729</item>
+        <item>opus</item>
+    </string-array>
+
 </resources>

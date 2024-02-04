@@ -27,6 +27,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme2">
         <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_settings" />
+        <activity
             android:name=".conference.ConferenceAddActivity"
             android:exported="false" />
         <activity
@@ -36,25 +40,28 @@
         <meta-data
             android:name="GETUI_APPID"
             android:value="${GETUI_APPID}" />
+
         <service
             android:name=".push.DemoIntentService"
             android:exported="false" />
         <service
             android:name=".push.DemoPushService"
+            android:directBootAware="true"
             android:exported="false"
             android:label="PushService"
-            android:directBootAware="true"
             android:process=":pushservice" />
+
         <meta-data
             android:name="push_kit_auto_init_enabled"
-            android:value="true"/>
+            android:value="true" />
 
-        <service android:name=".push.DemoHmsMessageService" android:exported="false">
+        <service
+            android:name=".push.DemoHmsMessageService"
+            android:exported="false">
             <intent-filter>
-                <action android:name="com.huawei.push.action.MESSAGING_EVENT"/>
+                <action android:name="com.huawei.push.action.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service
             android:name=".utils.MicroPhoneService"
             android:foregroundServiceType="phoneCall" />
@@ -87,6 +94,32 @@
             android:name=".conference.detail.ConferenceDetailActivity"
             android:launchMode="singleTask"
             android:screenOrientation="nosensor" />
+
+        <!-- Vivo推送配置开始 -->
+        <!--Vivo Push开放平台中应用的appid 和api key-->
+        <meta-data
+            android:name="api_key"
+            android:value="填入申请的api_key" />
+        <meta-data
+            android:name="app_id"
+            android:value="填入申请的api_id" />
+
+        <!-- 配置的 service,  receiver -->
+        <service
+            android:name="com.vivo.push.sdk.service.CommandClientService"
+            android:exported="true"
+            android:permission="com.push.permission.UPSTAGESERVICE" />
+
+        <!--push应用定义消息receiver声明-->
+        <receiver
+            android:name="com.yeastar.linkus.demo.push.VivoReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.vivo.pushclient.action.RECEIVE" />
+            </intent-filter>
+        </receiver>
+        <!-- Vivo推送配置结束 -->
+
     </application>
 
 </manifest>

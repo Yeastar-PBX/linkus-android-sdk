@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+ <string name="setting_setting">设置</string>
+ <string name="setting_agc">自动增益</string>
+ <string name="setting_ec">回音消除</string>
+ <string name="setting_nc">主动降噪</string>
+ <string name="setting_codec">编解码</string>
+</resources>

@@ -15,6 +15,7 @@ import android.os.Build;
 import android.telecom.TelecomManager;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -43,7 +44,6 @@ import com.yeastar.linkus.service.call.vo.CallStateVo;
 import com.yeastar.linkus.service.call.vo.InCallVo;
 import com.yeastar.linkus.service.callback.ActionCallback;
 import com.yeastar.linkus.service.callback.CallStateCallback;
-import com.yeastar.linkus.service.log.LogUtil;
 import com.yeastar.linkus.utils.CommonUtil;
 import com.yeastar.linkus.utils.MediaUtil;
 import com.yeastar.linkus.utils.NetWorkUtil;
@@ -60,6 +60,7 @@ import java.util.List;
 
 public class CallManager {
 
+    public static final String TAG = "CallManager";
     //最后呼出通话时间
     private long lastCallOutTime;
     private BasePopupView basePopupView;
@@ -134,7 +135,7 @@ public class CallManager {
             public void onStopMicroPhoneService() {
                 if (!YlsCallManager.getInstance().isInCall()
                         && CallManager.getInstance().getMicroPhoneServiceIntent() != null) {//未接来电关闭前台服务
-                    LogUtil.w("stopService MicroPhoneService");
+                    Log.w(TAG,"stopService MicroPhoneService");
                     App.getInstance().getContext().stopService(CallManager.getInstance().getMicroPhoneServiceIntent());
                 }
             }
@@ -187,7 +188,7 @@ public class CallManager {
             return;
         }
         Activity activity = mCallActivity.get();
-        LogUtil.w("结束通话页面情况: " + (activity != null ? activity.isDestroyed() : "null"));
+        Log.w(TAG,"结束通话页面情况: " + (activity != null ? activity.isDestroyed() : "null"));
         if (activity != null && !activity.isDestroyed()) {
             activity.finish();
         }
@@ -202,7 +203,7 @@ public class CallManager {
     }
 
     public void jump2CallActivity(Context context, boolean isNotifyClicked) {
-        LogUtil.w("jump2CallActivity isNotifyClicked:%b", isNotifyClicked);
+        Log.w(TAG,"jump2CallActivity isNotifyClicked:"+isNotifyClicked);
         if (isShowCallNotification(context, isNotifyClicked)) {
             makeNewCallNotification(context, true);
         } else {
@@ -211,7 +212,7 @@ public class CallManager {
     }
 
     public void jump2CallActivity(Context context) {
-        LogUtil.w("启动来电");
+        Log.w(TAG,"启动来电");
         jump2CallActivity(context, false);
     }
 
@@ -220,7 +221,7 @@ public class CallManager {
                 && (Utils.isKeyguardLocked(context)
                 || App.getInstance().isBackground())
                 && isMiUIShowNotification(isNotifyClicked);
-        LogUtil.w("isShowCallNotification:%b", isShowCallNotification);
+        Log.w(TAG,"isShowCallNotification:"+isShowCallNotification);
         return isShowCallNotification;
     }
 
@@ -233,7 +234,7 @@ public class CallManager {
         if (microPhoneServiceIntent != null) {
             return;
         }
-        LogUtil.w("makeNewCallNotification");
+        Log.w(TAG,"makeNewCallNotification");
         Intent callIntent = new Intent(context, CallContainerActivity.class);
         callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, callIntent,
@@ -266,12 +267,12 @@ public class CallManager {
     public void makeMicroPhoneNotification(Context context) {
         //如果您的应用以 Android 11 或更高版本为目标平台，且在前台服务中访问摄像头或麦克风，则必须添加前台服务类型 camera 和 microphone。
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !App.getInstance().isBackground()) {
-            LogUtil.w("makeMicroPhoneNotification");
+            Log.w(TAG,"makeMicroPhoneNotification");
             Intent callIntent = new Intent(context, CallContainerActivity.class);
             callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, callIntent,
                     PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
-            LogUtil.w("start microPhoneServiceIntent");
+            Log.w(TAG,"start microPhoneServiceIntent");
             String title = context.getString(R.string.call_call);
             microPhoneServiceIntent = new Intent(context, MicroPhoneService.class);
             Notification notification = NotificationUtils.getMicroPhoneNotification(context, pendingIntent,
@@ -280,13 +281,13 @@ public class CallManager {
             try {
                 ContextCompat.startForegroundService(context, microPhoneServiceIntent);
             } catch (Exception exception) {
-                LogUtil.e(exception, "startForegroundService");
+                Log.w(TAG, "startForegroundService:"+exception);
             }
         }
     }
 
     public void realJump2CallActivity(Context context, InCallVo inCallVo) {
-        LogUtil.w("realJump2CallActivity");
+        Log.w(TAG,"realJump2CallActivity");
         Intent callIntent = new Intent(context, CallContainerActivity.class);
         callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (inCallVo != null) {
@@ -305,7 +306,7 @@ public class CallManager {
         //与最后一通呼出通话时间间隔小于500ms，这通呼出就取消，防止双击导致的呼出多通问题
         synchronized (this) {
             if (System.currentTimeMillis() - lastCallOutTime < 500) {
-                LogUtil.w("重复呼出，忽略这通呼出！！");
+                Log.w(TAG,"重复呼出，忽略这通呼出！！");
                 return;
             }
             lastCallOutTime = System.currentTimeMillis();
@@ -313,12 +314,12 @@ public class CallManager {
 
         // 判断当前是否系统通话中
         if (App.getInstance().isInGsmCall()) {
-            LogUtil.w("gsm通话中,限制呼出");
+            Log.w(TAG,"gsm通话中,限制呼出");
         }
 
         // 判断当前网络是否连接
         if (!NetWorkUtil.isNetworkConnected(activity)) {
-            LogUtil.w("callWithRoute isNetworkConnected :" + false);
+            Log.w(TAG,"callWithRoute isNetworkConnected :" + false);
             ToastUtil.showToast(R.string.nonetworktip_error);
             return;
         }
@@ -347,7 +348,7 @@ public class CallManager {
                     @Override
                     public void onFailure(List<String> permissions) {
                         for (String str : permissions) {
-                            LogUtil.w("onFailure:" + str);
+                            Log.w(TAG,"onFailure:" + str);
                         }
                     }
 
@@ -395,7 +396,7 @@ public class CallManager {
     //盲转
     private void blindTransferCall(Context context, String callOutNumber) {
         if (YlsCallManager.getInstance().isInCall()) {
-            LogUtil.w("盲转移 通话情况:" + YlsCallManager.getInstance().getCallList() + ";呼出号码:" + callOutNumber);
+            Log.w(TAG,"盲转移 通话情况:" + YlsCallManager.getInstance().getCallList() + ";呼出号码:" + callOutNumber);
             InCallVo inCallVo = YlsCallManager.getInstance().getFirstCall();
             String currentCallNumber = inCallVo.getCallNumber();
             YlsCallManager.getInstance().blindTransferCall(context, callOutNumber);
@@ -417,7 +418,7 @@ public class CallManager {
     }
 
     public void finishAllCall(Context context) {
-        LogUtil.w("finishAllCall");
+        Log.w(TAG,"finishAllCall");
         CallManager.getInstance().setUnfoldDialPad(false);
         finishAllCallActivity();
         YlsCallManager.getInstance().setInTransfer(false);
@@ -433,7 +434,7 @@ public class CallManager {
         MediaUtil.getInstance().setCurrentAudioMode(AudioManager.MODE_NORMAL);
         SoundManager.getInstance().setAudioRoute(YlsConstant.AUDIO_DEFAULT);
         if (CallManager.getInstance().getMicroPhoneServiceIntent() != null) {//通话结束取消前台服务
-            LogUtil.w("stopService MicroPhoneService");
+            Log.w(TAG,"stopService MicroPhoneService");
             context.stopService(CallManager.getInstance().getMicroPhoneServiceIntent());
         }
     }
@@ -487,7 +488,7 @@ public class CallManager {
      */
     public void makeCall(Context context, String calleeName, String number, String trunkName,
                          String route, int isVideo) {
-        LogUtil.w("makeCall   calleeName==" + calleeName + "  number==" + number +
+        Log.w(TAG,"makeCall   calleeName==" + calleeName + "  number==" + number +
                 "  trunkName==" + trunkName + "  route==" + route + "  isVideo==" + isVideo);
         boolean netWorkAvailable = NetWorkUtil.isNetworkConnected(context);
         //已经有microphone前台服务不用重新启动
@@ -507,7 +508,7 @@ public class CallManager {
      */
     public void makeTransferCall(Context context, String calleeName, String number, String trunkName,
                                  String route, Object object) {
-        LogUtil.w("makeTransferCall   calleeName==" + calleeName + "  number==" + number +
+        Log.w(TAG,"makeTransferCall   calleeName==" + calleeName + "  number==" + number +
                 "  trunkName==" + trunkName + "  route==" + route);
         if (YlsCallManager.getInstance().isInCall()) {
             YlsCallManager.getInstance().makeTransferCall(context, calleeName, number, trunkName, route, object);

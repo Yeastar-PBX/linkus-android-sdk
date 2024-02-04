@@ -2,14 +2,15 @@ package com.yeastar.linkus.demo.push;
 
 import com.huawei.hms.push.HmsMessageService;
 import com.huawei.hms.push.RemoteMessage;
-import com.yeastar.linkus.service.base.YlsBaseManager;
 import com.yeastar.linkus.service.call.YlsCallManager;
-import com.yeastar.linkus.service.callback.RequestCallback;
 import com.yeastar.linkus.service.log.LogUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * 华为推送服务
+ */
 public class DemoHmsMessageService extends HmsMessageService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -30,22 +31,22 @@ public class DemoHmsMessageService extends HmsMessageService {
     public void onNewToken(String s) {
         super.onNewToken(s);
         LogUtil.i("onNewToken -> " + "clientid = " + s);
-        YlsBaseManager.getInstance().setPushInfo("huawei", s, new RequestCallback() {
-            @Override
-            public void onSuccess(Object o) {
-
-            }
-
-            @Override
-            public void onFailed(int i) {
-
-            }
-
-            @Override
-            public void onException(Throwable throwable) {
-
-            }
-        });
+//        YlsBaseManager.getInstance().setPushInfo("huawei", s, new RequestCallback() {
+//            @Override
+//            public void onSuccess(Object o) {
+//
+//            }
+//
+//            @Override
+//            public void onFailed(int i) {
+//
+//            }
+//
+//            @Override
+//            public void onException(Throwable throwable) {
+//
+//            }
+//        });
     }
 
     @Override

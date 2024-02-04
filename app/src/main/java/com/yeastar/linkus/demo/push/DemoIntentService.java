@@ -6,9 +6,7 @@ import com.igexin.sdk.GTIntentService;
 import com.igexin.sdk.message.GTCmdMessage;
 import com.igexin.sdk.message.GTNotificationMessage;
 import com.igexin.sdk.message.GTTransmitMessage;
-import com.yeastar.linkus.service.base.YlsBaseManager;
 import com.yeastar.linkus.service.call.YlsCallManager;
-import com.yeastar.linkus.service.callback.RequestCallback;
 import com.yeastar.linkus.service.log.LogUtil;
 
 import org.json.JSONException;
@@ -47,22 +45,22 @@ public class DemoIntentService extends GTIntentService {
     @Override
     public void onReceiveClientId(Context context, String clientid) {
         LogUtil.i("onReceiveClientId -> " + "clientid = " + clientid);
-        YlsBaseManager.getInstance().setPushInfo("getui", clientid, new RequestCallback() {
-            @Override
-            public void onSuccess(Object result) {
-
-            }
-
-            @Override
-            public void onFailed(int code) {
-
-            }
-
-            @Override
-            public void onException(Throwable exception) {
-
-            }
-        });
+//        YlsBaseManager.getInstance().setPushInfo("getui", clientid, new RequestCallback() {
+//            @Override
+//            public void onSuccess(Object result) {
+//
+//            }
+//
+//            @Override
+//            public void onFailed(int code) {
+//
+//            }
+//
+//            @Override
+//            public void onException(Throwable exception) {
+//
+//            }
+//        });
     }
 
     // cid 离线上线通知

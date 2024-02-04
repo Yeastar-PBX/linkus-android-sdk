@@ -35,7 +35,6 @@ import com.yeastar.linkus.demo.widget.CustomProgressDialog;
 import com.yeastar.linkus.demo.widget.Dialpad.DialPadLayout;
 import com.yeastar.linkus.demo.widget.VerticalRecyclerView;
 import com.yeastar.linkus.service.base.ConnectionUtils;
-import com.yeastar.linkus.service.base.YlsBaseManager;
 import com.yeastar.linkus.service.base.vo.ResultVo;
 import com.yeastar.linkus.service.call.vo.CdrVo;
 import com.yeastar.linkus.service.callback.RequestCallback;
@@ -70,6 +69,7 @@ public class DialPadActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dial_pad);
+        App.getInstance().setMain(true);
         updateCdr();
         mDialPadLayout = findViewById(R.id.dial_pad_layout);
         mMotionLayout = findViewById(R.id.motionLayout);
@@ -207,6 +207,7 @@ public class DialPadActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        App.getInstance().setMain(false);
         if (mDialPadLayout != null) {
             mDialPadLayout.mediaPlayRelease();
         }
@@ -251,32 +252,12 @@ public class DialPadActivity extends AppCompatActivity {
                 // 处理标记所有cdr已读的点击事件
                 YlsCallLogManager.getInstance().readAllCdr();
                 return true;
-            case R.id.menu_agc_open:
-                // 处理开启自动增益的点击事件
-                YlsBaseManager.getInstance().agcSetting(true);
-                return true;
-            case R.id.menu_agc_close:
-                // 处理关闭自动增益的点击事件
-                YlsBaseManager.getInstance().agcSetting(false);
-                return true;
-            case R.id.menu_ec_open:
-                // 处理开启回音消除的点击事件
-                YlsBaseManager.getInstance().echoSetting(true);
-                return true;
-            case R.id.menu_ec_close:
-                // 处理关闭回音消除的点击事件
-                YlsBaseManager.getInstance().echoSetting(false);
-                return true;
-            case R.id.menu_nc_open:
-                // 处理开启主动降噪的点击事件
-                YlsBaseManager.getInstance().ncSetting(true);
-                return true;
-            case R.id.menu_nc_close:
-                // 处理关闭主动降噪的点击事件
-                YlsBaseManager.getInstance().ncSetting(false);
-                return true;
             case R.id.menu_conference:
                 ConferenceListActivity.start(DialPadActivity.this);
+                return true;
+            case R.id.menu_setting:
+                // 设置页面
+                SettingsActivity.start(DialPadActivity.this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

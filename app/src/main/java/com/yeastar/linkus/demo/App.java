@@ -4,9 +4,15 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.hjq.toast.ToastUtils;
-import com.igexin.sdk.PushManager;
+import com.vivo.push.IPushActionListener;
+import com.vivo.push.PushClient;
+import com.vivo.push.PushConfig;
+import com.vivo.push.listener.IPushQueryActionListener;
+import com.vivo.push.util.VivoPushException;
+import com.yeastar.linkus.constant.YlsConstant;
 import com.yeastar.linkus.demo.base.BaseActivityLifecycleCallbacks;
 import com.yeastar.linkus.demo.call.CallManager;
 import com.yeastar.linkus.demo.conference.ConferenceManager;
@@ -25,11 +31,13 @@ import java.lang.ref.WeakReference;
 
 public class App extends Application {
 
+    public static final String TAG = "App";
     private static App instance;
     private Context context;
     private boolean isBackground = true;
     //系统通话中
     private boolean isInGsmCall = false;
+    private boolean isMain = false;//MainActivity是否启动
     private WeakReference<Activity> mCurrentActivity;
 
     public Context getContext() {
@@ -49,7 +57,10 @@ public class App extends Application {
             NotificationUtils.createNotificationChannel(this);
             registerActivityLifecycleCallbacks(new BaseActivityLifecycleCallbacks());
             //个推初始化
-            PushManager.getInstance().initialize(this);
+//            PushManager.getInstance().initialize(this);
+            //vivo推送初始化
+            initVovoPush(getApplicationContext());
+
             ToastUtils.init(this, new MToastStyle());
             YlsBaseManager.getInstance().setSdkCallback(new SdkCallback() {
                 //cdr变更通知
@@ -57,6 +68,7 @@ public class App extends Application {
                 public void onCdrChange(int syncResult) {
                     EventBus.getDefault().post(new CallLogChangeEvent(syncResult));
                 }
+
                 //退出登录通知
                 @Override
                 public void onLogout(int type) {
@@ -68,20 +80,61 @@ public class App extends Application {
                 //重连成功通知
                 @Override
                 public void onReconnectSuccess() {
-                    YlsBaseManager.getInstance().setPushInfo("getui", PushManager.getInstance().getClientid(getContext()), new RequestCallback() {
+                    //个推重连成功后重新设置cid
+//                    YlsBaseManager.getInstance().setPushInfo("getui", PushManager.getInstance().getClientid(getContext()), new RequestCallback() {
+//                        @Override
+//                        public void onSuccess(Object result) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onFailed(int code) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onException(Throwable exception) {
+//
+//                        }
+//                    });
+
+                    // vivo推送重连成功后重新设置regid
+                    PushClient.getInstance(context).turnOnPush(new IPushActionListener() {
                         @Override
-                        public void onSuccess(Object result) {
+                        public void onStateChanged(int state) {
+                            if (state == 0) {
+                                PushClient.getInstance(context).getRegId(new IPushQueryActionListener() {
+                                    @Override
+                                    public void onSuccess(String regid) {
+                                        //获取成功，回调参数即是当前应用的regid；
+                                        YlsBaseManager.getInstance().setPushInfo(YlsConstant.PUSH_MODE_VIVO, regid, new RequestCallback() {
+                                            @Override
+                                            public void onSuccess(Object o) {
 
-                        }
+                                            }
 
-                        @Override
-                        public void onFailed(int code) {
+                                            @Override
+                                            public void onFailed(int i) {
 
-                        }
+                                            }
 
-                        @Override
-                        public void onException(Throwable exception) {
+                                            @Override
+                                            public void onException(Throwable throwable) {
 
+                                            }
+                                        });
+                                        Log.w(TAG, "VIVO 获取regid成功，regid:" + regid);
+                                    }
+
+                                    @Override
+                                    public void onFail(Integer errerCode) {
+                                        //获取失败，可以结合错误码参考查询失败原因；
+                                        Log.w(TAG, "VIVO 获取regid失败，错误码:" + errerCode);
+                                    }
+                                });
+                            } else {
+                                Log.w(TAG, "VIVO 开关状态处理失败，错误码:" + state);
+                            }
                         }
                     });
                 }
@@ -90,11 +143,32 @@ public class App extends Application {
         }
     }
 
+    private static void initVovoPush(Context context) {
+        //初始化vivo push
+        try {
+            PushConfig pushConfig = new PushConfig.Builder()
+                    .agreePrivacyStatement(true)
+                    .build();
+            PushClient.getInstance(context).initialize(pushConfig);
+        } catch (VivoPushException e) {
+            //此处异常说明是有必须的vpush配置未配置所致，需要仔细检查集成指南的各项配置。
+            e.printStackTrace();
+        }
+    }
+
     public static App getInstance() {
         if (instance == null) {
             instance = new App();
         }
         return instance;
+    }
+
+    public boolean isMain() {
+        return isMain;
+    }
+
+    public void setMain(boolean main) {
+        isMain = main;
     }
 
     public boolean isBackground() {
