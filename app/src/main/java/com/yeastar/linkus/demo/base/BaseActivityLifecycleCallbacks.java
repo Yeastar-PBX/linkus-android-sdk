@@ -18,19 +18,16 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 
-import com.yeastar.linkus.demo.call.CallContainerActivity;
-import com.yeastar.linkus.demo.utils.ReflectionUtil;
-import com.yeastar.linkus.service.call.YlsCallManager;
-import com.yeastar.linkus.service.call.vo.InCallVo;
-import com.yeastar.linkus.service.log.LogUtil;
 import com.yeastar.linkus.demo.App;
 import com.yeastar.linkus.demo.Constant;
+import com.yeastar.linkus.demo.call.CallContainerActivity;
 import com.yeastar.linkus.demo.call.CallManager;
 import com.yeastar.linkus.demo.utils.NotificationUtils;
 import com.yeastar.linkus.demo.utils.Utils;
+import com.yeastar.linkus.service.call.YlsCallManager;
+import com.yeastar.linkus.service.call.vo.InCallVo;
+import com.yeastar.linkus.service.log.LogUtil;
 import com.yeastar.linkus.utils.CommonUtil;
 import com.yeastar.linkus.utils.ThreadPoolManager;
 
@@ -198,17 +195,6 @@ public class BaseActivityLifecycleCallbacks implements Application.ActivityLifec
     public void onActivityDestroyed(Activity activity) {
         LogUtil.w("Activity lifecycle: %s onDestroyed", activity.getLocalClassName());
         unRegisterCallStateListener();
-        invokeFragmentManagerNoteStateNotSaved(activity);
-    }
-
-    private void invokeFragmentManagerNoteStateNotSaved(Activity activity) {
-        if (activity instanceof FragmentActivity) {
-            FragmentManager fm = ((FragmentActivity) activity).getSupportFragmentManager();
-            ReflectionUtil.invokeMethod(fm, "noteStateNotSaved", null);
-        } else {
-            android.app.FragmentManager fm = activity.getFragmentManager();
-            ReflectionUtil.invokeMethod(fm, "noteStateNotSaved", null);
-        }
     }
 
 }

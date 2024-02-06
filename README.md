@@ -32,11 +32,21 @@
 
 ### 2.2 初始化
 
+```java
+    /**
+     * SDK初始化
+     *
+     * @param context 上下文
+     * @param config 配置信息
+     */
+    public ResultVo initYlsSDK(Context context, YlsInitConfig config)
+```
+
 #### 2.2.1 一键初始化
 
 > 一键初始化，默认的SDK信息保存地址是{应用沙盒内的file}/yls_sdk
 >
-> 注意：初始化只能执行一次，必须在主进程中执行
+> 注意：**初始化只能执行一次，必须在主进程中执行**
 
 ```java
 YlsBaseManager.getInstance().initYlsSDK(this, null);
@@ -44,17 +54,18 @@ YlsBaseManager.getInstance().initYlsSDK(this, null);
 
 #### 2.2.2 初始化参数设置
 
-> 除了使用默认参数，用户也能自己设置初始化参数，目前开放的有SDK信息保存地址、自动增益、降噪、回音消除等
+> 除了使用默认参数，用户也能自己设置初始化参数，目前开放的有SDK信息保存地址、自动增益、降噪、回音消除、是否pad等
 
 ```java
 YlsInitConfig config = new YlsInitConfig.Builder(projectPath)//SDK信息保存地址（包括SDK日志信息的地址）
-        .supportCallWaiting(false)//是否支持CallWaiting
-        .agc(true)//开启自动增益
-        .ec(true)//开启回音消除
-        .nc(true)//开启主动降噪
+        .supportCallWaiting(false)//是否支持CallWaiting，默认不支持
+        .agc(true)//开启自动增益,默认开启
+        .ec(true)//开启回音消除，默认开启
+        .nc(true)//开启主动降噪，默认开启
+    	.setPad(true)//是否pad，不设置的时候由sdk自行判断，如果sdk的判断有误，可自行设置
         .key("")//数据库密码
         .build();
-        YlsBaseManager.getInstance().initYlsSDK(this, config);
+YlsBaseManager.getInstance().initYlsSDK(this, config);
 ```
 
 #### 2.2.3 自动增益开关
@@ -65,7 +76,14 @@ YlsInitConfig config = new YlsInitConfig.Builder(projectPath)//SDK信息保存�
  *
  * @return
  */
-public void agcSetting(boolean isOpen)
+public void agcSetting(Context context, boolean isOpen)
+
+```
+
+> 使用方法
+
+```java
+YlsBaseManager.getInstance().agcSetting(getContext(), true);
 ```
 
 #### 2.2.4 回音消除开关
@@ -76,7 +94,13 @@ public void agcSetting(boolean isOpen)
  *
  * @return
  */
-public void echoSetting(boolean isOpen)
+public void echoSetting(Context context, boolean isOpen)
+```
+
+> 使用方法
+
+```java
+YlsBaseManager.getInstance().echoSetting(getContext(), true);
 ```
 
 #### 2.2.5 主动降噪开关
@@ -87,10 +111,46 @@ public void echoSetting(boolean isOpen)
  *
  * @return
  */
-public void ncSetting(boolean isOpen)
+public void ncSetting(Context context, boolean isOpen)
 ```
 
+> 使用方法
 
+```java
+YlsBaseManager.getInstance().ncSetting(getContext(), true);
+```
+
+#### 2.2.6 设置SIP编码
+
+```java
+/**
+* 设置编解码
+* 注意：设置编解码后，新的编码格式只对新的通话生效，对已经建立的通话不生效
+*/
+public void setCodec(Context context, String codec)
+```
+
+> 使用方法
+
+```java
+YlsCallManager.getInstance().setCodec(getContext(), (String) newValue);
+```
+
+#### 2.2.7 设置是否呼叫等待
+
+```java
+/**
+* 设置是否支持callWaiting
+* @param supportCallWaiting
+*/
+public void setSupportCallWaiting(boolean supportCallWaiting)
+```
+
+> 使用方法
+
+```java
+YlsCallManager.getInstance().setSupportCallWaiting(false);
+```
 
 ### 2.3 登录
 
@@ -114,27 +174,6 @@ public void ncSetting(boolean isOpen)
  */
 public void loginBlock(Context context, String userName, String passWord, String localeIp, int localePort,
         String remoteIp, int remotePort, RequestCallback<Boolean> requestCallback)
-//手动登录示例
-        YlsLoginManager.getInstance().loginBlock(this, userName, password, localeIp,
-        localePortI, remoteIp, remotePortI, new RequestCallback<>() {
-@Override
-public void onSuccess(Boolean result) {
-        closeProgressDialog();
-        startActivity(new Intent(LoginActivity.this, DialPadActivity.class));
-        }
-
-@Override
-public void onFailed(int code) {
-        closeProgressDialog();
-        Toast.makeText(LoginActivity.this, R.string.login_tip_login_failed, Toast.LENGTH_LONG).show();
-        }
-
-@Override
-public void onException(Throwable exception) {
-        closeProgressDialog();
-        Toast.makeText(LoginActivity.this, R.string.login_tip_login_failed, Toast.LENGTH_LONG).show();
-        }
-        });
 ```
 
 >linkus sdk mobile端登录错误码：
@@ -145,11 +184,42 @@ public void onException(Throwable exception) {
 >407：账号被锁定
 >416：请求ip被禁止（pbx开启国家防御）
 
+> 使用方法
+
+```java
+YlsLoginManager.getInstance().loginBlock(this, userName, password, localeIp,localePortI, remoteIp, remotePortI, new RequestCallback() {
+	@Override
+	public void onSuccess(Object result) {
+		closeProgressDialog();
+		startActivity(new Intent(LoginActivity.this, DialPadActivity.class));
+	}
+
+	@Override
+	public void onFailed(int code) {
+		closeProgressDialog();
+		String failStr = getString(R.string.login_tip_login_failed,code);
+		Toast.makeText(LoginActivity.this, failStr, Toast.LENGTH_LONG).show();
+	}
+
+	@Override
+	public void onException(Throwable exception) {
+		closeProgressDialog();
+		Toast.makeText(LoginActivity.this, R.string.login_tip_login_exception, Toast.LENGTH_LONG).show();
+	}
+});
+```
+
 #### 2.3.2 缓存登录
 
 ```java
+public void cacheLogin(int networkType) 
+```
+
+> 使用方法
+
+```java
 int networkType = NetWorkUtil.getNetWorkType(this);
-        YlsLoginManager.getInstance().cacheLogin(networkType);
+YlsLoginManager.getInstance().cacheLogin(networkType);
 ```
 
 #### 2.3.3 登录状态
@@ -160,11 +230,13 @@ int networkType = NetWorkUtil.getNetWorkType(this);
  * @return
  */
 public boolean isLoginEd()
-//调用示例
-        boolean isLoginEd = YlsLoginManager.getInstance().isLoginEd();
 ```
 
+> 使用方法
 
+```java
+boolean isLoginEd = YlsLoginManager.getInstance().isLoginEd();
+```
 
 #### 2.3.4 连接状态
 
@@ -173,12 +245,14 @@ public boolean isLoginEd()
  * 与服务器的连接状态
  * @return
  */
-public synchronized boolean isConnected()
-//调用示例
-        YlsLoginManager.getInstance().isConnected();
+public synchronized boolean isConnected() 
 ```
 
+> 使用方法
 
+```java
+YlsLoginManager.getInstance().isConnected();
+```
 
 #### 2.3.4 sdk通知回调
 
@@ -228,7 +302,7 @@ SdkEventCode.P_EVENT_SDK_ACCESSKEY_CHANGE://20154 sdk accesskey变更
 
 ### 2.4 通话相关操作
 
-> 通话相关大部分在YlsCallManager
+> **通话相关大部分在YlsCallManager**
 
 #### 2.4.1 呼叫
 
@@ -241,8 +315,12 @@ SdkEventCode.P_EVENT_SDK_ACCESSKEY_CHANGE://20154 sdk accesskey变更
  * @return
  */
 public void makeNewCall(String callNumber, boolean netWorkAvailable)
-//调用方式如下
-        YlsCallManager.getInstance().makeNewCall(number, netWorkAvailable);
+```
+
+> 使用方法
+
+```java
+YlsCallManager.getInstance().makeNewCall(number, netWorkAvailable);
 ```
 
 
@@ -473,8 +551,6 @@ public void onException(Throwable exception) {
 });
 ```
 
-
-
 #### 2.5.2 推送处理
 
 ```java
@@ -488,13 +564,13 @@ try {
 YlsCallManager.getInstance().handlerPushMessage(context, jsonObject);
 ```
 
-
-
 ### 2.6 通话记录
 
 #### 2.6.1 获取通话记录
 
 > 获取最多N条通话记录
+>
+> **注意：cdr相关接口都在YlsCallLogManager**
 
 ```java
 /**
@@ -504,7 +580,7 @@ YlsCallManager.getInstance().handlerPushMessage(context, jsonObject);
  */
 public List<CdrVo> getCdrList(int limit);
 //调用示例
-        List<CdrVo> cdrVoList = YlsCallLogManager.getInstance().getCdrList(1000);
+List<CdrVo> cdrVoList = YlsCallLogManager.getInstance().getCdrList(1000);
 ```
 
 #### 2.6.2 删除通话记录
@@ -529,7 +605,7 @@ public int deleteCdr(String cdrIds)
  */
 public int deleteAllCdr()
 //调用示例
-        btnCdrClear.setOnClickListener(v -> YlsCallLogManager.getInstance().deleteAllCdr());
+btnCdrClear.setOnClickListener(v -> YlsCallLogManager.getInstance().deleteAllCdr());
 ```
 
 #### 2.6.4 标记所有未读为已读
@@ -555,6 +631,8 @@ public int getMissCallCdrCount();
 ```
 
 ### 2.7 多方通话（至多五方）
+
+> **注意：多方通话接口都在YlsCallManager里**
 
 #### 2.7.1 添加多方通话
 
@@ -693,7 +771,9 @@ public boolean isMultiPartyCallAlwaysRecordDisable()
 
 #### 2.8.1会议室功能初始化
 
-> 会议室初始化最好在Application主进程进行
+> **会议室初始化最好在Application主进程进行**
+>
+> **会议室相关方法都在YlsConferenceManager里**
 
 ```java
 YlsConferenceManager.getInstance().setConferenceCallback(context, new ConferenceCallback() {
@@ -719,11 +799,11 @@ conferenceModelList = YlsConferenceManager.getInstance().getConferenceList();
 
 #### 2.8.3 开始会议室
 
-> 会议室名称限制：
+> **会议室名称限制：**
 >
-> 1.不能使用包含 :、!、$、(、)、/、#、;、,、[、]、"、=、<、>、&、\、'、```、^、%、@、{、}、|、空格
+> **1.不能使用包含 :、!、$、(、)、/、#、;、,、[、]、"、=、<、>、&、\、'、```、^、%、@、{、}、|、空格**
 >
-> 2.长度不能超过63g
+> **2.长度不能超过63g**
 
 ```java
     /**
@@ -737,10 +817,57 @@ conferenceModelList = YlsConferenceManager.getInstance().getConferenceList();
 public void startConference(Context context, String conferenceName, String[] memberArray, RequestCallback requestCallback)
 ```
 
+> 使用方法
+
+```java
+YlsConferenceManager.getInstance().startConference(activity, conferenceVo.getName(), numberArray, new RequestCallback() {
+            @Override
+            public void onSuccess(Object result) {
+                view.dismissProgressDialog();
+                activity.finish();
+                Intent intent = new Intent(activity, CallContainerActivity.class);
+                intent.putExtra(Constant.EXTRA_CONFERENCE, conferenceVo);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                activity.startActivity(intent);
+            }
+
+            @Override
+            public void onFailed(int code) {
+                view.dismissProgressDialog();
+                YlsConferenceManager.getInstance().setConferenceVo(null);
+                switch (code) {
+                    case YlsConstant.CONFERENCE_NAME_LENGTH_ERROR:
+                        ToastUtil.showToast("会议室名称长度不能超过63个字节");
+                        break;
+                    case YlsConstant.CONFERENCE_NAME_REGEX_ERROR:
+                        ToastUtil.showLongToast("会议室名称不能使用包含 :、!、$、(、)、/、#、;、,、[、]、\"、=、<、>、&、\\、'、```、^、%、@、{、}、|、空格");
+                        break;
+                    case YlsConstant.CONFERENCE_IN_USE_ERROR:
+                        ToastUtil.showToast(R.string.conference_tip_meeting);
+                        break;
+                    case YlsConstant.SDK_NETWORK_DISABLE:
+                    case YlsConstant.SDK_LOGIN_DISABLE:
+                        ToastUtil.showToast(R.string.connectiontip_connect_fail);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onException(Throwable exception) {
+                view.dismissProgressDialog();
+            }
+        });
+```
+
+
+
 #### 2.8.4 返回异常会议室
 
 ```java
-    /**
+/**
  * 返回异常会议室
  *
  * @param conferenceId
@@ -753,7 +880,7 @@ public ResultVo returnConferenceBlock(String conferenceId, String member)
 #### 2.8.5 会议进行中的接口
 
 ```java
-    /**
+/**
  * 会议室中
  * 会议室主持人
  * 静音/取消静音 所有成员
@@ -893,7 +1020,7 @@ public void deleteAllConferenceLog()
 ```
 
 ### 2.9 权限相关
-> 通话相关的权限已经包括在aar的AndroidManifest.xml里了，我们遵循按需获取权限的原则申请危险权限
+> **通话相关的权限已经包括在aar的AndroidManifest.xml里了，我们遵循按需获取权限的原则申请危险权限**
 ```java
 private void judgeCallPermission(Activity activity, String callee, String routePrefix, String name) {
         PermissionRequest request = new PermissionRequest(activity,
@@ -926,6 +1053,7 @@ private void judgeCallPermission(Activity activity, String callee, String routeP
 
 ## 3. 更新日志
 
+- 2024/02/05 增加对Pad的支持，开放编码、agc、ec、nc的单独设置接口
 - 2023/09/22 新增通话UI回调说明
 - 2023/09/19 新增权限申请说明
 - 2023/08/11 新增退出的回调码【SdkEventCode.P_EVENT_SDK_STATUS_CHANGE://20153 sdk状态变更关闭sdk 或 sdk到期通知; SdkEventCode.P_EVENT_SDK_ACCESSKEY_CHANGE ：刷新access_key】 新增onReconnectSuccess()回调接口
