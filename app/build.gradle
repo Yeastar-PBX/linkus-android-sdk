@@ -63,7 +63,7 @@ android {
 
 dependencies {
 
-    implementation files('libs/vivo_pushSDK_v3.0.0.7_488.aar')
+    implementation files('libs/vivo_pushSDK_v4.0.0.0_500.aar')
     implementation files('libs/linkus-sdk-1.2.0.aar')
 //    implementation project(':linkus-sdk-android')
     implementation files('libs/wcdb-room.aar')

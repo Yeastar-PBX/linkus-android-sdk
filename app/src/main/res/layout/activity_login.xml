@@ -29,7 +29,7 @@
         android:layout_marginTop="8dp"
         android:hint="@string/prompt_password"
         android:selectAllOnFocus="true"
-        android:text="eyJleHBpcmUiOjAsInNpZ24iOiJFLzBmY1J1YjZDVlhXdFNRWS8xQWpHMzRGNVBGUEw4cE52Zm4wNzA3K3BrPSIsInVzZXJuYW1lIjoiMTAwMCIsInZlcnNpb24iOiIxLjAifQ__"
+        android:text="eyJleHBpcmUiOjE3MTQ3ODc1NzcsInNpZ24iOiJjN05ZeWVnd0dqQ2dTeEM1YWFiL0tMNjhhMEx2QkRpWUIyWk5UQmdWcHpNPSIsInVzZXJuYW1lIjoiMjAwNyIsInZlcnNpb24iOiIxLjAifQ__"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_username" />

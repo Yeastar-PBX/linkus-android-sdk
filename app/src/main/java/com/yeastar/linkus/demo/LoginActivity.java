@@ -21,7 +21,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etLocalePort;
     private EditText etRemoteIp;
     private EditText etRemotePort;
-    private Button btnLogin;
     private CustomProgressDialog progressDialog;
     //1030
     //eyJleHBpcmUiOjE3MDU3NTQ4NTUsInNpZ24iOiJtUEloYXVidTlhZlAyTkw0WU5rZXBDcC9PY3JsU1dYWlM1Zi9yWDVyYTZrPSIsInVzZXJuYW1lIjoiMTAzMCIsInZlcnNpb24iOiIxLjAifQ__
@@ -40,10 +39,8 @@ public class LoginActivity extends AppCompatActivity {
         etLocalePort = findViewById(R.id.et_locale_port);
         etRemoteIp = findViewById(R.id.et_remote_ip);
         etRemotePort = findViewById(R.id.et_remote_port);
-        btnLogin = findViewById(R.id.login);
-        btnLogin.setOnClickListener(v -> {
-            login();
-        });
+        Button btnLogin = findViewById(R.id.login);
+        btnLogin.setOnClickListener(v -> login());
     }
 
     private void login() {
@@ -67,14 +64,15 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
         showLargeProgressDialog();
-        int localePortI = TextUtils.isEmpty(localePort) ? 8111 : Integer.valueOf(localePort);
-        int remotePortI = TextUtils.isEmpty(remotePort) ? 8111 : Integer.valueOf(remotePort);
+        int localePortI = TextUtils.isEmpty(localePort) ? 8111 : Integer.parseInt(localePort);
+        int remotePortI = TextUtils.isEmpty(remotePort) ? 8111 : Integer.parseInt(remotePort);
         YlsLoginManager.getInstance().loginBlock(this, userName, password, localeIp,
                 localePortI, remoteIp, remotePortI, new RequestCallback() {
                     @Override
                     public void onSuccess(Object result) {
                         closeProgressDialog();
                         startActivity(new Intent(LoginActivity.this, DialPadActivity.class));
+                        finish();
                     }
 
                     @Override
