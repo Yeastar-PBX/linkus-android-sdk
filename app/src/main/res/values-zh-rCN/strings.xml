@@ -5,4 +5,5 @@
  <string name="setting_ec">回音消除</string>
  <string name="setting_nc">主动降噪</string>
  <string name="setting_codec">编解码</string>
+ <string name="setting_call_waiting">呼叫等待</string>
 </resources>

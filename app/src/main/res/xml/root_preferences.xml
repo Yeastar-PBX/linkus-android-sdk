@@ -13,6 +13,11 @@
         <SwitchPreferenceCompat
             app:key="switch_preference_nc"
             app:title="@string/setting_nc" />
+
+        <SwitchPreferenceCompat
+            app:key="switch_preference_call_waiting"
+            app:title="@string/setting_call_waiting" />
+
         <ListPreference
             app:defaultValue="0"
             app:entries="@array/entries_str"

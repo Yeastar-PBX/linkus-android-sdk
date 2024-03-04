@@ -51,7 +51,7 @@ public class App extends Application {
             context = this.getApplicationContext();
             instance = this;
             String projectPath = YlsBaseManager.getInstance().getProjectPath(this);
-            YlsInitConfig config = new YlsInitConfig.Builder(projectPath).key("123").build();
+            YlsInitConfig config = new YlsInitConfig.Builder(projectPath).key("123").supportCallWaiting(true).build();
             YlsBaseManager.getInstance().initYlsSDK(this, config);
             CallManager.getInstance().initCallBack(this);
             NotificationUtils.createNotificationChannel(this);

@@ -78,6 +78,11 @@ public class SettingsActivity extends AppCompatActivity {
             ncASwitchPreference.setChecked(nc);
             ncASwitchPreference.setOnPreferenceChangeListener(this);
 
+            SwitchPreferenceCompat  callWaitingASwitchPreference = findPreference("switch_preference_call_waiting");
+            boolean callWaiting = (boolean) SPUtil.getParam(getContext(), SPUtil.SETTING_CALL_WAITING, true);
+            callWaitingASwitchPreference.setChecked(callWaiting);
+            callWaitingASwitchPreference.setOnPreferenceChangeListener(this);
+
         }
 
         @Override
@@ -101,6 +106,8 @@ public class SettingsActivity extends AppCompatActivity {
                     YlsBaseManager.getInstance().echoSetting(getContext(), (boolean) newValue);
                 } else if (switchPreferenceCompat.getKey().equals("switch_preference_nc")) {
                     YlsBaseManager.getInstance().ncSetting(getContext(), (boolean) newValue);
+                } else if (switchPreferenceCompat.getKey().equals("switch_preference_call_waiting")) {
+                    YlsCallManager.getInstance().setSupportCallWaiting(getContext(), (boolean) newValue);
                 }
                 switchPreferenceCompat.setChecked((boolean) newValue);
             }

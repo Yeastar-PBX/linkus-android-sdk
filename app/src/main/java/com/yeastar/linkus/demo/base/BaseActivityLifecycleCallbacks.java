@@ -80,7 +80,7 @@ public class BaseActivityLifecycleCallbacks implements Application.ActivityLifec
 
     private boolean callStateListenerRegistered = false;
 
-    private CallStateListener callStateListener = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) ?
+    private final CallStateListener callStateListener = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) ?
             new CallStateListener() {
                 @Override
                 public void onCallStateChanged(int state) {
@@ -90,7 +90,7 @@ public class BaseActivityLifecycleCallbacks implements Application.ActivityLifec
             }
             : null;
 
-    private PhoneStateListener phoneStateListener = (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) ?
+    private final PhoneStateListener phoneStateListener = (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) ?
             new PhoneStateListener() {
                 @Override
                 public void onCallStateChanged(int state, String phoneNumber) {
@@ -182,6 +182,7 @@ public class BaseActivityLifecycleCallbacks implements Application.ActivityLifec
             LogUtil.w("app在后台");
             if (YlsCallManager.getInstance().isInCall()) {
                 CallManager.getInstance().makeNewCallNotification(activity, false);
+                CallManager.getInstance().finishAllCallActivity();
             }
             App.getInstance().setBackground(true);
         }
