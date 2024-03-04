@@ -67,6 +67,7 @@ public class CallManager {
     private Intent microPhoneServiceIntent;
     private boolean isUnfoldDialPad;//通话键盘是否展开
     private WeakReference<Activity> mCallActivity;
+    private int callNotifyId = -1;//通话通知id
 
     private volatile static CallManager instance;
 
@@ -192,6 +193,7 @@ public class CallManager {
         if (activity != null && !activity.isDestroyed()) {
             activity.finish();
         }
+        NotificationUtils.cancelNotificationById(App.getInstance().getContext(), callNotifyId);
     }
 
     private void finishAllTransferFragment(Activity activity) {
@@ -241,10 +243,13 @@ public class CallManager {
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
         String callName = "";
         String msg = "";
+        int notificationId = Constant.NEW_CALL_NOTIFICATION_ID;
         LinkedList<InCallVo> callList = YlsCallManager.getInstance().getCallList();
         if (CommonUtil.isListNotEmpty(callList)) {
             InCallVo inCallVo = callList.getFirst();
             callName = inCallVo.getCallName();
+            notificationId = (int) inCallVo.getStartTimestamp();
+            callNotifyId = notificationId;
             if (TextUtils.isEmpty(inCallVo.getConfId())) {
                 if (inCallVo.isCallOut() || inCallVo.isAccept()) {
                     msg = context.getString(R.string.call_notification_inacall);
@@ -261,7 +266,7 @@ public class CallManager {
             }
         }
         NotificationUtils.sendNewCallNotification(context, pendingIntent,
-                callName, msg, isFullScreen);
+                callName, msg, isFullScreen, notificationId);
     }
 
     public void makeMicroPhoneNotification(Context context) {

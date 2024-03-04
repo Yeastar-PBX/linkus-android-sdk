@@ -96,12 +96,12 @@ public class NotificationUtils {
         sendGroupNotification(context, group, groupId, title);
     }
 
-    public static void sendNewCallNotification(Context context, PendingIntent pendingIntent, String title, String message, boolean isFullScreen) {
+    public static void sendNewCallNotification(Context context, PendingIntent pendingIntent, String title, String message, boolean isFullScreen, int notificationId) {
         Notification notification = getNewCallNotification(context, pendingIntent, title, message, isFullScreen);
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
         if (notificationManager != null) {
-            notificationManager.notify(Constant.NEW_CALL_NOTIFICATION_ID, notification);
+            notificationManager.notify(notificationId, notification);
         }
     }
 
