@@ -48,7 +48,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseActi
         beforeCreate();
         super.onCreate(savedInstanceState);
         try {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER_PORTRAIT);
         } catch (Exception e) {
             LogUtil.i("setRequestedOrientation:%s", e.toString());
         }

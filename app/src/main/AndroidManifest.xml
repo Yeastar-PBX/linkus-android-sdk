@@ -85,7 +85,7 @@
         <activity
             android:name=".call.CallContainerActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="nosensor"
+            android:screenOrientation="userPortrait"
             android:showWhenLocked="true"
             android:theme="@style/incall"
             android:turnScreenOn="true"
