@@ -22,6 +22,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.yeastar.linkus.demo.Constant;
+import com.yeastar.linkus.demo.DialPadActivity;
 import com.yeastar.linkus.demo.R;
 import com.yeastar.linkus.service.log.LogUtil;
 
@@ -241,6 +242,28 @@ public class NotificationUtils {
             }
         }
         context.startActivity(localIntent);
+    }
+
+    public static void missCallNotification(Context context, String text, String title, int type, int notificationId) {
+        if (type == 1) {
+            LogUtil.w("missCallNotification type=" + type + " miss call 显示");
+            Intent intent = new Intent();
+            intent.setClass(context, DialPadActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(Constant.EXTRA_FROM, text);
+            String msg;
+            if (Constant.CONFERENCE.equals(title)) {
+                msg = context.getString(R.string.conference_conference);
+            } else {
+                msg = title;
+            }
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, Constant.MISS_CALL_GROUP_ID, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+            NotificationUtils.sendPushNotification(context, pendingIntent, notificationId, msg,
+                    context.getResources().getString(R.string.cdr_missed_call), Constant.NOTIFICATION_CHANNEL_MISS_CALL_ID, Constant.MISS_CALL_GROUP_ID);
+        } else {
+            LogUtil.w("missCallNotification type=" + type + " miss call 不显示");
+        }
     }
 
 }

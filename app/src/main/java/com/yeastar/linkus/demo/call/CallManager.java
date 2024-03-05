@@ -151,6 +151,11 @@ public class CallManager {
                 notifyAudioChange();
             }
 
+            @Override
+            public void onMissCallArrive(String caller) {
+                NotificationUtils.missCallNotification(context,  context.getString(R.string.cdr_missed_call), caller, 1, callNotifyId);
+            }
+
         });
 
     }

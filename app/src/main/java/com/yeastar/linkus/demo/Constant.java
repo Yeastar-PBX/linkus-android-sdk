@@ -53,6 +53,7 @@ public class Constant {
     public static final int MICRO_PHONE_NOTIFICATION_ID = 7;
     public static final String NOTIFICATION_CHANNEL_PUSH_ID = "push";
     public static final String NOTIFICATION_CHANNEL_NEW_CALL_ID = "new_call";
+    public static final String NOTIFICATION_CHANNEL_MISS_CALL_ID = "miss_call";
 
     public static final int IN_CONFERENCE=1;
 
