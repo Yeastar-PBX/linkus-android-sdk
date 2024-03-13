@@ -4,13 +4,15 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.hjq.toast.ToastUtils;
-import com.vivo.push.IPushActionListener;
+import com.huawei.hms.aaid.HmsInstanceId;
+import com.huawei.hms.common.ApiException;
+import com.huawei.hms.support.common.ActivityMgr;
 import com.vivo.push.PushClient;
 import com.vivo.push.PushConfig;
-import com.vivo.push.listener.IPushQueryActionListener;
 import com.vivo.push.util.VivoPushException;
 import com.yeastar.linkus.constant.YlsConstant;
 import com.yeastar.linkus.demo.base.BaseActivityLifecycleCallbacks;
@@ -59,7 +61,9 @@ public class App extends Application {
             //个推初始化
 //            PushManager.getInstance().initialize(this);
             //vivo推送初始化
-            initVovoPush(getApplicationContext());
+//            initVovoPush(getApplicationContext());
+            //华为推送初始化
+            ActivityMgr.INST.init(this);
 
             ToastUtils.init(this, new MToastStyle());
             YlsBaseManager.getInstance().setSdkCallback(new SdkCallback() {
@@ -99,44 +103,80 @@ public class App extends Application {
 //                    });
 
                     // vivo推送重连成功后重新设置regid
-                    PushClient.getInstance(context).turnOnPush(new IPushActionListener() {
-                        @Override
-                        public void onStateChanged(int state) {
-                            if (state == 0) {
-                                PushClient.getInstance(context).getRegId(new IPushQueryActionListener() {
-                                    @Override
-                                    public void onSuccess(String regid) {
-                                        //获取成功，回调参数即是当前应用的regid；
-                                        YlsBaseManager.getInstance().setPushInfo(YlsConstant.PUSH_MODE_VIVO, regid, new RequestCallback() {
-                                            @Override
-                                            public void onSuccess(Object o) {
+//                    PushClient.getInstance(context).turnOnPush(new IPushActionListener() {
+//                        @Override
+//                        public void onStateChanged(int state) {
+//                            if (state == 0) {
+//                                PushClient.getInstance(context).getRegId(new IPushQueryActionListener() {
+//                                    @Override
+//                                    public void onSuccess(String regid) {
+//                                        //获取成功，回调参数即是当前应用的regid；
+//                                        YlsBaseManager.getInstance().setPushInfo(YlsConstant.PUSH_MODE_VIVO, regid, new RequestCallback() {
+//                                            @Override
+//                                            public void onSuccess(Object o) {
+//
+//                                            }
+//
+//                                            @Override
+//                                            public void onFailed(int i) {
+//
+//                                            }
+//
+//                                            @Override
+//                                            public void onException(Throwable throwable) {
+//
+//                                            }
+//                                        });
+//                                        Log.w(TAG, "VIVO 获取regid成功，regid:" + regid);
+//                                    }
+//
+//                                    @Override
+//                                    public void onFail(Integer errerCode) {
+//                                        //获取失败，可以结合错误码参考查询失败原因；
+//                                        Log.w(TAG, "VIVO 获取regid失败，错误码:" + errerCode);
+//                                    }
+//                                });
+//                            } else {
+//                                Log.w(TAG, "VIVO 开关状态处理失败，错误码:" + state);
+//                            }
+//                        }
+//                    });
 
-                                            }
 
-                                            @Override
-                                            public void onFailed(int i) {
+                    // 华为推送重连成功后重新设置token
+                    try {
+                        Log.w(TAG, "HuaWei 重新获取token");
+                        // 从agconnect-services.json文件中读取APP_ID
+                        String appId = "100031905";
+                        // 输入token标识"HCM"
+                        String tokenScope = "HCM";
+                        String token = HmsInstanceId.getInstance(getContext()).getToken(appId, tokenScope);
+                        Log.i(TAG, "get token: " + token);
 
-                                            }
+                        // 判断token是否为空
+                        if(!TextUtils.isEmpty(token)) {
+                            Log.w(TAG, "HuaWei 获取token成功，token:" + token);
+                            YlsBaseManager.getInstance().setPushInfo(YlsConstant.PUSH_MODE_HUAWEI, token, new RequestCallback() {
+                                @Override
+                                public void onSuccess(Object o) {
 
-                                            @Override
-                                            public void onException(Throwable throwable) {
+                                }
 
-                                            }
-                                        });
-                                        Log.w(TAG, "VIVO 获取regid成功，regid:" + regid);
-                                    }
+                                @Override
+                                public void onFailed(int i) {
 
-                                    @Override
-                                    public void onFail(Integer errerCode) {
-                                        //获取失败，可以结合错误码参考查询失败原因；
-                                        Log.w(TAG, "VIVO 获取regid失败，错误码:" + errerCode);
-                                    }
-                                });
-                            } else {
-                                Log.w(TAG, "VIVO 开关状态处理失败，错误码:" + state);
-                            }
+                                }
+
+                                @Override
+                                public void onException(Throwable throwable) {
+
+                                }
+                            });
                         }
-                    });
+
+                    } catch (ApiException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             });
             ConferenceManager.getInstance().init(this);

@@ -119,6 +119,16 @@
             </intent-filter>
         </receiver>
         <!-- Vivo推送配置结束 -->
+        <!-- 华为推送配置 -->
+        <service android:name=".push.HuaWeiPushService" android:exported="false">
+            <intent-filter>
+                <action android:name="com.huawei.push.action.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.huawei.hms.support.api.push.service.HmsMsgService"
+            android:exported="false"
+            tools:replace="android:exported" />
 
     </application>
 
