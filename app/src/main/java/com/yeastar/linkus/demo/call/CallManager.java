@@ -25,6 +25,7 @@ import com.lxj.xpopup.core.BasePopupView;
 import com.yeastar.linkus.constant.YlsConstant;
 import com.yeastar.linkus.demo.App;
 import com.yeastar.linkus.demo.Constant;
+import com.yeastar.linkus.demo.DialPadActivity;
 import com.yeastar.linkus.demo.R;
 import com.yeastar.linkus.demo.call.Audio.AudioPopupView;
 import com.yeastar.linkus.demo.eventbus.AudioRouteEvent;
@@ -153,6 +154,9 @@ public class CallManager {
 
             @Override
             public void onMissCallArrive(String caller) {
+                if (Utils.isAppOnForeground(context)) {
+                    return;
+                }
                 NotificationUtils.missCallNotification(context,  context.getString(R.string.cdr_missed_call), caller, 1, callNotifyId);
             }
 
@@ -303,7 +307,14 @@ public class CallManager {
         if (inCallVo != null) {
             callIntent.putExtra(Constant.EXTRA_DATA, inCallVo);
         }
-        context.startActivity(callIntent);
+        if (!App.getInstance().isMain()) {//MainActivity是否启动
+            Intent mainIntent = new Intent(context, DialPadActivity.class);
+            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            Intent[] intents = new Intent[]{mainIntent, callIntent};
+            context.startActivities(intents);
+        } else {
+            context.startActivity(callIntent);
+        }
     }
 
     //不带路由呼出(voice call)
