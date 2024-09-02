@@ -522,18 +522,20 @@ public void onNotifyAudioChange() {
 
 #### 2.5.1 推送设置
 
+为了提高通话送达率，Linkus SDK引入手机系统厂商推送。手机系统级别的厂商推送（如小米、华为、vivo、OPPO、荣耀等）的优势在于其拥有稳定的系统级长连接，可以做到随时接收推送。您可以通过集成各手机厂商推送 SDK，与 Linkus SDK 搭配使用，实现离线推送功能。
+
 ```java
 /**
  * 设置推送信息
  *
- * @param mode: getui, huawei, xiaomi
+ * @param mode: huawei, xiaomi, honor, vivo, oppo, firebase
  * @param token
  * @param requestCallback
  * @return
  */
 public void setPushInfo(String mode, String token, RequestCallback requestCallback)
 //使用方法示例
-YlsBaseManager.getInstance().setPushInfo("GETUI", clientid, new RequestCallback() {
+YlsBaseManager.getInstance().setPushInfo("honor", clientid, new RequestCallback() {
 @Override
 public void onSuccess(Object result) {
 
@@ -1053,6 +1055,7 @@ private void judgeCallPermission(Activity activity, String callee, String routeP
 
 ## 3. 更新日志
 
+- 2024/09/02 修改文档中关于推送的说明
 - 2024/02/05 增加对Pad的支持，开放编码、agc、ec、nc的单独设置接口
 - 2023/09/22 新增通话UI回调说明
 - 2023/09/19 新增权限申请说明
