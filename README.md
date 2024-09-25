@@ -147,6 +147,8 @@ public void setSupportCallWaiting(boolean supportCallWaiting)
 ```
 
 > 使用方法
+>
+> **注意：该方法必须在《2.3.4 sdk通知回调》中的重连成功通知onReconnectSuccess中调用才能成功**
 
 ```java
 YlsCallManager.getInstance().setSupportCallWaiting(false);
@@ -255,6 +257,8 @@ YlsLoginManager.getInstance().isConnected();
 ```
 
 #### 2.3.4 sdk通知回调
+
+> 注意：部分接口必须在重连成功后调用才能生效
 
 ```java
 YlsBaseManager.getInstance().setSdkCallback(new SdkCallback() {
@@ -523,6 +527,8 @@ public void onNotifyAudioChange() {
 #### 2.5.1 推送设置
 
 为了提高通话送达率，Linkus SDK引入手机系统厂商推送。手机系统级别的厂商推送（如小米、华为、vivo、OPPO、荣耀等）的优势在于其拥有稳定的系统级长连接，可以做到随时接收推送。您可以通过集成各手机厂商推送 SDK，与 Linkus SDK 搭配使用，实现离线推送功能。
+
+> **注意：该方法必须在《2.3.4 sdk通知回调》中的重连成功通知onReconnectSuccess中调用才能成功**
 
 ```java
 /**
@@ -806,6 +812,8 @@ conferenceModelList = YlsConferenceManager.getInstance().getConferenceList();
 > **1.不能使用包含 :、!、$、(、)、/、#、;、,、[、]、"、=、<、>、&、\、'、```、^、%、@、{、}、|、空格**
 >
 > **2.长度不能超过63g**
+>
+> **注意：该方法必须在《2.3.4 sdk通知回调》中的重连成功通知onReconnectSuccess中调用才能成功**
 
 ```java
     /**
@@ -868,6 +876,8 @@ YlsConferenceManager.getInstance().startConference(activity, conferenceVo.getNam
 
 #### 2.8.4 返回异常会议室
 
+> **注意：该方法必须在《2.3.4 sdk通知回调》中的重连成功通知onReconnectSuccess中调用才能成功**
+
 ```java
 /**
  * 返回异常会议室
@@ -880,6 +890,8 @@ public ResultVo returnConferenceBlock(String conferenceId, String member)
 ```
 
 #### 2.8.5 会议进行中的接口
+
+> **注意：该方法必须在《2.3.4 sdk通知回调》中的重连成功通知onReconnectSuccess中调用才能成功**
 
 ```java
 /**
@@ -1049,13 +1061,99 @@ private void judgeCallPermission(Activity activity, String callee, String routeP
     }
 ```
 
-### 2.10 其他事项
+### 2.10 常见问题
+
+#### 2.10.1 初始化
+
+```
+-3000：yls-sdk的目录绝对地址为空
+
+-3001：yls-sdk目录绝对地址的文件夹为空
+
+YlsBaseManager.getInstance().initYlsSDK()出现上面两种返回码，需要检查一下sdk的文件地址是否正常。
+```
+
+#### 2.10.2 登录
+
+《2.3.1 首次登录》查看回调接口
+
+```java
+public interface RequestCallback<T> {
+    /**
+     * 操作成功
+     * @param result 操作结果
+     */
+     void onSuccess(T result);
+
+    /**
+     * 操作失败
+     * @param code 错误码。
+     *1： 连接不上服务器
+	 *-5： 连接服务器成功但是登录请求没有响应
+	 *403：用户名或密码错误
+	 *405：客户端被禁用
+	 *407：账号被锁定
+	 *416：请求ip被禁止（pbx开启国家防御）
+     */
+     void onFailed(int code);
+
+    /**
+     * 操作过程中发生异常
+     * @param exception 异常详情
+     */
+     void onException(Throwable exception);
+}
+```
+
+#### 2.10.3 通话
+
+```
+《2.4.14 通话状态回调》中
+void onCallStateChange(CallStateVo callStateVo);
+处理的是callStateVo.getStatusCode()的值
+
+404/603：号码有误
+486:您呼叫的用户正忙，请稍后再拨
+408:用户无回应
+480:您呼叫的用户暂时无人接听，请稍后再拨
+410:号码变更
+484:无效号码
+488:呼叫不接受
+403:禁止
+400:错误请求
+502:当前网络不可用，请检查网络设置
+503:线路忙，请稍后再拨
+其他：未知错误
+```
+
+
+
+#### 2.10.4 通话记录
+
+```
+《2.6.2 删除通话记录》、《2.6.3 删除所有通话记录》、《2.6.5 未接来电数量》返回值-1：分机已退出SDK登录
+```
+
+#### 2.10.5 会议室
+
+```
+-1000:网络不可用
+-2000:sdk已退出登录
+-5000:当前没有会议室
+-6000:非法操作，非会议室主持人使用了主持人的操作（禁音其他人、踢出其他人）
+-7000:发起会议，成员超过9个
+-8000:发起会议，成员为空
+```
+
+### 2.11 其他事项
+
+### 2.11 其他事项
 
 > 其他未尽事项可以结合demo来看
 
 ## 3. 更新日志
 
-- 2024/09/02 修改文档中关于推送的说明
+- 2024/09/25 更新sdk版本到1.2.5版本，增加对Opus编码的兼容，补充readme文档
 - 2024/02/05 增加对Pad的支持，开放编码、agc、ec、nc的单独设置接口
 - 2023/09/22 新增通话UI回调说明
 - 2023/09/19 新增权限申请说明

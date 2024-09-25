@@ -23,6 +23,7 @@ import com.yeastar.linkus.service.base.YlsBaseManager;
 import com.yeastar.linkus.service.base.YlsInitConfig;
 import com.yeastar.linkus.service.callback.RequestCallback;
 import com.yeastar.linkus.service.callback.SdkCallback;
+import com.yeastar.linkus.utils.SPUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -50,7 +51,8 @@ public class App extends Application {
             context = this.getApplicationContext();
             instance = this;
             String projectPath = YlsBaseManager.getInstance().getProjectPath(this);
-            YlsInitConfig config = new YlsInitConfig.Builder(projectPath).key("123").supportCallWaiting(true).build();
+            String codec = (String) SPUtil.getParam(getContext(), SPUtil.CODEC, "ilbc");
+            YlsInitConfig config = new YlsInitConfig.Builder(projectPath).key("123").supportCallWaiting(true).codeC(codec).build();
             YlsBaseManager.getInstance().initYlsSDK(this, config);
             CallManager.getInstance().initCallBack(this);
             NotificationUtils.createNotificationChannel(this);

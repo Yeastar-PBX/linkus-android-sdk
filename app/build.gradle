@@ -12,7 +12,7 @@ android {
         minSdk 21
         targetSdk 29
         versionCode 2
-        versionName "1.2.5"
+        versionName "1.3.0"
         ndk {
             abiFilters "armeabi-v7a", "arm64-v8a"//, "x86", "mips"
         }
@@ -64,7 +64,7 @@ android {
 dependencies {
 
     implementation files('libs/vivo_pushSDK_v4.0.0.0_500.aar')
-    implementation files('libs/linkus-sdk-1.2.4.aar')
+    implementation files('libs/linkus-sdk-1.2.5.aar')
 //    implementation project(':linkus-sdk-android')
     implementation files('libs/wcdb-room.aar')
     implementation 'com.tencent.wcdb:wcdb-android:1.0.8'
