@@ -811,7 +811,7 @@ conferenceModelList = YlsConferenceManager.getInstance().getConferenceList();
 >
 > **1.不能使用包含 :、!、$、(、)、/、#、;、,、[、]、"、=、<、>、&、\、'、```、^、%、@、{、}、|、空格**
 >
-> **2.长度不能超过63g**
+> **2.长度不能超过63**
 >
 > **注意：该方法必须在《2.3.4 sdk通知回调》中的重连成功通知onReconnectSuccess中调用才能成功**
 
