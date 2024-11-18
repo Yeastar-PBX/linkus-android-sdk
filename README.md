@@ -521,6 +521,15 @@ public void onNotifyAudioChange() {
         });
 ```
 
+#### 2.4.15 DTMF回调
+
+```java
+YlsCallManager.getInstance().setDtmfCallback(dtmf -> {
+    //dtmf 回调
+    LogUtil.i("dtmf:" + dtmf);
+});
+```
+
 
 
 ### 2.5 推送
