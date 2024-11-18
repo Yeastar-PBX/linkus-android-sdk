@@ -64,6 +64,7 @@ YlsInitConfig config = new YlsInitConfig.Builder(projectPath)//SDK信息保存�
         .nc(true)//开启主动降噪，默认开启
     	.setPad(true)//是否pad，不设置的时候由sdk自行判断，如果sdk的判断有误，可自行设置
         .key("")//数据库密码
+    	.codeC(codec)//sip编码
         .build();
 YlsBaseManager.getInstance().initYlsSDK(this, config);
 ```
@@ -571,6 +572,30 @@ try {
 }
 YlsCallManager.getInstance().handlerPushMessage(context, jsonObject);
 ```
+
+#### 2.5.3 推送问题相关
+
+##### 2.5.3.1 Firebase推送
+
+##### 2.5.3.2 华为推送
+
+需要申请高优先级通知权限：https://developer.huawei.com/consumer/cn/doc/HMSCore-Guides/faq-0000001050042183#section037425218509
+
+##### 2.5.3.3 荣耀推送
+
+需要申请VOIP权益：https://developer.honor.com/cn/docs/11002/guides/faq
+
+##### 2.5.3.4 vivo推送
+
+vivo推送需要申请权限：https://dev.vivo.com.cn/documentCenter/doc/c7facbddba34455aa7bd0dd99767801e#w1-73104266
+
+##### 2.5.3.5 oppo推送
+
+开通私信通道权限：https://open.oppomobile.com/new/developmentDoc/info?id=13216
+
+##### 2.5.3.6 小米推送
+
+私信消息权限申请：https://dev.mi.com/distribute/doc/details?pId=1655#_4
 
 ### 2.6 通话记录
 
@@ -1145,7 +1170,7 @@ void onCallStateChange(CallStateVo callStateVo);
 -8000:发起会议，成员为空
 ```
 
-### 2.11 其他事项
+
 
 ### 2.11 其他事项
 
@@ -1153,6 +1178,7 @@ void onCallStateChange(CallStateVo callStateVo);
 
 ## 3. 更新日志
 
+- 2024/11/18 更新sdk版本到1.2.8版本，修复通话中音频切换问题，增加对dtmf回调的监听方法
 - 2024/09/25 更新sdk版本到1.2.5版本，增加对Opus编码的兼容，补充readme文档
 - 2024/02/05 增加对Pad的支持，开放编码、agc、ec、nc的单独设置接口
 - 2023/09/22 新增通话UI回调说明

@@ -45,6 +45,7 @@ import com.yeastar.linkus.service.call.vo.CallStateVo;
 import com.yeastar.linkus.service.call.vo.InCallVo;
 import com.yeastar.linkus.service.callback.ActionCallback;
 import com.yeastar.linkus.service.callback.CallStateCallback;
+import com.yeastar.linkus.service.log.LogUtil;
 import com.yeastar.linkus.utils.CommonUtil;
 import com.yeastar.linkus.utils.MediaUtil;
 import com.yeastar.linkus.utils.NetWorkUtil;
@@ -106,6 +107,11 @@ public class CallManager {
                 EventBus.getDefault().post(new RecordEvent(isRecording));
             }
 
+        });
+
+        YlsCallManager.getInstance().setDtmfCallback(dtmf -> {
+            //dtmf 回调
+            LogUtil.i("dtmf:" + dtmf);
         });
 
         YlsCallManager.getInstance().setActionCallback(new ActionCallback() {
