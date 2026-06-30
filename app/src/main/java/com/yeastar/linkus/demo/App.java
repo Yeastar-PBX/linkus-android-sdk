@@ -16,6 +16,7 @@ import com.yeastar.linkus.demo.base.BaseActivityLifecycleCallbacks;
 import com.yeastar.linkus.demo.call.CallManager;
 import com.yeastar.linkus.demo.conference.ConferenceManager;
 import com.yeastar.linkus.demo.eventbus.CallLogChangeEvent;
+import com.yeastar.linkus.demo.eventbus.RegisterStateEvent;
 import com.yeastar.linkus.demo.utils.NotificationUtils;
 import com.yeastar.linkus.demo.utils.Utils;
 import com.yeastar.linkus.demo.widget.MToastStyle;
@@ -173,6 +174,12 @@ public class App extends Application {
 //                    } catch (ApiException e) {
 //                        throw new RuntimeException(e);
 //                    }
+                }
+
+                //SIP注册状态变更通知
+                @Override
+                public void onRegisterStateChange(int registerStatus, int statusCode) {
+                    EventBus.getDefault().post(new RegisterStateEvent(registerStatus, statusCode));
                 }
             });
             ConferenceManager.getInstance().init(this);

@@ -5,10 +5,13 @@
 ## 1.前置条件
 
 - 请先和星纵信息的商务达成合作协议
-- 已经部署了Yeastar P系列的IPPBX
-- 拥有自己的Android应用（原生开发）
-- 准备如下开发环境：
 
+- 已经部署了Yeastar P系列的IPPBX
+
+- 拥有自己的Android应用（原生开发）
+
+- 准备如下开发环境：
+  
   ```
   Android Studio Arctic Fox 及以上
   Java 11
@@ -28,7 +31,8 @@
 #### 2.1.2 通过maven导入
 
 #### 2.1.3 混淆配置
->aar包中已包含混淆文件，无需特殊配置
+
+> aar包中已包含混淆文件，无需特殊配置
 
 ### 2.2 初始化
 
@@ -45,7 +49,7 @@
 #### 2.2.1 一键初始化
 
 > 一键初始化，默认的SDK信息保存地址是{应用沙盒内的file}/yls_sdk
->
+> 
 > 注意：**初始化只能执行一次，必须在主进程中执行**
 
 ```java
@@ -62,9 +66,9 @@ YlsInitConfig config = new YlsInitConfig.Builder(projectPath)//SDK信息保存�
         .agc(true)//开启自动增益,默认开启
         .ec(true)//开启回音消除，默认开启
         .nc(true)//开启主动降噪，默认开启
-    	.setPad(true)//是否pad，不设置的时候由sdk自行判断，如果sdk的判断有误，可自行设置
+        .setPad(true)//是否pad，不设置的时候由sdk自行判断，如果sdk的判断有误，可自行设置
         .key("")//数据库密码
-    	.codeC(codec)//sip编码
+        .codeC(codec)//sip编码
         .build();
 YlsBaseManager.getInstance().initYlsSDK(this, config);
 ```
@@ -78,7 +82,6 @@ YlsBaseManager.getInstance().initYlsSDK(this, config);
  * @return
  */
 public void agcSetting(Context context, boolean isOpen)
-
 ```
 
 > 使用方法
@@ -148,7 +151,7 @@ public void setSupportCallWaiting(boolean supportCallWaiting)
 ```
 
 > 使用方法
->
+> 
 > **注意：该方法必须在《2.3.4 sdk通知回调》中的重连成功通知onReconnectSuccess中调用才能成功**
 
 ```java
@@ -179,36 +182,36 @@ public void loginBlock(Context context, String userName, String passWord, String
         String remoteIp, int remotePort, RequestCallback<Boolean> requestCallback)
 ```
 
->linkus sdk mobile端登录错误码：
->1： 连接不上服务器
->-5： 连接服务器成功但是登录请求没有响应
->403：用户名或密码错误
->405：客户端被禁用
->407：账号被锁定
->416：请求ip被禁止（pbx开启国家防御）
+> linkus sdk mobile端登录错误码：
+> 1： 连接不上服务器
+> -5： 连接服务器成功但是登录请求没有响应
+> 403：用户名或密码错误
+> 405：客户端被禁用
+> 407：账号被锁定
+> 416：请求ip被禁止（pbx开启国家防御）
 
 > 使用方法
 
 ```java
 YlsLoginManager.getInstance().loginBlock(this, userName, password, localeIp,localePortI, remoteIp, remotePortI, new RequestCallback() {
-	@Override
-	public void onSuccess(Object result) {
-		closeProgressDialog();
-		startActivity(new Intent(LoginActivity.this, DialPadActivity.class));
-	}
+    @Override
+    public void onSuccess(Object result) {
+        closeProgressDialog();
+        startActivity(new Intent(LoginActivity.this, DialPadActivity.class));
+    }
 
-	@Override
-	public void onFailed(int code) {
-		closeProgressDialog();
-		String failStr = getString(R.string.login_tip_login_failed,code);
-		Toast.makeText(LoginActivity.this, failStr, Toast.LENGTH_LONG).show();
-	}
+    @Override
+    public void onFailed(int code) {
+        closeProgressDialog();
+        String failStr = getString(R.string.login_tip_login_failed,code);
+        Toast.makeText(LoginActivity.this, failStr, Toast.LENGTH_LONG).show();
+    }
 
-	@Override
-	public void onException(Throwable exception) {
-		closeProgressDialog();
-		Toast.makeText(LoginActivity.this, R.string.login_tip_login_exception, Toast.LENGTH_LONG).show();
-	}
+    @Override
+    public void onException(Throwable exception) {
+        closeProgressDialog();
+        Toast.makeText(LoginActivity.this, R.string.login_tip_login_exception, Toast.LENGTH_LONG).show();
+    }
 });
 ```
 
@@ -265,44 +268,40 @@ YlsLoginManager.getInstance().isConnected();
 YlsBaseManager.getInstance().setSdkCallback(new SdkCallback() {
 //cdr变更通知
 @Override
-public void onCdrChange(int syncResult) {
-        EventBus.getDefault().post(new CallLogChangeEvent(syncResult));
-        }
+public void onCdrChange(int syncResult) {}
 //退出登录通知
 @Override
-public void onLogout(int type) {
-        context.startActivity(new Intent(context, LoginActivity.class));
-        }
+public void onLogout(int type) {}
 //重连成功通知
 @Override
 public void onReconnectSuccess() {}
-        });
+//SIP注册状态变更通知
+@Override
+public void onRegisterStateChange(int registerStatus, int statusCode) {}
 ```
-
 
 > 其中退出类型如下
 
 ```
 SdkEventCode.EVENT_USER_RELOGIN://1005 帐号在其他地方登录
-               
+
 SdkEventCode.P_EVENT_DISABLE_LINKUS_APP://20014 linkus被禁用了
-   
+
 SdkEventCode.EVENT_LOGIN_LOCKED://1009 账号被锁住
 
 SdkEventCode.EVENT_LOGIN_INFO_ILLEGAL://1010 缓存登录信息错误
-    
+
 SdkEventCode.EVENT_CACHE_LOGIIN_USER_NOTFOUND://1011 缓存登录信息为空
-    
+
 SdkEventCode.P_EVENT_LOGIN_MODE_CHANGE://20008 登录模式变更
-   
+
 SdkEventCode.P_EVENT_COUNTRY_IP_LIMIT://20083 ip登录限制
-   
+
 SdkEventCode.P_EVENT_LICENSE_EXPIRE://20093 pbx未激活
 
 SdkEventCode.P_EVENT_SDK_STATUS_CHANGE://20153 sdk状态变更
 
 SdkEventCode.P_EVENT_SDK_ACCESSKEY_CHANGE://20154 sdk accesskey变更
-   
 ```
 
 ### 2.4 通话相关操作
@@ -328,15 +327,11 @@ public void makeNewCall(String callNumber, boolean netWorkAvailable)
 YlsCallManager.getInstance().makeNewCall(number, netWorkAvailable);
 ```
 
-
-
 #### 2.4.2 接听来电
 
 ```java
 YlsCallManager.getInstance().answerCall(callId);
 ```
-
-
 
 #### 2.4.3 拒接
 
@@ -344,15 +339,11 @@ YlsCallManager.getInstance().answerCall(callId);
 YlsCallManager.getInstance().answerBusy(context, callId);
 ```
 
-
-
 #### 2.4.4 通话结束挂断
 
 ```java
 YlsCallManager.getInstance().hangUpCall(context, callId);
 ```
-
-
 
 #### 2.4.5 hold通话
 
@@ -360,15 +351,11 @@ YlsCallManager.getInstance().hangUpCall(context, callId);
 YlsCallManager.getInstance().holdCall(inCallVo);
 ```
 
-
-
 #### 2.4.6 解hold通话
 
 ```java
 YlsCallManager.getInstance().unHoldCall(getContext(), inCallVo);
 ```
-
-
 
 #### 2.4.7 咨询转
 
@@ -376,23 +363,17 @@ YlsCallManager.getInstance().unHoldCall(getContext(), inCallVo);
 YlsCallManager.getInstance().makeTransferCall(context, calleeName, number, trunkName, route, object);
 ```
 
-
-
 #### 2.4.8 咨询转确定转移
 
 ```java
 YlsCallManager.getInstance().confirmTransfer(App.getInstance().getContext());
 ```
 
-
-
 #### 2.4.9 盲转
 
 ```java
 YlsCallManager.getInstance().blindTransferCall(context, callOutNumber);
 ```
-
-
 
 #### 2.4.10 静音/取消静音
 
@@ -402,8 +383,6 @@ YlsCallManager.getInstance().blindTransferCall(context, callOutNumber);
  */
 public void mute(InCallVo inCallVo)
 ```
-
-
 
 #### 2.4.11 录音
 
@@ -417,8 +396,6 @@ public void mute(InCallVo inCallVo)
 public int record(InCallVo vo)
 ```
 
-
-
 #### 2.4.12 发送DTMF
 
 ```java
@@ -431,15 +408,11 @@ public int record(InCallVo vo)
 public int sendDtmf(int callId, String recordCode)
 ```
 
-
-
 #### 2.4.13 显示通话质量
 
 ```java
 CallQualityVo callQualityVo = YlsCallManager.getInstance().getCallQuality();
 ```
-
-
 
 #### 2.4.14 通话状态回调
 
@@ -472,50 +445,48 @@ public void onRecordChange(boolean isRecording) {
         });
 ```
 
-
-
 #### 2.4.15 通话UI回调
 
 ```java
 YlsCallManager.getInstance().setActionCallback(new ActionCallback() {
 @Override
 public void onFinishCall() {
-    	//结束通话回调
+        //结束通话回调
         finishAllCall(context);
         }
 
 @Override
 public void onNewCall() {
-    	//来电弹窗回调
+        //来电弹窗回调
         jump2CallActivity(context);
         }
 
 @Override
 public void onCallWaiting() {
-    	//call waiting回调
+        //call waiting回调
         EventBus.getDefault().post(new CallWaitingEvent());
         SoundManager.getInstance().startPlay(context, YlsConstant.SOUND_CALL_WAITING_TYPE);
         }
 
 @Override
 public void onMissCallClick() {
-		//收到misscall的回调
+        //收到misscall的回调
         }
 
 @Override
 public void onStopMicroPhoneService() {
-		//Android11以上通话在后台时需要开启前台服务，通话结束后停止前台服务的回调
+        //Android11以上通话在后台时需要开启前台服务，通话结束后停止前台服务的回调
         }
 
 @Override
 public void onDismissPopupView() {
-    	//音频路由弹窗消失的回调
+        //音频路由弹窗消失的回调
         dismissPopupView();
         }
 
 @Override
 public void onNotifyAudioChange() {
-    	//音频路由变更的回调
+        //音频路由变更的回调
         notifyAudioChange();
         }
         });
@@ -529,8 +500,6 @@ YlsCallManager.getInstance().setDtmfCallback(dtmf -> {
     LogUtil.i("dtmf:" + dtmf);
 });
 ```
-
-
 
 ### 2.5 推送
 
@@ -611,7 +580,7 @@ vivo推送需要申请权限：https://dev.vivo.com.cn/documentCenter/doc/c7facb
 #### 2.6.1 获取通话记录
 
 > 获取最多N条通话记录
->
+> 
 > **注意：cdr相关接口都在YlsCallLogManager**
 
 ```java
@@ -685,8 +654,6 @@ public int getMissCallCdrCount();
 public void makeMultipartyCall(String number, String trunkName, String route, Activity activity, Object obj)
 ```
 
-
-
 #### 2.7.2 挂断多方通话中的单通
 
 ```java
@@ -698,8 +665,6 @@ public void makeMultipartyCall(String number, String trunkName, String route, Ac
 public void hangUpSingleCall(Context context, int callId)
 ```
 
-
-
 #### 2.7.3 静音/取消静音多方通话中的单通
 
 ```java
@@ -708,8 +673,6 @@ public void hangUpSingleCall(Context context, int callId)
  */
 public void muteSingleMember(InCallVo inCallVo)
 ```
-
-
 
 #### 2.7.4 多方通话其他接口
 
@@ -807,14 +770,12 @@ public boolean isMultiPartyCallRecordAble()
 public boolean isMultiPartyCallAlwaysRecordDisable()
 ```
 
-
-
 ### 2.8 会议室
 
 #### 2.8.1会议室功能初始化
 
 > **会议室初始化最好在Application主进程进行**
->
+> 
 > **会议室相关方法都在YlsConferenceManager里**
 
 ```java
@@ -842,11 +803,11 @@ conferenceModelList = YlsConferenceManager.getInstance().getConferenceList();
 #### 2.8.3 开始会议室
 
 > **会议室名称限制：**
->
+> 
 > **1.不能使用包含 :、!、$、(、)、/、#、;、,、[、]、"、=、<、>、&、\、'、```、^、%、@、{、}、|、空格**
->
+> 
 > **2.长度不能超过63**
->
+> 
 > **注意：该方法必须在《2.3.4 sdk通知回调》中的重连成功通知onReconnectSuccess中调用才能成功**
 
 ```java
@@ -905,8 +866,6 @@ YlsConferenceManager.getInstance().startConference(activity, conferenceVo.getNam
             }
         });
 ```
-
-
 
 #### 2.8.4 返回异常会议室
 
@@ -998,7 +957,6 @@ public void endConferenceBlock(Context context, int callId, ConferenceVo confere
  * @return
  */
 public ResultVo returnConferenceBlock(Context context, String conferenceId, String member)
-
 ```
 
 #### 2.8.6 会议室其他接口
@@ -1068,7 +1026,9 @@ public void deleteAllConferenceLog()
 ```
 
 ### 2.9 权限相关
+
 > **通话相关的权限已经包括在aar的AndroidManifest.xml里了，我们遵循按需获取权限的原则申请危险权限**
+
 ```java
 private void judgeCallPermission(Activity activity, String callee, String routePrefix, String name) {
         PermissionRequest request = new PermissionRequest(activity,
@@ -1123,11 +1083,11 @@ public interface RequestCallback<T> {
      * 操作失败
      * @param code 错误码。
      *1： 连接不上服务器
-	 *-5： 连接服务器成功但是登录请求没有响应
-	 *403：用户名或密码错误
-	 *405：客户端被禁用
-	 *407：账号被锁定
-	 *416：请求ip被禁止（pbx开启国家防御）
+     *-5： 连接服务器成功但是登录请求没有响应
+     *403：用户名或密码错误
+     *405：客户端被禁用
+     *407：账号被锁定
+     *416：请求ip被禁止（pbx开启国家防御）
      */
      void onFailed(int code);
 
@@ -1160,8 +1120,6 @@ void onCallStateChange(CallStateVo callStateVo);
 其他：未知错误
 ```
 
-
-
 #### 2.10.4 通话记录
 
 ```
@@ -1179,14 +1137,18 @@ void onCallStateChange(CallStateVo callStateVo);
 -8000:发起会议，成员为空
 ```
 
-
-
 ### 2.11 其他事项
 
 > 其他未尽事项可以结合demo来看
 
 ## 3. 更新日志
 
+- 2026/06/30 更新sdk版本 1.2.11
+  1. 增加对有线网络类型的支持
+  
+  2. 修复收到bye包却没有触发通话回调的问题
+  
+  3. 修复未注册成功时呼出静默失败问题，增加呼出重试机制
 - 2024/11/18 更新sdk版本到1.2.8版本，修复通话中音频切换问题，增加对dtmf回调的监听方法
 - 2024/09/25 更新sdk版本到1.2.5版本，增加对Opus编码的兼容，补充readme文档
 - 2024/02/05 增加对Pad的支持，开放编码、agc、ec、nc的单独设置接口
