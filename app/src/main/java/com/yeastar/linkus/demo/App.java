@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.hjq.toast.ToastUtils;
+import com.hihonor.push.sdk.HonorPushCallback;
+import com.hihonor.push.sdk.HonorPushClient;
 import com.vivo.push.PushClient;
 import com.vivo.push.PushConfig;
 import com.vivo.push.listener.IPushQueryActionListener;
@@ -64,6 +66,8 @@ public class App extends Application {
             initVovoPush(getApplicationContext());
             //华为推送初始化
 //            ActivityMgr.INST.init(this);
+            //荣耀推送初始化
+            initHonorPush(getApplicationContext());
 
             ToastUtils.init(this, new MToastStyle());
             YlsBaseManager.getInstance().setSdkCallback(new SdkCallback() {
@@ -174,6 +178,29 @@ public class App extends Application {
 //                    } catch (ApiException e) {
 //                        throw new RuntimeException(e);
 //                    }
+
+                    // 荣耀推送重连成功后重新设置token
+                    HonorPushClient.getInstance().getPushToken(new HonorPushCallback<String>() {
+                        @Override
+                        public void onSuccess(String pushToken) {
+                            if (pushToken != null && !pushToken.isEmpty()) {
+                                Log.w(TAG, "Honor 重新获取token成功，token:" + pushToken);
+                                YlsBaseManager.getInstance().setPushInfo(YlsConstant.PUSH_MODE_HONOR, pushToken, new RequestCallback() {
+                                    @Override
+                                    public void onSuccess(Object o) {}
+                                    @Override
+                                    public void onFailed(int i) {}
+                                    @Override
+                                    public void onException(Throwable throwable) {}
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(int errorCode, String errorString) {
+                            Log.w(TAG, "Honor 重新获取token失败:" + errorCode + " " + errorString);
+                        }
+                    });
                 }
 
                 //SIP注册状态变更通知
@@ -197,6 +224,33 @@ public class App extends Application {
             //此处异常说明是有必须的vpush配置未配置所致，需要仔细检查集成指南的各项配置。
             e.printStackTrace();
         }
+    }
+
+    private static void initHonorPush(Context context) {
+        //初始化荣耀推送
+        HonorPushClient.getInstance().init(context, true);
+        //获取PushToken
+        HonorPushClient.getInstance().getPushToken(new HonorPushCallback<String>() {
+            @Override
+            public void onSuccess(String pushToken) {
+                if (pushToken != null && !pushToken.isEmpty()) {
+                    Log.w(TAG, "Honor token==" + pushToken);
+                    YlsBaseManager.getInstance().setPushInfo(YlsConstant.PUSH_MODE_HONOR, pushToken, new RequestCallback() {
+                        @Override
+                        public void onSuccess(Object o) {}
+                        @Override
+                        public void onFailed(int i) {}
+                        @Override
+                        public void onException(Throwable throwable) {}
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(int errorCode, String errorString) {
+                Log.w(TAG, "Honor 获取PushToken失败:" + errorCode + " " + errorString);
+            }
+        });
     }
 
     public static App getInstance() {

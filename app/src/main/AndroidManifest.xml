@@ -7,6 +7,10 @@
         <intent>
             <action android:name="com.getui.sdk.action" />
         </intent>
+        <!-- 荣耀推送配置 -->
+        <intent>
+            <action android:name="com.hihonor.push.action.BIND_PUSH_SERVICE" />
+        </intent>
     </queries>
 
     <uses-permission
@@ -129,6 +133,19 @@
             android:name="com.huawei.hms.support.api.push.service.HmsMsgService"
             android:exported="false"
             tools:replace="android:exported" />
+
+        <!-- 荣耀推送配置开始 -->
+        <meta-data
+            android:name="com.hihonor.push.app_id"
+            android:value="填入申请的app_id" />
+        <service
+            android:name=".push.DemoHonorMessageService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.hihonor.push.action.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <!-- 荣耀推送配置结束 -->
 
     </application>
 

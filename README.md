@@ -1142,7 +1142,9 @@ void onCallStateChange(CallStateVo callStateVo);
 > 其他未尽事项可以结合demo来看
 
 ## 3. 更新日志
-
+- 2026/07/03 更新sdk版本 1.2.12
+  1. 修复Android12网络切换监听不可靠问题
+  2. demo项目增加对荣耀推送的支持
 - 2026/06/30 更新sdk版本 1.2.11
   1. 增加对有线网络类型的支持
   

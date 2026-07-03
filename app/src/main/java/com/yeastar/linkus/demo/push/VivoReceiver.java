@@ -2,7 +2,6 @@ package com.yeastar.linkus.demo.push;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.vivo.push.model.UnvarnishedMessage;
 import com.vivo.push.sdk.OpenClientPushMessageReceiver;
@@ -10,6 +9,7 @@ import com.yeastar.linkus.constant.YlsConstant;
 import com.yeastar.linkus.service.base.YlsBaseManager;
 import com.yeastar.linkus.service.call.YlsCallManager;
 import com.yeastar.linkus.service.callback.RequestCallback;
+import com.yeastar.linkus.service.log.LogUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,7 +36,7 @@ public class VivoReceiver extends OpenClientPushMessageReceiver {
     public void onTransmissionMessage(Context context, UnvarnishedMessage unvarnishedMessage) {
         super.onTransmissionMessage(context, unvarnishedMessage);
         String pushMsg = unvarnishedMessage.getMessage();
-        Log.i(TAG,"VIVO onTransmissionMessage==" + pushMsg);
+        LogUtil.w("VIVO onTransmissionMessage==" + pushMsg);
         if (!TextUtils.isEmpty(pushMsg)) {
             try {
                 JSONObject jsonObject = new JSONObject(pushMsg);
